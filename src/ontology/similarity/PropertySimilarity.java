@@ -100,6 +100,8 @@ public class PropertySimilarity {
     /** Returns the range similarity between two properties.
      * @param Pst
      * @param Pcs
+     * @param Cst
+     * @param Ccs
      * @return
      */
     private static double rangeSim (OWLProperty Pst, OWLProperty Pcs, OWLClass Cst, OWLClass Ccs, String owlURI)
@@ -124,7 +126,7 @@ public class PropertySimilarity {
         
         Set<OWLClass>    PcsRangeSet            = new HashSet<OWLClass>();
         Set<OWLClass>    PcsRestrictionClassSet = new HashSet<OWLClass>();
-        Set<Restriction> CcsRestrictions        = Restriction.getRestrictions(Cst, owlURI);
+        Set<Restriction> CcsRestrictions        = Restriction.getRestrictions(Ccs, owlURI);
         
         for (Restriction r : CcsRestrictions) {
             if (r.getClassTypeName().equalsIgnoreCase("ObjectAllValuesFrom")) {
