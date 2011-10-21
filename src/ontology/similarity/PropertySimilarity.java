@@ -106,17 +106,37 @@ public class PropertySimilarity {
     {
         OntologyManager parser = OntologyManager.getInstance(owlURI);
 
+        Set<OWLClass>    PstRangeSet            = new HashSet<OWLClass>();
+        Set<OWLClass>    PstRestrictionClassSet = new HashSet<OWLClass>();
+        Set<Restriction> CstRestrictions        = Restriction.getRestrictions(Cst, owlURI);
         
-        
-        Set<OWLClass> PstRangeSet = new HashSet<OWLClass>();
-        // = parser.getRanges(Pst);
-        Set<Restriction> CstRestrictions = Restriction.getRestrictions(Cst, owlURI);
         for (Restriction r : CstRestrictions) {
-            System.out.println(r.getClassTypeName());
+            if (r.getClassTypeName().equalsIgnoreCase("ObjectAllValuesFrom")) {
+                PstRestrictionClassSet.addAll(r.getCls());
+            }
         }
         
-        Set<OWLClass> PcsRangeSet = new HashSet<OWLClass>();
-        // = parser.getRanges(Pcs);
+        if (PstRestrictionClassSet.isEmpty()) {
+            PstRangeSet = parser.getRanges(Pst);
+        } else {
+            PstRangeSet = PstRestrictionClassSet;
+        }
+        
+        Set<OWLClass>    PcsRangeSet            = new HashSet<OWLClass>();
+        Set<OWLClass>    PcsRestrictionClassSet = new HashSet<OWLClass>();
+        Set<Restriction> CcsRestrictions        = Restriction.getRestrictions(Cst, owlURI);
+        
+        for (Restriction r : CcsRestrictions) {
+            if (r.getClassTypeName().equalsIgnoreCase("ObjectAllValuesFrom")) {
+                PstRestrictionClassSet.addAll(r.getCls());
+            }
+        }
+        
+        if (PcsRestrictionClassSet.isEmpty()) {
+            PcsRangeSet = parser.getRanges(Pcs);
+        } else {
+            PcsRangeSet = PcsRestrictionClassSet;
+        }
 
         Double valueToReturn = new Double(0);
         
