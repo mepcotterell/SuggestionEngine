@@ -21,7 +21,7 @@ public class PropertySimilarity {
      * @param Pcs
      * @return
      */
-    private static double propSynSim(OWLProperty Pst, OWLProperty Pcs, String owlURI) 
+    private static double propSynSim (OWLProperty Pst, OWLProperty Pcs, String owlURI) 
     {
         double common = 0.0;
 
@@ -68,7 +68,7 @@ public class PropertySimilarity {
      * @param Pcs
      * @return
      */
-    private static double cardinalitySim(OWLProperty Pst, OWLProperty Pcs, String owlURI)
+    private static double cardinalitySim (OWLProperty Pst, OWLProperty Pcs, String owlURI)
     {
         OntologyManager parser = OntologyManager.getInstance(owlURI);
 
@@ -102,12 +102,21 @@ public class PropertySimilarity {
      * @param Pcs
      * @return
      */
-    private static double rangeSim(OWLProperty Pst, OWLProperty Pcs, String owlURI)
+    private static double rangeSim (OWLProperty Pst, OWLProperty Pcs, OWLClass Cst, OWLClass Ccs, String owlURI)
     {
         OntologyManager parser = OntologyManager.getInstance(owlURI);
 
-        Set<OWLClass> PstRangeSet = parser.getRanges(Pst);
-        Set<OWLClass> PcsRangeSet = parser.getRanges(Pcs);
+        
+        
+        Set<OWLClass> PstRangeSet = new HashSet<OWLClass>();
+        // = parser.getRanges(Pst);
+        Set<Restriction> CstRestrictions = Restriction.getRestrictions(Cst, owlURI);
+        for (Restriction r : CstRestrictions) {
+            System.out.println(r.getClassTypeName());
+        }
+        
+        Set<OWLClass> PcsRangeSet = new HashSet<OWLClass>();
+        // = parser.getRanges(Pcs);
 
         Double valueToReturn = new Double(0);
         
@@ -201,7 +210,7 @@ public class PropertySimilarity {
         Set<Restriction> ccsRestrictions = Restriction.getRestrictions(Ccs, owlURI);
         
         for (Restriction cstRestriction: cstRestrictions) {
-            for (Restriction ccsRestriction: ccsRestrictions) {
+            for (Restriction ccsRestriction: ccsRestrictions) {            
                 
                 double synSim = PropertySimilarity.synSim(cstRestriction.getProp(), ccsRestriction.getProp(), owlURI);
                 
@@ -235,7 +244,7 @@ public class PropertySimilarity {
             c = 1.0;
         } // if
 
-        double rangSim = rangeSim(Pst, Pcs, owlURI);
+        double rangSim = rangeSim(Pst, Pcs, Cst, Ccs, owlURI);
         double synSim = synSim(Pst, Pcs, owlURI);
         
         // @TODO should we noly check cardinality when considering restrictions?

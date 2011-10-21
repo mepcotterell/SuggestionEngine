@@ -133,7 +133,7 @@ public class ConceptSimilarity {
      */
     public static void main(String[] args) 
     {
-        String owlURI = "obi.owl";
+        String owlURI = "owl/obi.owl";
         
         OntologyManager parser = OntologyManager.getInstance(owlURI);
         
