@@ -28,7 +28,7 @@ public class Test {
 //    public static String wsdbfetch = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/edam/WSDbfetchDoclit.wsdl";
 //    public static String clustalW = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/edam/clustalw2.wsdl";
    
-    public static String ontology = "obi.owl";
+    public static String ontology = "owl/obi.owl";
 //    public static String ontology = "edam.owl";
     
     public static void main (String[] args) {
