@@ -119,6 +119,7 @@ public class PropertySimilarity {
         if (PstRestrictionClassSet.isEmpty()) {
             PstRangeSet = parser.getRanges(Pst);
         } else {
+            System.out.println("using restrictions as ranges...");
             PstRangeSet = PstRestrictionClassSet;
         }
         
@@ -135,6 +136,7 @@ public class PropertySimilarity {
         if (PcsRestrictionClassSet.isEmpty()) {
             PcsRangeSet = parser.getRanges(Pcs);
         } else {
+            System.out.println("using restrictions as ranges...");
             PcsRangeSet = PcsRestrictionClassSet;
         }
 
