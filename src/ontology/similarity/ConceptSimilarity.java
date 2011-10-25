@@ -1,5 +1,5 @@
 /**
- * 
+ * Concept Similarity 
  */
 package ontology.similarity;
 
@@ -137,15 +137,13 @@ public class ConceptSimilarity {
         
         OntologyManager parser = OntologyManager.getInstance(owlURI);
         
-        ConceptSimilarity cs = new ConceptSimilarity();
-        
         String concept1 = "http://purl.obolibrary.org/obo/webService.owl#Class_0013";
         String concept2 = "http://purl.obolibrary.org/obo/obi.owl#Class_34";
         
         OWLClass cls1 = parser.getConceptClass(concept1);
         OWLClass cls2 = parser.getConceptClass(concept2);
         
-        double score = cs.getConceptSimScore(cls1, cls2, owlURI);
+        double score = ConceptSimilarity.getConceptSimScore(cls1, cls2, owlURI);
         
         System.out.println("overall concept similarity score = " + score);
         
