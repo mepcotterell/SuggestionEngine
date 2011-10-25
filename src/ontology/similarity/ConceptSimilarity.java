@@ -1,8 +1,9 @@
 /**
- * 
+ * Concept Similarity 
  */
 package ontology.similarity;
 
+import StringMatcher.*;
 import parser.OntologyManager;
 
 import org.semanticweb.owlapi.model.*;
@@ -83,12 +84,19 @@ public class ConceptSimilarity {
         String PstLabel = parser.getClassLabel(Pst);
         String PcsLabel = parser.getClassLabel(Pcs);
         
-        // TODO: Need to compare definitions.
+        String PstDefinition = parser.getClassDefinition(Pst);
+        String PcsDefinition = parser.getClassDefinition(Pcs);
+        
+
         
         double scoreName = mc.getSimilarity(PstLocalName, PcsLocalName);
         double scoreLabel = mc.getSimilarity(PstLabel, PcsLabel);
+        // Comparing definitions.
+        double scoreDef = CompareDefination.getSimilarity(PstDefinition, PcsDefinition);
 
-        double score = (wName * scoreName) + (wLabel * scoreLabel);
+        double scoreTerm = (wName * scoreName) + (wLabel * scoreLabel);
+
+        double score = ( scoreDef * 0.8 ) + ( scoreTerm * 0.2);
         
         return score;
         
@@ -137,15 +145,13 @@ public class ConceptSimilarity {
         
         OntologyManager parser = OntologyManager.getInstance(owlURI);
         
-        ConceptSimilarity cs = new ConceptSimilarity();
-        
         String concept1 = "http://purl.obolibrary.org/obo/webService.owl#Class_0013";
         String concept2 = "http://purl.obolibrary.org/obo/obi.owl#Class_34";
         
         OWLClass cls1 = parser.getConceptClass(concept1);
         OWLClass cls2 = parser.getConceptClass(concept2);
         
-        double score = cs.getConceptSimScore(cls1, cls2, owlURI);
+        double score = ConceptSimilarity.getConceptSimScore(cls1, cls2, owlURI);
         
         System.out.println("overall concept similarity score = " + score);
         

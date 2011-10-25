@@ -109,12 +109,12 @@ public class ForwardSuggest {
             dmResults.put(candidateOP, ds.getDmResults());
 
             //structure-based data mediation(subtree homeomorphism)
-//			dmScore = ds.calculateHomeoDmScore(workflowOPs, candidateOP, owlFileName);
-//			homeoDmResults.put(candidateOP, ds.getHomeoDmResult());
+            //dmScore = ds.calculateHomeoDmScore(workflowOPs, candidateOP, owlFileName);
+            //homeoDmResults.put(candidateOP, ds.getHomeoDmResult());
 
             //leaf-based data mediation
-//			dmScore = ds.calculateLeafDmScore(workflowOPs, candidateOP, owlFileName);
-//			dmResults.put(candidateOP, ds.getDmResults());
+            //dmScore = ds.calculateLeafDmScore(workflowOPs, candidateOP, owlFileName);
+            //dmResults.put(candidateOP, ds.getDmResults());
         }
         return dmScore;
     }
