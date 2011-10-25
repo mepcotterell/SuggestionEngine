@@ -206,8 +206,8 @@ public class PathRank {
 
         if (type == NodeType.LEAF_NODE) {
             
-            weightSyn = 0.4;
-            weightSem = 0.4;
+            weightSyn = 0.2;
+            weightSem = 0.6;
             weightTyp = 0.2;
 
             //compare leaf's type attribute if exist

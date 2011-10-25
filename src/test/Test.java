@@ -43,8 +43,8 @@ public class Test {
         Results results = new Results();
         
         // Specify a desired functionality or operation name
-//        String desiredOps = "fetch sequences";
-        String desiredOps = "";
+        String desiredOps = "retrieve sequences";
+        //String desiredOps = "http://purl.obolibrary.org/obo/obi.owl#Class_40";
         
         List<OpWsdl> candidateOpsOBI = new ArrayList<OpWsdl>();
         candidateOpsOBI.add(new OpWsdl("getParameters", wublast));
@@ -68,7 +68,7 @@ public class Test {
         List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
         //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
         workflowOpsOBI.add(new OpWsdl("run", wublast));
-        //workflowOpsOBI.add(new OpWsdl("getResult", wublast));
+        workflowOpsOBI.add(new OpWsdl("getResult", wublast));
         //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
         
         System.out.println();
@@ -85,8 +85,8 @@ public class Test {
         
         for (OpWsdlScore suggestion: suggestOpList2) {
             results.test1.put(suggestion.getOpName(), suggestion);
-            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
-            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
+            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
+            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
         }
        
          

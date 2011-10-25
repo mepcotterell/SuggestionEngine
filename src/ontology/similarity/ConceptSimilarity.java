@@ -3,6 +3,7 @@
  */
 package ontology.similarity;
 
+import StringMatcher.*;
 import parser.OntologyManager;
 
 import org.semanticweb.owlapi.model.*;
@@ -83,12 +84,19 @@ public class ConceptSimilarity {
         String PstLabel = parser.getClassLabel(Pst);
         String PcsLabel = parser.getClassLabel(Pcs);
         
-        // TODO: Need to compare definitions.
+        String PstDefinition = parser.getClassDefinition(Pst);
+        String PcsDefinition = parser.getClassDefinition(Pcs);
+        
+
         
         double scoreName = mc.getSimilarity(PstLocalName, PcsLocalName);
         double scoreLabel = mc.getSimilarity(PstLabel, PcsLabel);
+        // Comparing definitions.
+        double scoreDef = CompareDefination.getSimilarity(PstDefinition, PcsDefinition);
 
-        double score = (wName * scoreName) + (wLabel * scoreLabel);
+        double scoreTerm = (wName * scoreName) + (wLabel * scoreLabel);
+
+        double score = ( scoreDef * 0.8 ) + ( scoreTerm * 0.2);
         
         return score;
         

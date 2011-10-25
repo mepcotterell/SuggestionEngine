@@ -75,7 +75,7 @@ public class DmScore {
      * @param workflowOPs    operations in current workflow, topologic order
      * @param candidateOP   one candidate operation
      * @param owlURI
-     * @return     score of data mediation for the candidate operation (how input of candidate operation will be fed)
+     * @return score of data mediation for the candidate operation (how input of candidate operation will be fed)
      */
     public double calculatePathDmScore(List<OpWsdl> workflowOPs, OpWsdl candidateOP, String owlURI) 
     {
