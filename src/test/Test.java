@@ -22,7 +22,7 @@ public class Test {
     
     public static String wublast = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/obi/wublast.wsdl";
     public static String wsdbfetch = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/obi/WSDbfetchDoclit.wsdl";
-    public static String clustalW = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/obi/clustalw2.wsdl";
+    public static String clustalW = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2_FullyAnnotated.wsdl";//"http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/obi/clustalw2.wsdl";
     
 //    public static String wublast = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/edam/wublast.wsdl";
 //    public static String wsdbfetch = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/edam/WSDbfetchDoclit.wsdl";
@@ -43,7 +43,7 @@ public class Test {
         Results results = new Results();
         
         // Specify a desired functionality or operation name
-        String desiredOps = "retrieve sequences";
+        String desiredOps = "";//retrieve sequences";
         //String desiredOps = "http://purl.obolibrary.org/obo/obi.owl#Class_40";
         
         List<OpWsdl> candidateOpsOBI = new ArrayList<OpWsdl>();
@@ -66,29 +66,60 @@ public class Test {
         candidateOpsOBI.add(new OpWsdl("run", clustalW));
         
         List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
-        //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
         workflowOpsOBI.add(new OpWsdl("run", wublast));
-        workflowOpsOBI.add(new OpWsdl("getResult", wublast));
         //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
         
         System.out.println();
         System.out.println("--------------------------------------------------");
         System.out.println("TEST - OBI");
-        System.out.println("--------------------------------------------------");
-        
+        System.out.println("Case 1: There is only one operation on the workflow Blast.run\n------------------------------------\n");
         ForwardSuggest sugg2 = new ForwardSuggest();
         List<OpWsdlScore> suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+        for (OpWsdlScore suggestion: suggestOpList2) {
+            results.test1.put(suggestion.getOpName(), suggestion);
+            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
+            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
+        }
         
+        workflowOpsOBI.add(new OpWsdl("getResult", wublast));
+        desiredOps = "retrieve sequences";
+        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
+        System.out.println();   
+        System.out.println("\nCase 2\n Workflow has two Operations Added\nBlast.run -> Blast.getResult--------------------------------------------------");
         System.out.println();
-        System.out.println("--------------------------------------------------");
+        for (OpWsdlScore suggestion: suggestOpList2) {
+            results.test1.put(suggestion.getOpName(), suggestion);
+            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
+            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
+        }
+
+        //workflowOpsOBI.add(new OpWsdl("run", clustalW));
+        workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
+        desiredOps = "global multiple sequence alignment";
+        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
+        System.out.println();
+        System.out.println("\nCase 3\n Workflow has three Operations Added\nBlast.run -> Blast.getResult -> FetchBatch\n--------------------------------------------------");
         System.out.println();
         
         for (OpWsdlScore suggestion: suggestOpList2) {
             results.test1.put(suggestion.getOpName(), suggestion);
-            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
-            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
+            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
+            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
         }
-       
+    
+        workflowOpsOBI.add(new OpWsdl("run", clustalW));
+        //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
+        desiredOps = "";
+        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
+        System.out.println();
+        System.out.println("\nCase 4\n Workflow has three Operations Added\nBlast.run -> Blast.getResult -> WSDBFetch.FetchBatch -> ClustalW.run\n--------------------------------------------------");
+        System.out.println();
+        
+        for (OpWsdlScore suggestion: suggestOpList2) {
+            results.test1.put(suggestion.getOpName(), suggestion);
+            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
+            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
+        }       
          
     }
     

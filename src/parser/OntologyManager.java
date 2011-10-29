@@ -1123,7 +1123,7 @@ public class OntologyManager {
             //discoveryMgr = new OntologyManager("camera.owl.rdf");
             //discoveryMgr = new OntologyManager("SUMO_Finance.owl");
             //discoveryMgr = new OntologyManager("pizza.owl");
-            discoveryMgr = new OntologyManager("obi.owl");
+            discoveryMgr = new OntologyManager("/home/alok/Desktop/SuggestionEngineWS/owl/obi.owl");
         } catch (OWLOntologyCreationException e) {
             e.printStackTrace();
         }

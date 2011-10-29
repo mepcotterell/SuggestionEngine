@@ -162,7 +162,7 @@ public class ForwardSuggest {
 
 
         OntologyManager om = OntologyManager.getInstance(owlURI);
-        OWLOntology onModel = om.getOntology(owlURI);
+        //OWLOntology onModel = om.getOntology(owlURI);
 
         //adjust weight, so final scores are comparable for different level annotation
         if (preferOp == null) {

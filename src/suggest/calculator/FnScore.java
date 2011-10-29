@@ -27,7 +27,7 @@ public class FnScore {
 	 */
 	public double calculateFnScore (String preferOp, OpWsdl op, String owlFileName){
 		double fnScore = 0;
-                String owlURI = "owl/obi.owl";        
+                String owlURI = "/home/alok/Desktop/SuggestionEngineWS/owl/obi.owl";        
                 OntologyManager parser = OntologyManager.getInstance(owlURI);
 		//penality for only syntax match
 		double penality = 0.5;
@@ -43,15 +43,23 @@ public class FnScore {
 		if (!preferOp.startsWith("http://")|| opMr == null)
                 {
                     String tempPreferOp = preferOp;
+                    String tempOpName = op.getOpName();
                     if(preferOp.startsWith("http://"))
                     {
-                            OWLClass preferopClass = parser.getConceptClass(preferOp);
-                            tempPreferOp = parser.getClassLabel(preferopClass);
+                         OWLClass preferopClass = parser.getConceptClass(preferOp);
+                         tempPreferOp = parser.getClassLabel(preferopClass);
+                    }
+                    if (opMr != null)
+                    if (opMr.startsWith("http://") && owlFileName!=null)
+                    {
+                            OWLClass Oprcls = parser.getConceptClass(opMr);
+                            tempOpName = parser.getClassLabel(Oprcls);
+                            
                     }
                     //operation name's syntax similarity
                     QGramsDistance mc = new QGramsDistance();
                     String t = op.getOpName();
-                    fnScore = penality * mc.getSimilarity(tempPreferOp, op.getOpName());
+                    fnScore = penality * mc.getSimilarity(tempPreferOp, tempOpName);
 		}
 		
 		else
