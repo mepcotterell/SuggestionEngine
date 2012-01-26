@@ -270,7 +270,7 @@ public class PropertySimilarity {
         double synSim = synSim(Pst, Pcs, owlURI);
         
         // @TODO should we noly check cardinality when considering restrictions?
-        // double cardSim = cardinalitySim(Pst, Pcs, owlURI);
+        double cardSim = cardinalitySim(Pst, Pcs, owlURI);
         
         double val = 0.0;
         
@@ -319,7 +319,7 @@ public class PropertySimilarity {
             if (CstPropSize > CcsPropSize) {
                 matrix = new double[CcsPropSize][CstPropSize];
                 for (int i = 0; i < CcsPropList.size(); i++) {
-                    List<Double> inScore = new ArrayList<Double>();
+                    //List<Double> inScore = new ArrayList<Double>();
                     OWLProperty p1 = CcsPropList.get(i);
                     for (int j = 0; j < CstPropList.size(); j++) {
                         OWLProperty p2 = CstPropList.get(j);
