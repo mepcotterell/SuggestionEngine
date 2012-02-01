@@ -22,7 +22,7 @@ public class Test {
     
     public static String wublast = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/obi/wublast.wsdl";
     public static String wsdbfetch = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/obi/WSDbfetchDoclit.wsdl";
-    public static String clustalW = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2_FullyAnnotated.wsdl";//"http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/obi/clustalw2.wsdl";
+    public static String clustalW = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2_FullyAnnotated.wsdl";
     
 //    public static String wublast = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/edam/wublast.wsdl";
 //    public static String wsdbfetch = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsdlfiles/evaluate/edam/WSDbfetchDoclit.wsdl";
@@ -63,10 +63,11 @@ public class Test {
         candidateOpsOBI.add(new OpWsdl("getSupportedStyles", wsdbfetch));
         candidateOpsOBI.add(new OpWsdl("getDatabaseInfoList", wsdbfetch));
         candidateOpsOBI.add(new OpWsdl("getDbFormats", wsdbfetch));
-        candidateOpsOBI.add(new OpWsdl("run", clustalW));
+        //candidateOpsOBI.add(new OpWsdl("run", clustalW));
         
         List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
         workflowOpsOBI.add(new OpWsdl("run", wublast));
+        
         //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
         
         System.out.println();

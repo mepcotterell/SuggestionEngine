@@ -168,13 +168,17 @@ public class ForwardSuggest {
         if (preferOp == null) {
             if (initState == null) {
                 weightDm = 1;
+                weightFn = 0;
+                weightPe = 0;
             } else {
                 weightDm = 0.5;
                 weightPe = 0.5;
+                weightFn = 0;
             }
         } else if (initState == null) {
             weightDm = 0.5;
             weightFn = 0.5;
+            weightPe = 0.5;            
         }
 
         List<OpWsdlScore> suggestionList = new ArrayList<OpWsdlScore>();

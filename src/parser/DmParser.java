@@ -64,7 +64,7 @@ public class DmParser {
                     path.add(elem);
                 }
             }
-        } else if (elem.getName().equalsIgnoreCase("complexType")) {
+        } else if (elem.getName().equalsIgnoreCase("complexType") || elem.getName().equalsIgnoreCase("complexContent")) {
             // case 1: has decendent <element>
             // case 2: array attribute wsdl:arrayType= has element (wublast
             // service)<xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="tns:data[]"/>
