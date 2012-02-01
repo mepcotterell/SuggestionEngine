@@ -65,7 +65,7 @@ public class TestMetrics {
         } // for
         System.out.println("---------------------------------------------------");
         for (OpWsdlScore suggestion: list) {
-            if (suggestion.getScore() >= mean - stddev || suggestion.getScore() <= mean + stddev) printOp (suggestion);
+            if (suggestion.getScore() >= mean - stddev && suggestion.getScore() <= mean + stddev) printOp (suggestion);
         } // for
         System.out.println("---------------------------------------------------");
         for (OpWsdlScore suggestion: list) {
