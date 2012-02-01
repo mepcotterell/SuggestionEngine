@@ -138,6 +138,8 @@ public class evaluationRun {
             System.out.println(wsName +suggestion.getOpName() + "\t" + suggestion.getScore());
         }
         
+        TestMetrics.printMetrics(suggestOpList2);
+        
         workflowOpsOBI.add(new OpWsdl("run", clustalW));
         desiredOps = "";//retrieve sequences
         suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
@@ -151,6 +153,8 @@ public class evaluationRun {
             System.out.println(wsName +suggestion.getOpName() + "\t" + suggestion.getScore());
         }
 
+        TestMetrics.printMetrics(suggestOpList2);
+        
 //        workflowOpsOBI.add(new OpWsdl("array2string", wsconverter));
 //        workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
 //        desiredOps = "multiple sequence alignment";
