@@ -120,7 +120,7 @@ public class evaluationRun {
         List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
         //workflowOpsOBI.add(new OpWsdl("run", wublast));          
         workflowOpsOBI.add(new OpWsdl("filterByEvalScore", filterSeq));   
-        desiredOps = "multiple sequence alignment";
+        desiredOps = "http://purl.obolibrary.org/obo/webService.owl#Class_011";
         
         System.out.println();
         System.out.println("--------------------------------------------------");
@@ -128,16 +128,7 @@ public class evaluationRun {
         System.out.println("Case 1: There is only one operation on the workflow Blast.run\n------------------------------------\n");
         ForwardSuggest sugg2 = new ForwardSuggest();
         List<OpWsdlScore> suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
-        for (OpWsdlScore suggestion: suggestOpList2) {
-            
-            results.test1.put(suggestion.getOpName(), suggestion);
-            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
-
-            String[] ww = suggestion.getWsdlName().split("/");
-            wsName = ww[ww.length -1].replace("sawsdl", "");
-            System.out.println(wsName +suggestion.getOpName() + "\t" + suggestion.getScore());
-        }
-        
+       
         TestMetrics.printMetrics(suggestOpList2);
         
         workflowOpsOBI.add(new OpWsdl("run", clustalW));
@@ -146,13 +137,8 @@ public class evaluationRun {
         System.out.println();   
         System.out.println("\nCase 2\n Workflow has two Operations Added\nBlast.run -> Blast.getResult--------------------------------------------------");
         System.out.println();
-        for (OpWsdlScore suggestion: suggestOpList2) {
-            results.test1.put(suggestion.getOpName(), suggestion);
-            String[] ww = suggestion.getWsdlName().split("/");
-            wsName = ww[ww.length -1].replace("sawsdl", "");
-            System.out.println(wsName +suggestion.getOpName() + "\t" + suggestion.getScore());
-        }
-
+        
+       
         TestMetrics.printMetrics(suggestOpList2);
         
 //        workflowOpsOBI.add(new OpWsdl("array2string", wsconverter));

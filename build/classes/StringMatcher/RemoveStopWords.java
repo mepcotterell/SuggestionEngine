@@ -23,7 +23,7 @@ public class RemoveStopWords {
 
     public static void populateStopWords(){
         if(stopWords.isEmpty()){
-            File Stop = new File("/home/alok/Desktop/SuggestionEngine/src/StringMatcher/stop.txt");
+            File Stop = new File("src/StringMatcher/stop.txt");
             try {
                 Scanner stopscanner = new Scanner(Stop);
                 while (stopscanner.hasNext()) {

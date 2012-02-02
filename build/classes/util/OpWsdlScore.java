@@ -40,15 +40,19 @@ public class OpWsdlScore extends OpWsdl implements Comparable<OpWsdlScore>{
  */
 @Override
 	public int compareTo(OpWsdlScore o) {
-		int compare = 0;
-	double result = this.getScore()-o.getScore();
-	if (result > 0){
-		compare =1;
-	}
-	else if(result <1){
-		compare = -1;
-	}
-	return  compare;
+//            int compare = 0;
+//    double result = this.getScore()-o.getScore();
+//    if (result > 0){
+//            compare =1;
+//    }
+//    else if(result <1){
+//            compare = -1;
+//    }
+//    return  compare;
+    
+            Double a = getScore();
+            return a.compareTo(o.getScore());
+    
 	}
 	
 	/**

@@ -269,7 +269,7 @@ public class PropertySimilarity {
         double rangSim = rangeSim(Pst, Pcs, Cst, Ccs, owlURI);
         double synSim = synSim(Pst, Pcs, owlURI);
         
-        // @TODO should we noly check cardinality when considering restrictions?
+        // @TODO should we only check cardinality when considering restrictions?
         double cardSim = cardinalitySim(Pst, Pcs, owlURI);
         
         double val = 0.0;

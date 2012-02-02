@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package test;
 
 import java.util.ArrayList;
@@ -29,9 +26,10 @@ public class evaluationRun {
     public static String wsconverter = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/WSConverter.sawsdl";
     public static String fasta = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/fasta.sawsdl";
     public static String muscle = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/muscle.sawsdl";
-    public static String filerSeq= "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/FilterSequencesWS.sawsdl";
+    public static String filterSeq= "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/FilterSequencesWS.sawsdl";
     
     public static String ontology = "owl/obi.owl";
+    
     
     public static void main (String[] args) {
         
@@ -43,15 +41,15 @@ public class evaluationRun {
         }
         
         Results results = new Results();
-        
+        String wsName="";
         // Specify a desired functionality or operation name
         String desiredOps = "";//retrieve sequences";
         //String desiredOps = "http://purl.obolibrary.org/obo/obi.owl#Class_40";
         
         List<OpWsdl> candidateOpsOBI = new ArrayList<OpWsdl>();
         
-        //candidateOpsOBI.add(new OpWsdl("filterByEvalScore", filerSeq));
-        candidateOpsOBI.add(new OpWsdl("filterByEval", filerSeq));
+        candidateOpsOBI.add(new OpWsdl("filterByEvalScore", filterSeq));
+        candidateOpsOBI.add(new OpWsdl("filterByEval", filterSeq));
         
         candidateOpsOBI.add(new OpWsdl("array2string", wsconverter));
         candidateOpsOBI.add(new OpWsdl("base64toString", wsconverter));        
@@ -120,7 +118,9 @@ public class evaluationRun {
 
         
         List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
-        workflowOpsOBI.add(new OpWsdl("run", wublast));        
+        //workflowOpsOBI.add(new OpWsdl("run", wublast));          
+        workflowOpsOBI.add(new OpWsdl("filterByEvalScore", filterSeq));   
+        desiredOps = "http://purl.obolibrary.org/obo/webService.owl#Class_011";
         
         System.out.println();
         System.out.println("--------------------------------------------------");
@@ -132,10 +132,15 @@ public class evaluationRun {
             
             results.test1.put(suggestion.getOpName(), suggestion);
             //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
-            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getWsdlName() + "\n");
+
+            String[] ww = suggestion.getWsdlName().split("/");
+            wsName = ww[ww.length -1].replace("sawsdl", "");
+            System.out.println(wsName +suggestion.getOpName() + "\t" + suggestion.getScore());
         }
         
-        workflowOpsOBI.add(new OpWsdl("getResult", wublast));
+        TestMetrics.printMetrics(suggestOpList2);
+        
+        workflowOpsOBI.add(new OpWsdl("run", clustalW));
         desiredOps = "";//retrieve sequences
         suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
         System.out.println();   
@@ -143,23 +148,26 @@ public class evaluationRun {
         System.out.println();
         for (OpWsdlScore suggestion: suggestOpList2) {
             results.test1.put(suggestion.getOpName(), suggestion);
-            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
-                        System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getWsdlName() + "\n");
+            String[] ww = suggestion.getWsdlName().split("/");
+            wsName = ww[ww.length -1].replace("sawsdl", "");
+            System.out.println(wsName +suggestion.getOpName() + "\t" + suggestion.getScore());
         }
 
-        workflowOpsOBI.add(new OpWsdl("array2string", wsconverter));
-        workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
-        desiredOps = "multiple sequence alignment";
-        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
-        System.out.println();
-        System.out.println("\nCase 3\n Workflow has three Operations Added\nBlast.run -> Blast.getResult -> FetchBatch\n--------------------------------------------------");
-        System.out.println();
+        TestMetrics.printMetrics(suggestOpList2);
         
-        for (OpWsdlScore suggestion: suggestOpList2) {
-            results.test1.put(suggestion.getOpName(), suggestion);
-            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
-            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
-        }
+//        workflowOpsOBI.add(new OpWsdl("array2string", wsconverter));
+//        workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
+//        desiredOps = "multiple sequence alignment";
+//        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
+//        System.out.println();
+//        System.out.println("\nCase 3\n Workflow has three Operations Added\nBlast.run -> Blast.getResult -> FetchBatch\n--------------------------------------------------");
+//        System.out.println();
+//        
+//        for (OpWsdlScore suggestion: suggestOpList2) {
+//            results.test1.put(suggestion.getOpName(), suggestion);
+//            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
+//            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
+//        }
     
 //        workflowOpsOBI.add(new OpWsdl("run", clustalW));
 //        //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
