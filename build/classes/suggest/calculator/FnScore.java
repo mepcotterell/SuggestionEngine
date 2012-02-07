@@ -1,5 +1,8 @@
 package suggest.calculator;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import mepcotterell.SimpleCache;
 import org.semanticweb.owlapi.model.*;
 import parser.OntologyManager;
 
@@ -81,6 +84,11 @@ public class FnScore {
                             OWLClass cls1 = parser.getConceptClass(preferOp);                            
                             OWLClass cls2 = parser.getConceptClass(opMr);
         
+                            if (cls1 == null || cls2 == null) {
+                                fnScore = 0;
+                                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "One of the concepts doesn''t seem to exist. cls1 = {0} ({1}), cls2 = {2} ({3})", new Object[]{cls1, preferOp, cls2, opMr});
+                            } // if
+                            
                             fnScore = ConceptSimilarity.getConceptSimScore(cls1, cls2, owlURI);
                             //fnScore = cs.getConceptSimScore(opMr, preferOp, owlFileName);
                         }

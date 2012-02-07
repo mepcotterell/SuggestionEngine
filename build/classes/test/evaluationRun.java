@@ -120,7 +120,11 @@ public class evaluationRun {
         List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
         //workflowOpsOBI.add(new OpWsdl("run", wublast));          
         workflowOpsOBI.add(new OpWsdl("filterByEvalScore", filterSeq));   
+<<<<<<< HEAD
         desiredOps = "multiple sequence alignment";
+=======
+        desiredOps = "http://purl.obolibrary.org/obo/webService.owl#Class_011";
+>>>>>>> edd19a3fe37fbacd3233ef72741c61ffb2d46015
         
         System.out.println();
         System.out.println("--------------------------------------------------");
