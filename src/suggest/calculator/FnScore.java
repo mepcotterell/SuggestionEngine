@@ -73,15 +73,21 @@ public class FnScore {
                     {
                         if (!opMr.startsWith("http://"))
                         {
-                                    QGramsDistance mc = new QGramsDistance();                              
+                                    QGramsDistance mc = new QGramsDistance();  
+                                    if (preferOp!=null && op.getOpName()!=null)
                                     fnScore = mc.getSimilarity(preferOp, op.getOpName());
+                                    else
+                                        fnScore = 0;
                         }
 			else if(owlFileName!=null)
                         {		
+                            
                             OWLClass cls1 = parser.getConceptClass(preferOp);                            
                             OWLClass cls2 = parser.getConceptClass(opMr);
-        
-                            fnScore = ConceptSimilarity.getConceptSimScore(cls1, cls2, owlURI);
+                            if (cls2 == null || cls1 == null)
+                                System.out.println("-------------Concept fot fount for ModelRef: "+ opMr);
+                            else
+                                fnScore = ConceptSimilarity.getConceptSimScore(cls1, cls2, owlURI);
                             //fnScore = cs.getConceptSimScore(opMr, preferOp, owlFileName);
                         }
                     }

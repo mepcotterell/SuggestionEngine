@@ -4,7 +4,6 @@
  */
 package test;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import util.OpWsdlScore;
 
@@ -18,9 +17,7 @@ public class TestMetrics {
     private static void printOp (OpWsdlScore suggestion) {
         String[] ww = suggestion.getWsdlName().split("/");
         String wsName = ww[ww.length -1].replace("sawsdl", "");
-       	DecimalFormat twoDForm = new DecimalFormat("#.##");
-        
-        System.out.println(wsName +suggestion.getOpName() + "--" + twoDForm.format(suggestion.getScore()) );
+        System.out.println(wsName +suggestion.getOpName() + "\t" + suggestion.getScore());
     } // printOp
     
     public static void printMetrics (List<OpWsdlScore> list) {
@@ -68,11 +65,11 @@ public class TestMetrics {
         } // for
         System.out.println("---------------------------------------------------");
         for (OpWsdlScore suggestion: list) {
-            if (suggestion.getScore() >= mean && suggestion.getScore() <= mean + stddev) printOp (suggestion);
+            if (suggestion.getScore() >= mean - stddev || suggestion.getScore() <= mean + stddev) printOp (suggestion);
         } // for
         System.out.println("---------------------------------------------------");
         for (OpWsdlScore suggestion: list) {
-            if (suggestion.getScore() < mean) printOp (suggestion);
+            if (suggestion.getScore() < mean - stddev) printOp (suggestion);
         } // for
         System.out.println("---------------------------------------------------");
         System.out.println();
