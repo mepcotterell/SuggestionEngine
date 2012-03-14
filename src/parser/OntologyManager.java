@@ -29,6 +29,7 @@ public class OntologyManager {
     private static Map<String, OntologyManager> ontologyManagerInstances = new HashMap<String, OntologyManager>();
     
     private static final String base = "";
+
     
     /**
      * The ontology manager which is used to be load ontology(owl file).

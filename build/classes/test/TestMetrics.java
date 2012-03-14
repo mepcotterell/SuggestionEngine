@@ -4,6 +4,7 @@
  */
 package test;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import util.OpWsdlScore;
 
@@ -17,7 +18,9 @@ public class TestMetrics {
     private static void printOp (OpWsdlScore suggestion) {
         String[] ww = suggestion.getWsdlName().split("/");
         String wsName = ww[ww.length -1].replace("sawsdl", "");
-        System.out.println(wsName +suggestion.getOpName() + "\t" + suggestion.getScore());
+       	DecimalFormat twoDForm = new DecimalFormat("#.##");
+        
+        System.out.println(wsName +suggestion.getOpName() + "--" + twoDForm.format(suggestion.getScore()) );
     } // printOp
     
     public static void printMetrics (List<OpWsdlScore> list) {
@@ -43,6 +46,9 @@ public class TestMetrics {
         
         double variance = sum / (double) list.size();
         double stddev   = Math.sqrt(variance);
+        double xStd = (max- mean)/stddev;
+        double upLimit = (0.5 * xStd) * stddev;
+        
         
         System.out.println();
         System.out.println("METRICS");
@@ -53,23 +59,26 @@ public class TestMetrics {
         System.out.println("Variance = " + variance);
         System.out.println("Std.Dev. = " + stddev);
         System.out.println("---------------------------------------------------");
-        System.out.println("H        = (" + (mean + stddev) + ", " + max + "]");
-        System.out.println("M        = [" + (mean - stddev) + ", " + (mean + stddev) + "]");
-        System.out.println("L        = [" + min + ", " + (mean - stddev) + ")");
+        System.out.println("H        = (" + ( max - upLimit) + ", " + max + "]");
+        System.out.println("M        = [" + (mean) + ", " + ( max - upLimit) + "]");
+        System.out.println("L        = [" + min + ", " + (mean) + ")");
         System.out.println("---------------------------------------------------");
         System.out.println();
         System.out.println("GROUPS");
         System.out.println("---------------------------------------------------");
+        
+        
+
         for (OpWsdlScore suggestion: list) {
-            if (suggestion.getScore() > mean + stddev) printOp (suggestion);
+            if (suggestion.getScore() > max - upLimit) printOp (suggestion);
         } // for
         System.out.println("---------------------------------------------------");
         for (OpWsdlScore suggestion: list) {
-            if (suggestion.getScore() >= mean - stddev || suggestion.getScore() <= mean + stddev) printOp (suggestion);
+            if (suggestion.getScore() >= mean && suggestion.getScore() <= max - upLimit) printOp (suggestion);
         } // for
         System.out.println("---------------------------------------------------");
         for (OpWsdlScore suggestion: list) {
-            if (suggestion.getScore() < mean - stddev) printOp (suggestion);
+            if (suggestion.getScore() < mean) printOp (suggestion);
         } // for
         System.out.println("---------------------------------------------------");
         System.out.println();

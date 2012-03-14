@@ -116,18 +116,13 @@ public class evaluationRun {
         List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
         workflowOpsOBI.add(new OpWsdl("run", wublast));   
         desiredOps = "";
-        //workflowOpsOBI.add(new OpWsdl("run", wublast));          
-        workflowOpsOBI.add(new OpWsdl("filterByEvalScore", filterSeq));   
-        desiredOps = "http://purl.obolibrary.org/obo/webService.owl#Class_011";
 
-        
         System.out.println();
         System.out.println("--------------------------------------------------");
         System.out.println("TEST - OBI");
         System.out.println("Case 1: There is only one operation on the workflow Blast.run\n------------------------------------\n");
         ForwardSuggest sugg2 = new ForwardSuggest();
-        List<OpWsdlScore> suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
-       
+        List<OpWsdlScore> suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);       
         TestMetrics.printMetrics(suggestOpList2);
         
         workflowOpsOBI.add(new OpWsdl("getResult", wublast));

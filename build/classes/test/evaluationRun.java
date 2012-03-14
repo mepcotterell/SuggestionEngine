@@ -40,11 +40,8 @@ public class evaluationRun {
             Map<String, OpWsdlScore> test4 = new HashMap<String, OpWsdlScore>();
         }
         
-        Results results = new Results();
-        String wsName="";
-        // Specify a desired functionality or operation name
-        String desiredOps = "";//retrieve sequences";
-        //String desiredOps = "http://purl.obolibrary.org/obo/obi.owl#Class_40";
+
+        String desiredOps = "";
         
         List<OpWsdl> candidateOpsOBI = new ArrayList<OpWsdl>();
         
@@ -90,7 +87,7 @@ public class evaluationRun {
         candidateOpsOBI.add(new OpWsdl("run", tcoffee));        
         
         candidateOpsOBI.add(new OpWsdl("getParameters", muscle));
-       candidateOpsOBI.add(new OpWsdl("getParameterDetails", muscle));
+        candidateOpsOBI.add(new OpWsdl("getParameterDetails", muscle));
         candidateOpsOBI.add(new OpWsdl("getResult", muscle));
         candidateOpsOBI.add(new OpWsdl("getResultTypes", muscle));
         candidateOpsOBI.add(new OpWsdl("getStatus", muscle));
@@ -115,78 +112,44 @@ public class evaluationRun {
         candidateOpsOBI.add(new OpWsdl("getDatabaseInfoList", wsdbfetch));
         candidateOpsOBI.add(new OpWsdl("getDbFormats", wsdbfetch));
 
-
-        
+      
         List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
-        //workflowOpsOBI.add(new OpWsdl("run", wublast));          
-        workflowOpsOBI.add(new OpWsdl("filterByEvalScore", filterSeq));   
-<<<<<<< HEAD
-        desiredOps = "multiple sequence alignment";
-=======
-        desiredOps = "http://purl.obolibrary.org/obo/webService.owl#Class_011";
->>>>>>> edd19a3fe37fbacd3233ef72741c61ffb2d46015
-        
+        workflowOpsOBI.add(new OpWsdl("run", wublast));   
+        desiredOps = "";
+
         System.out.println();
         System.out.println("--------------------------------------------------");
         System.out.println("TEST - OBI");
         System.out.println("Case 1: There is only one operation on the workflow Blast.run\n------------------------------------\n");
         ForwardSuggest sugg2 = new ForwardSuggest();
-        List<OpWsdlScore> suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
-        for (OpWsdlScore suggestion: suggestOpList2) {
-            
-            results.test1.put(suggestion.getOpName(), suggestion);
-            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
-
-            String[] ww = suggestion.getWsdlName().split("/");
-            wsName = ww[ww.length -1].replace("sawsdl", "");
-            System.out.println(wsName +suggestion.getOpName() + "\t" + suggestion.getScore());
-        }
-        
+        List<OpWsdlScore> suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);       
         TestMetrics.printMetrics(suggestOpList2);
         
-        workflowOpsOBI.add(new OpWsdl("run", clustalW));
+        workflowOpsOBI.add(new OpWsdl("getResult", wublast));
         desiredOps = "";//retrieve sequences
         suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
         System.out.println();   
         System.out.println("\nCase 2\n Workflow has two Operations Added\nBlast.run -> Blast.getResult--------------------------------------------------");
         System.out.println();
-        for (OpWsdlScore suggestion: suggestOpList2) {
-            results.test1.put(suggestion.getOpName(), suggestion);
-            String[] ww = suggestion.getWsdlName().split("/");
-            wsName = ww[ww.length -1].replace("sawsdl", "");
-            System.out.println(wsName +suggestion.getOpName() + "\t" + suggestion.getScore());
-        }
-
         TestMetrics.printMetrics(suggestOpList2);
         
-//        workflowOpsOBI.add(new OpWsdl("array2string", wsconverter));
-//        workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
-//        desiredOps = "multiple sequence alignment";
-//        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
-//        System.out.println();
-//        System.out.println("\nCase 3\n Workflow has three Operations Added\nBlast.run -> Blast.getResult -> FetchBatch\n--------------------------------------------------");
-//        System.out.println();
-//        
-//        for (OpWsdlScore suggestion: suggestOpList2) {
-//            results.test1.put(suggestion.getOpName(), suggestion);
-//            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
-//            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
-//        }
+        workflowOpsOBI.add(new OpWsdl("filterByEvalScore", filterSeq));   
+        desiredOps = "http://purl.obolibrary.org/obo/webService.owl#Class_0009"; //global multiple sequence alignment";
+        //"http://purl.obolibrary.org/obo/webService.owl#Class_011";//multiple sequence alignment";
+        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
+        System.out.println();
+        System.out.println("\nCase 3\n Workflow has three Operations Added\nBlast.run -> Blast.getResult -> Filter Sequences\n--------------------------------------------------");
+        System.out.println();    
+        TestMetrics.printMetrics(suggestOpList2);
     
-//        workflowOpsOBI.add(new OpWsdl("run", clustalW));
-//        //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
-//        desiredOps = "";
-//        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
-//        System.out.println();
-//        System.out.println("\nCase 4\n Workflow has three Operations Added\nBlast.run -> Blast.getResult -> WSDBFetch.FetchBatch -> ClustalW.run\n--------------------------------------------------");
-//        System.out.println();
-//        
-//        for (OpWsdlScore suggestion: suggestOpList2) {
-//            results.test1.put(suggestion.getOpName(), suggestion);
-//            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
-//            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
-//        }       
-//         
+        workflowOpsOBI.add(new OpWsdl("run", clustalW));
+        desiredOps = "";
+        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
+        System.out.println();
+        System.out.println("\nCase 4\n Workflow has three Operations Added\nBlast.run -> Blast.getResult -> Filter Sequences -> ClustalW.run\n--------------------------------------------------");
+        System.out.println();        
+        TestMetrics.printMetrics(suggestOpList2);
+      
     }
     
 }

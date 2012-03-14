@@ -3,6 +3,7 @@
  */
 package dataMediator;
 
+import java.text.DecimalFormat;
 import util.NodeType;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,11 +122,13 @@ public class PathRank {
                 } // if
             } // for
             
+            //outPathScore
             path.setScore(outPathScore);
             
         } // for
         
         // sort, higher score first
+        
         Collections.sort(pathsList, Collections.reverseOrder());
 
         // return the highest score path

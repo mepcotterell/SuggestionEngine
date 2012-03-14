@@ -101,7 +101,7 @@ public class PropertySimilarity {
      * @param Pst
      * @param Pcs
      * @param Cst
-     * @param Ccs
+         * @param Ccs
      * @return
      */
     private static double rangeSim (OWLProperty Pst, OWLProperty Pcs, OWLClass Cst, OWLClass Ccs, String owlURI)

@@ -46,6 +46,9 @@ public class TestMetrics {
         
         double variance = sum / (double) list.size();
         double stddev   = Math.sqrt(variance);
+        double xStd = (max- mean)/stddev;
+        double upLimit = (0.5 * xStd) * stddev;
+        
         
         System.out.println();
         System.out.println("METRICS");
@@ -56,19 +59,22 @@ public class TestMetrics {
         System.out.println("Variance = " + variance);
         System.out.println("Std.Dev. = " + stddev);
         System.out.println("---------------------------------------------------");
-        System.out.println("H        = (" + (mean + stddev) + ", " + max + "]");
-        System.out.println("M        = [" + (mean - stddev) + ", " + (mean + stddev) + "]");
-        System.out.println("L        = [" + min + ", " + (mean - stddev) + ")");
+        System.out.println("H        = (" + ( max - upLimit) + ", " + max + "]");
+        System.out.println("M        = [" + (mean) + ", " + ( max - upLimit) + "]");
+        System.out.println("L        = [" + min + ", " + (mean) + ")");
         System.out.println("---------------------------------------------------");
         System.out.println();
         System.out.println("GROUPS");
         System.out.println("---------------------------------------------------");
+        
+        
+
         for (OpWsdlScore suggestion: list) {
-            if (suggestion.getScore() > mean + stddev) printOp (suggestion);
+            if (suggestion.getScore() > max - upLimit) printOp (suggestion);
         } // for
         System.out.println("---------------------------------------------------");
         for (OpWsdlScore suggestion: list) {
-            if (suggestion.getScore() >= mean && suggestion.getScore() <= mean + stddev) printOp (suggestion);
+            if (suggestion.getScore() >= mean && suggestion.getScore() <= max - upLimit) printOp (suggestion);
         } // for
         System.out.println("---------------------------------------------------");
         for (OpWsdlScore suggestion: list) {

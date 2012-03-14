@@ -30,7 +30,7 @@ public class FnScore {
 	 */
 	public double calculateFnScore (String preferOp, OpWsdl op, String owlFileName){
 		double fnScore = 0;
-                String owlURI = "owl/obi.owl";        
+                String owlURI = "/home/alok/Desktop/SuggestionEngineWS/owl/obi.owl";        
                 OntologyManager parser = OntologyManager.getInstance(owlURI);
 		//penality for only syntax match
 		double penality = 0.5;
@@ -76,13 +76,18 @@ public class FnScore {
                     {
                         if (!opMr.startsWith("http://"))
                         {
-                                    QGramsDistance mc = new QGramsDistance();                              
+                                    QGramsDistance mc = new QGramsDistance();  
+                                    if (preferOp!=null && op.getOpName()!=null)
                                     fnScore = mc.getSimilarity(preferOp, op.getOpName());
+                                    else
+                                        fnScore = 0;
                         }
 			else if(owlFileName!=null)
                         {		
+                            
                             OWLClass cls1 = parser.getConceptClass(preferOp);                            
                             OWLClass cls2 = parser.getConceptClass(opMr);
+
         
                             if (cls1 == null || cls2 == null) {
                                 fnScore = 0;
@@ -90,6 +95,7 @@ public class FnScore {
                             } // if
                             
                             fnScore = ConceptSimilarity.getConceptSimScore(cls1, cls2, owlURI);
+
                             //fnScore = cs.getConceptSimScore(opMr, preferOp, owlFileName);
                         }
                     }

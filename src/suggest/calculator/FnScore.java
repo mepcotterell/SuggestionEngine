@@ -30,7 +30,7 @@ public class FnScore {
 	 */
 	public double calculateFnScore (String preferOp, OpWsdl op, String owlFileName){
 		double fnScore = 0;
-                String owlURI = "owl/obi.owl";        
+                String owlURI = "/home/alok/Desktop/SuggestionEngineWS/owl/obi.owl";        
                 OntologyManager parser = OntologyManager.getInstance(owlURI);
 		//penality for only syntax match
 		double penality = 0.5;
