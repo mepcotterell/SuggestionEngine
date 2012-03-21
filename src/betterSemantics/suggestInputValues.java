@@ -1,9 +1,11 @@
 package betterSemantics;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
 import parser.OntologyManager;
 
 /**
@@ -14,49 +16,62 @@ import parser.OntologyManager;
  */
 public class suggestInputValues
 {
-    
-    private static ArrayList<String> suggestValues(String paramIRI, String owlURI)
+    private static HashMap<String,String> values = new HashMap<String, String>();
+
+    public suggestInputValues(String paramIRI, String owlURI, String WSDLURL)
     {
-        ArrayList values = new ArrayList<String>();
-        
         OntologyManager parser = OntologyManager.getInstance(owlURI);
         OWLClass conceptClass = parser.getConceptClass(paramIRI);
         
-        values.addAll(getDirectSubClasses(conceptClass,owlURI));
-        values.addAll(getIndividuals(conceptClass,owlURI));        
+        getIndividuals(conceptClass, parser);
+        getDirectSubClasses(conceptClass,parser);    
+    }
+    
+    public HashMap<String,String> getInputValues()
+    {
         return values;
     }
-
-    private static ArrayList getDirectSubClasses(OWLClass conceptClass, String owlURI)
+            
+    private static void getDirectSubClasses(OWLClass conceptClass, OntologyManager parser)
     {
-        ArrayList values = new ArrayList<String>();
-        OntologyManager parser = OntologyManager.getInstance(owlURI);
         Set<OWLClass> subclasses = parser.getDirectSubClasses(conceptClass);
         String label = "";
+        String className = "";
         
         for (OWLClass c : subclasses)
         {
             label = parser.getClassLabel(c);
+            className = parser.getConceptName(c.getIRI().toString());
             if (!label.equals(""))
-                values.add(label);
+                values.put(label,"SubClass");
+            else if(!className.equals(""))
+                values.put(className,"SubClass");
         }
-        return values;
     }
 
-    private static Collection getIndividuals(OWLClass conceptClass,String owlURI)
+    private static void getIndividuals(OWLClass conceptClass, OntologyManager parser)
     {
-        ArrayList values = new ArrayList<String>();
-        OntologyManager parser = OntologyManager.getInstance(owlURI);
-        //parser
-        return values;
+        OWLOntology ontology = parser.getOntology();
+        Set<OWLIndividual> individuals = new HashSet<OWLIndividual>();
+        individuals = conceptClass.getIndividuals(ontology);
+
+        for(OWLIndividual i : individuals)
+        {
+            String name = i.toStringID();
+            String[] temp = new String [10];
+            if (name.contains("#"))
+            {
+               temp = name.split("#");
+               name = temp[1];
+            }
+            values.put(name,"individuals");
+        }
     }
     
     public static void main (String[] args)
     {
-    
-    
-    
+        suggestInputValues s = new suggestInputValues("http://purl.obolibrary.org/obo/OBIws_0000096", "/home/alok/Desktop/SuggestionEngine/webService.owl","");       
+        System.out.println(s.getInputValues());
     }
-    
     
 }

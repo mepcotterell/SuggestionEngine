@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
+        <uri id="Automatically generated entry, Timestamp=1332351619893" name="http://purl.obolibrary.org/obo/obi.owl" uri="owl/obi.b4.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1332351619893" name="http://purl.obolibrary.org/obo/webService.owl" uri="webService.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1332351619893" name="http://purl.org/obo/all" uri="owl/edam.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1332351619893" name="shadowed:http://purl.obolibrary.org/obo/obi.owl" uri="build/classes/owl/obi.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1332351619893" name="shadowed:http://purl.obolibrary.org/obo/obi.owl" uri="src/owl/obi.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1332351619893" name="shadowed:http://purl.obolibrary.org/obo/webService.owl" uri="owl/obi.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1332351619893" name="shadowed:http://purl.org/obo/all" uri="build/classes/owl/edam.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1332351619893" name="shadowed:http://purl.org/obo/all" uri="src/owl/edam.owl"/>
+    </group>
+</catalog>

@@ -218,6 +218,8 @@ public class OntologyManager {
         Iterator<OWLOntology> ont = ontologyInstances.values().iterator();
         while (ont.hasNext()) {
             Set<OWLClassExpression> _equivs = cls.getEquivalentClasses(ont.next());
+
+            
             for (OWLClassExpression cd : _equivs) {
                 if (!cd.isAnonymous()) {
                     equivs.add(cd.asOWLClass());
