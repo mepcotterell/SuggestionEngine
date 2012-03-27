@@ -60,7 +60,7 @@ public class SchemaParser {
 							+ xsdPrefix
 							+ ":schema/descendant::"
 							+ xsdPrefix
-							+ ":element[@name=\""
+							+ ":*[@name=\""
 							+ elementName
 							+ "\"]"));
 			elementElem = tempElem;
@@ -232,7 +232,7 @@ public class SchemaParser {
 	 */
 	private Element getRootElem(String fileName){
 		//String fileUrl=ClassLoader.getSystemResource(fileName).toString();
-            String fileUrl =Thread.currentThread().getContextClassLoader().getResource(fileName).toString();
+            String fileUrl =fileName;//Thread.currentThread().getContextClassLoader().getResource(fileName).toString();
 		SAXBuilder sbuilder = new SAXBuilder();
 		Element root=null;
 				

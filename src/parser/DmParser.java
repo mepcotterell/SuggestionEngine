@@ -9,8 +9,6 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 import org.jdom.xpath.XPath;
-
-import parser.SawsdlParser;
 import util.OpWsdl;
 
 /**
@@ -33,8 +31,6 @@ public class DmParser {
     public List<List<Element>> getPathsList(Element elem) {
         List<List<Element>> pathsList = new ArrayList<List<Element>>();
         Element rootElem = elem.getDocument().getRootElement();
-//		wsdlNS = rootElem.getNamespace("wsdl");
-//		sawsdlNS = rootElem.getNamespace("sawsdl");
         if (rootElem.getNamespace("xsd") != null) {
             xsdNS = rootElem.getNamespace("xsd");
         } else if (rootElem.getNamespace("xs") != null) {
@@ -72,7 +68,7 @@ public class DmParser {
             // to do case 4: extension/restriction base= another type
             // ----complexType(step in for elements), xsd type(--end recursive),
             // simpleType(ignore--end recursive, do nothing)
-//			System.out.println(elem.getDescendants(new ElementFilter("attribute", xsdNS)).hasNext()+"---------------------------");
+
             if (elem.getDescendants(new ElementFilter("element", xsdNS)).hasNext()) {
                 // case 1: has decendent <element>
                 Iterator<Element> eleIt = elem.getDescendants(new ElementFilter("element", xsdNS));

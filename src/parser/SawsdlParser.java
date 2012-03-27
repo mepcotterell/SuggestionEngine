@@ -88,7 +88,29 @@ public class SawsdlParser {
         }
         return outMsElem;
     }
+    public Element getOutMsElem1(String fileName, String opName) {
+        Element opElem = this.getOpNameElemMap(fileName).get(opName);
+        if (opElem == null) {
+            return null;
+        }
+        Element outElem = opElem.getChild("output", wsdlNS);
 
+        String outMsName = outElem.getAttributeValue("message");
+        if (outMsName.contains(":")) {
+            outMsName = outMsName.split(":")[1];
+        }
+        List<Element> msElemList = opElem.getDocument().getRootElement().getChildren("message", wsdlNS);
+        Element outMsElem = null;
+        for (Element msElem : msElemList) {
+            if (msElem.getAttributeValue("name").equals(outMsName)) {
+                outMsElem = msElem;
+                break;
+            }
+        }
+        return outMsElem;
+    }
+
+    
     /**
      * given sawsdl/wsdl file name and operation name, return input message element
      * @param fileName
@@ -193,8 +215,7 @@ public class SawsdlParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//		wsdlNS = root.getNamespace("wsdl");
-//		sawsdlNS = root.getNamespace("sawsdl");
+
         if (root.getNamespace("xsd") != null) {
             xsdNS = root.getNamespace("xsd");
         } else if (root.getNamespace("xs") != null) {

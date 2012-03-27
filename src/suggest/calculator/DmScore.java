@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package suggest.calculator;
 
 import java.util.ArrayList;

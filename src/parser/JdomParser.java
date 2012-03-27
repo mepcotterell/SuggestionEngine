@@ -249,7 +249,7 @@ Element schemaEle=null;
 		String preXsdNs=schemaEle.getNamespacePrefix();
 		List<Element> subEleNodeList=new ArrayList<Element>();
 		List<String> subEleXpathList=new ArrayList<String>();
-		try{			
+		try{
 			Element elem=(Element)(XPath.selectSingleNode(schemaEle,"//"+preXsdNs+":schema/descendant::"+preXsdNs+":element[@name=\""+eleName+"\"]"));
 			
 			subEleNodeList.add(elem);

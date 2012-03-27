@@ -1,8 +1,4 @@
-/**
- * 
- */
 package parser;
-
 
 
 import java.io.File;
@@ -24,6 +20,7 @@ import javax.xml.namespace.QName;
 
 
 
+import org.jdom.Element;
 import parser.JdomParser;
 
 
@@ -40,9 +37,9 @@ public class ParseWSDL {
 	 * @throws Exception
 	 */
 	private Definition getWsdlDef(String fileName) throws Exception{
-		String fileUrl =Thread.currentThread().getContextClassLoader().getResource(fileName).toString();
+		//String fileUrl =Thread.currentThread().getContextClassLoader().getResource(fileName).toString();
 //		String fileUrl=ClassLoader.getSystemResource(fileName).toString();
-//		String fileUrl=fileName;
+		String fileUrl=fileName;
 		
 		WSDLFactory factory= WSDLFactory.newInstance();
 		WSDLReader reader=factory.newWSDLReader();
@@ -188,9 +185,74 @@ public class ParseWSDL {
 	 * @throws Exception
 	 */
 	public List<String> getOpInMsElemName(String fileName, String opName)throws Exception{
-		
-		Definition df=this.getWsdlDef(fileName);
-		return getMsElemName(this.getDefOp(df,opName).getInput().getMessage());
+
+            Definition df = this.getWsdlDef(fileName);
+
+            Operation op = this.getDefOp(df, opName);
+            Input i = op.getInput();
+            Message msg = i.getMessage();
+            
+//            Map parts = msg.getParts();
+//            String msgName = msg.getQName().getLocalPart();
+//            Iterator it = parts.keySet().iterator();
+//            List<Element> schemaList = parser.getSchemaParser().getSchemaElemList();
+//            Element schemaElement = null;
+//            if (schemaList.size() == 1)
+//            {
+//                schemaElement = schemaList.get(0);
+//            }
+//
+//            //System.out.println("Are there any elements in the Map : "+it.hasNext());
+//            
+//            while(it.hasNext()){
+//
+//                Part p = (Part)parts.get(it.next());
+//                Element partElement = parser.getPartTypeEle(p,schemaElement);
+//
+//                if(partElement == null){
+//                    Element part = parser.getJdomWSDLManager().getPart(p.getName());
+//                    out.println("<li id=\""+p.getName()+"\"><div id=\""+p.getName()+"\" class=\"drop hove ui-widget-content ui-corner-all element\" "
+//                            + "value=\""+part.getName()+"\">"+p.getName()+"</div>"
+//                            + "<div id=\""+p.getName()+"annotation\" class=\"annotation\" ></div>");                    
+//                    printAnnotation(out,part,"");  //Have to check correctly for annotation
+//                    out.println("<div id=\""+p.getName()+"annotation\" class=\"annotation\" style=\"margin:10px;\"></div></li>");
+////                    leafNodes.add(p.getName());
+//                }
+//                else
+//                {
+//                    //System.out.println("The WSDL message part is : " + partElement.getAttributeValue("name"));
+//                    
+//                    List<Element> lst = parser.getChildElements(partElement,schemaElement);
+//                    for(Element e : lst){
+//                        Element annot = e.getChild("annotation",e.getNamespace());
+//                        String eleDoc = "";
+//                        if(annot != null){
+//                            Element  doc = annot.getChild("documentation",e.getNamespace());
+//                            eleDoc = doc.getTextTrim();
+//                        }
+//                        
+////                        String eleDoc = e.getChild("annotation", e.getNamespace()).getChildText("documentation", e.getNamespace());
+//                        Attribute modelRef = e.getAttribute("modelReference", Namespace.getNamespace("http://www.w3.org/ns/sawsdl"));
+//                        //Attribute liftingSchemaMap = e.getAttribute("liftingSchemaMapping", Namespace.getNamespace("http://www.w3.org/ns/sawsdl"));
+//                        //Attribute loweringSchemaMap = e.getAttribute("loweringSchemaMapping", Namespace.getNamespace("http://www.w3.org/ns/sawsdl"));
+//                        String eleName = e.getAttributeValue("name");
+//                        String attrval = e.getName()+":"+eleName+" "+msgName;
+//                        out.println("<li id=\"li"+msgName+eleName+"\">"
+//                                + "<div id=\""+msgName+eleName+"\" class=\"element drop ui-widget-content ui-corner-all\" "
+//                                + "value=\""+e.getName()+":"+eleName+" "+msgName+"\" title='"+eleDoc+"'>"
+//                                + "<span style='width:55%;float:left'>"+eleName+"</span>"
+//                                + "<span onClick=\"recommend('"+eleName+"','"+e.getName()+"','"+eleDoc+"','"+msgName+"')\" class='ui-button ui-state-default ui-corner-all' style='background:#616D7E;color: white; text-align:center;;width:120px;margin:2px'>Recommend Terms</span>"
+//                                + "<span onClick=\"addSchemaMapper('"+eleName+"','"+e.getName()+"')\" class='ui-button ui-state-default ui-corner-all' style='text-align:center;background:#616D7E;color:white;width:120px;margin:2px'>Add SchemaMapper</span></div>");
+//                        printAnnotation(out,e,attrval); 
+//                        out.println("<div id=\""+msgName+eleName+"annotation\" class=\"annotation\" value=\""+attrval+"\"></div></li>");
+//                    }
+//                }
+//            }
+
+                
+                return getMsElemName(this.getDefOp(df,opName).getInput().getMessage());
+                
+                
 	}
 	
 	/**

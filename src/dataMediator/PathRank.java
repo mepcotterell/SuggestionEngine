@@ -3,7 +3,6 @@
  */
 package dataMediator;
 
-import java.text.DecimalFormat;
 import util.NodeType;
 import java.util.ArrayList;
 import java.util.Collections;

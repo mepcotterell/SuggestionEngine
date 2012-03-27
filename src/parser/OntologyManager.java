@@ -1107,10 +1107,40 @@ public class OntologyManager {
                 rval = val.getLiteral();
             }
         }
-
         return rval;
     } // getClassDefinition
 
+    public String getClassUsage(OWLClass cls) {
+
+        String rval = "";
+        OWLDataFactory df = manager.getOWLDataFactory();
+        OWLAnnotationProperty usage = df.getOWLAnnotationProperty(IRI.create("http://purl.obolibrary.org/obo/IAO_0000112"));
+
+        for (OWLAnnotation annotation : cls.getAnnotations(ontology, usage)) {
+            if (annotation.getValue() instanceof OWLLiteral) {
+                OWLLiteral val = (OWLLiteral) annotation.getValue();
+                rval = val.getLiteral();
+            }
+        }
+        return rval;
+    } // getClassDefinition
+    
+    
+    public String getClassDescription(OWLClass cls) {
+
+        String rval = "";
+        OWLDataFactory df = manager.getOWLDataFactory();
+        OWLAnnotationProperty description = df.getOWLAnnotationProperty(IRI.create("http://purl.org/dc/elements/1.1/description"));
+
+        for (OWLAnnotation annotation : cls.getAnnotations(ontology, description)) {
+            if (annotation.getValue() instanceof OWLLiteral) {
+                OWLLiteral val = (OWLLiteral) annotation.getValue();
+                rval = val.getLiteral();
+            }
+        }
+        return rval;
+    } // getClassDefinition
+    
     /***********************************************************************************
      * Main method for testing.
      * 
