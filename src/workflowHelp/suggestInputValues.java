@@ -42,29 +42,41 @@ public class suggestInputValues
         Namespace sawsdlNS  = Namespace.getNamespace("sawsdl", "http://www.w3.org/ns/sawsdl");
         SchemaParser schemaParser = new SchemaParser();
         
-        List<Element> schemaList =  schemaParser.getSchemaElemList(WSDLURL);
-        for(Element e : schemaList)
-            paramElement = schemaParser.getElementElemOfSchema(paramName, e);
-        
-        org.jdom.Attribute attribute = paramElement.getAttribute("modelReference",sawsdlNS);
+        try{
+            List<Element> schemaList =  schemaParser.getSchemaElemList(WSDLURL);
+            for(Element e : schemaList)
+                paramElement = schemaParser.getElementElemOfSchema(paramName, e);
+            org.jdom.Attribute attribute = paramElement.getAttribute("modelReference",sawsdlNS);
 
-        if(attribute!=null)
-            if (!attribute.getValue().equals(""))
-            {
-                try{
+            if(attribute!=null)
+                if (!attribute.getValue().equals(""))
+                {
+                    try{
                         paramIRI = attribute.getValue();
                         OntologyManager parser = OntologyManager.getInstance(owlURI);
                         OWLClass conceptClass = parser.getConceptClass(paramIRI);
                         getIndividuals(conceptClass, parser);
                         getDirectSubClasses(conceptClass, parser);
                     }
-                catch(Exception e)
-                {
-                    System.out.println("Exception Occurred when getting the class in the Ontology "
-                            + "for the requested param :" + e);
-                }
-            }        
-    }
+                    catch(Exception e)
+                    {
+                        System.out.println("Exception Occurred when getting the class in the Ontology "
+                                + "for the requested param :" + e);
+                    }
+                }//if ends        
+            }//Outer try ends
+            catch(java.lang.NullPointerException e)
+            {
+                System.out.println("The Web service document could not be found at the given address\n" + e);
+                values.add("Unexpected Error Occurred check server log for Details !");
+            }
+            catch(Exception e)
+            {    
+                System.out.println("Following Exception Occurred: " + e);
+                values.add("Unexpected Error Occurred check server log for Details !");    
+            } 
+        
+    }//Method ends
     
     /**
      * Returns the list of InputValues calculated earlier
@@ -133,8 +145,9 @@ public class suggestInputValues
     
     public static void main (String[] args)
     {
-        suggestInputValues s = new suggestInputValues("http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl","program", "/home/alok/Desktop/SuggestionEngine/webService.owl");       
-        System.out.println(s.getInputValues());
+        suggestInputValues s = new suggestInputValues("http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl","program", "/home/alok/Desktop/SuggestionEngine/webService.ow");       
+
+        util.debuggingUtils.printCollection(s.getInputValues());
     }
     
 }

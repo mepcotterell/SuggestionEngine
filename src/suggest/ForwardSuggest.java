@@ -139,7 +139,7 @@ public class ForwardSuggest {
     }
 
     /**
-     * given operations in current workflow, all candidated operations return a
+     * Given operations in current Workflow and all candidate operations returns a
      * list of suggested operations and their rank score, size of the list is no
      * more than the value of "maxSuggest"
      * 
