@@ -197,7 +197,7 @@ public class SawsdlParser {
 //      System.out.println("fileUrl: " + fileUrl);
 
         // cache the files
-        String filePath = mepcotterell.SimpleCache.getInstance().get(fileName).getAbsolutePath();
+        String filePath = util.SimpleCache.getInstance().get(fileName).getAbsolutePath();
 
         
         SAXBuilder sbuilder = new SAXBuilder();

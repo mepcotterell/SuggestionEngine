@@ -1,7 +1,7 @@
 /*
  * @author Michael Cotterell <mepcotterell@gmail.com>
  */
-package mepcotterell;
+package util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
