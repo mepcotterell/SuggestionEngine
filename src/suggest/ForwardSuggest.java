@@ -8,11 +8,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.semanticweb.owlapi.model.*;
-
 import parser.OntologyManager;
-
 import suggest.calculator.DmScore;
 import suggest.calculator.FnScore;
 import suggest.calculator.PeScore;
@@ -160,25 +157,19 @@ public class ForwardSuggest {
             return null;
         }
 
+        OntologyManager o = OntologyManager.getInstance(owlURI);
 
-        OntologyManager om = OntologyManager.getInstance(owlURI);
-        //OWLOntology onModel = om.getOntology(owlURI);
-
-        //adjust weight, so final scores are comparable for different level annotation
+        //Adjusting weight, 
+        //TODO: If Pre-Conditions and Effect is considered, they have to be re-weighted
         if (preferOp == null) {
-            if (initState == null) {
                 weightDm = 1;
-                weightFn = 0;
                 weightPe = 0;
-            } else {
-                weightDm = 0.5;
-                weightPe = 0.5;
                 weightFn = 0;
-            }
-        } else if (initState == null) {
+        } else
+        {
             weightDm = 0.5;
             weightFn = 0.5;
-            weightPe = 0.5;            
+            weightPe = 0;            
         }
 
         List<OpWsdlScore> suggestionList = new ArrayList<OpWsdlScore>();
@@ -199,10 +190,9 @@ public class ForwardSuggest {
                 fnScore = this.getFnScore(preferOp, op, owlURI);
             }
 
-            if (initState != null) {
-                peScore = this.getPeScore(initState, workflowOPs, op);
-
-            }
+            // Uncomment when accounting for preconditions and effects
+            //if (initState != null) 
+            //    peScore = this.getPeScore(initState, workflowOPs, op);
 
             score = this.weightDm * dmScore + this.weightFn * fnScore
                     + this.weightPe * peScore;
@@ -214,7 +204,7 @@ public class ForwardSuggest {
             opScore.setExtraInfo(op.getExtraInfo());
             suggestionList.add(opScore);
 
-        }
+        }// For ends
 
         Collections.sort(suggestionList, Collections.reverseOrder());
 
@@ -456,17 +446,11 @@ public class ForwardSuggest {
     public ForwardSuggest() {
     }
 
-    /**
-     * test
-     * 
-     * @param args
-     */
+
     public static void main(String[] args) {
         Timer.startTimer();
         ForwardSuggest test = new ForwardSuggest();
         OpWsdl wublastOp = new OpWsdl("runWUBlast", "wsdl/2/WSWUBlast.wsdl");
-//		OpWsdl getidsOp = new OpWsdl("getIds","wsdl/3/WSWUBlast.wsdl");
-//		OpWsdl getXmlFormatsOp = new OpWsdl("getXmlFormats","wsdl/3/WSWUBlast.wsdl");
 
         List<OpWsdl> workflowOpList = new ArrayList<OpWsdl>();
         List<OpWsdl> candidateOpList = new ArrayList<OpWsdl>();
@@ -474,16 +458,9 @@ public class ForwardSuggest {
         candidateOpList.add(new OpWsdl("getResultTypes", "wsdl/2/clustalw2.wsdl"));
 
         workflowOpList.add(wublastOp);
-//		candidateOpList.add(getidsOp);
-//		candidateOpList.add(getXmlFormatsOp);
-//		Ev3 ev = new Ev3();
-//		candidateOpList= ev.getCandidateOp();
-
-//		List<OpWsdlScore> suggestions = test.getSuggestServices(workflowOpList,candidateOpList,"getid", "owl/obi.owl","pl/initialState.pl" );
-//		List<OpWsdlScore> suggestions = test.getSuggestServices(workflowOpList,candidateOpList,"getid", "owl/obi.owl",null );
         List<OpWsdlScore> suggestions = test.getSuggestServices(workflowOpList, candidateOpList, null, "owl/obi.owl", null);
 
-//		List<OpWsdlScore> suggestions = test.getSuggestServices(workflowOpList,candidateOpList,null, null,null );
+
         System.out.println(suggestions.get(0).getOpName() + "----best----" + suggestions.get(0).getScore());
         System.out.println(suggestions.get(1).getOpName() + "----2nd----" + suggestions.get(1).getScore());
 

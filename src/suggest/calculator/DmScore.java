@@ -156,30 +156,13 @@ public class DmScore {
         
     } // calculateLeafDmScore
 
-    /**
-     * @param args
-     */
+
     public static void main(String[] args) {
         DmScore test = new DmScore();
         OpWsdl wublastOp = new OpWsdl("runWUBlast", "wsdl/8/WSWUBlast.wsdl");
         OpWsdl getidsOp = new OpWsdl("getIds", "wsdl/8/WSWUBlast.wsdl");
         List<OpWsdl> opList = new ArrayList<OpWsdl>();
         opList.add(wublastOp);
-
-//		double score = test.calculateDmScore(opList,getidsOp,"owl/obi.owl");
-//		Map<OpWsdlPathScore_type, OpWsdlPathScore_type> pathDm = test.getDmResults();
-//		for (OpWsdlPathScore_type p: pathDm.keySet()){
-//			OpWsdlPathScore_type match = pathDm.get(p);
-//			System.out.println(p.getPath().get(0).getAttribute("name")+"--------------" + p.getScore()+"--------------"+ match.getPath().get(0).getAttribute("name"));
-//			
-//		}
-
-//		double score = test.calculateHomeoDmScore(opList, getidsOp, "owl/obi.owl");
-//		List<IODG> homeoDm = test.getHomeoDmResult();
-//		System.out.println(score);
-//		for (IODG node: homeoDm){
-//		System.out.println(node.getNode().getAttributeValue("name")+"--------------" + node.getScore()+"--------------"+ node.getMatchNode().getAttributeValue("name"));
-//		}
 
         double score = test.calculateLeafDmScore(opList, getidsOp, "owl/obi.owl");
         

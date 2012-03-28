@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package dataMediator;
 
 import util.NodeType;
