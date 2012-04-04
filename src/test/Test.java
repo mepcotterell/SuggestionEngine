@@ -30,7 +30,7 @@ public class Test {
     public static String fasta = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/fasta.sawsdl";
     public static String muscle = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/muscle.sawsdl";
     
-    public static String ontology = "owl/obi.owl";   
+    public static String ontology = "owl/webService.owl";   
     
     public static void main (String[] args) {
         
@@ -117,20 +117,24 @@ public class Test {
         candidateOpsOBI.add(new OpWsdl("run", fasta));    
         
         List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
-        workflowOpsOBI.add(new OpWsdl("getResult", wublast));
-        
+        workflowOpsOBI.add(new OpWsdl("filterByEval", filerSeq));
+        //workflowOpsOBI.add(new OpWsdl("getResult", wublast));
         //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
         
         System.out.println();
         System.out.println("--------------------------------------------------");
         System.out.println("TEST - OBI");
         System.out.println("Case 1: There is only one operation on the workflow Blast.run\n------------------------------------\n");
+        desiredOps = "multiple sequence alignment";//http://purl.obolibrary.org/obo/OBIws_0000063
         ForwardSuggest sugg2 = new ForwardSuggest();
         List<OpWsdlScore> suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         for (OpWsdlScore suggestion: suggestOpList2) {
             results.test1.put(suggestion.getOpName(), suggestion);
-            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
-            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
+            String[] ww = suggestion.getWsdlName().split("/");
+            String wsName = ww[ww.length -1].replace("sawsdl", "");
+
+            System.out.println(wsName+ "." + suggestion.getOpName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore() + "\n");
+            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
         }
         
 //        workflowOpsOBI.add(new OpWsdl("getResult", wublast));

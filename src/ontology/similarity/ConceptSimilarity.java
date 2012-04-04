@@ -3,7 +3,7 @@
  */
 package ontology.similarity;
 
-import StringMatcher.*;
+import stringMatcher.*;
 import parser.OntologyManager;
 
 import org.semanticweb.owlapi.model.*;
