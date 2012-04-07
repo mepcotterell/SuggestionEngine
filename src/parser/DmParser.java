@@ -20,8 +20,6 @@ public class DmParser {
     private static Namespace xsdNS = Namespace.getNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
     private static Namespace wsdlNS = Namespace.getNamespace("wsdl", "http://schemas.xmlsoap.org/wsdl/");
     private static Namespace sawsdlNS = Namespace.getNamespace("sawsdl", "http://www.w3.org/ns/sawsdl");
-//	private static Namespace soapencNS = Namespace
-//	.getNamespace("soapenc", "http://schemas.xmlsoap.org/soap/encoding/");
 
     /**
      * given an element, return a list of paths in his element
