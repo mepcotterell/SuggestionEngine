@@ -31,7 +31,8 @@ public class Test {
     public static String fasta = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/fasta.sawsdl";
     public static String muscle = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/muscle.sawsdl";
     
-    public static String ontology = "owl/webService.owl";   
+    public static String ontology = "http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";
+    //"owl/webService.owl";   
     
     public static void main (String[] args) {
         

@@ -3,6 +3,8 @@ package parser;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.System.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import java.util.*;
 
@@ -93,13 +95,33 @@ public class OntologyManager {
             // Create our ontology manager in the usual way.
             manager = OWLManager.createOWLOntologyManager();
 
-            // load ontology on local file
-            File inputOntologyFile = new File(base + filename);
+            //Check if the Ontology Location is a URL or a local file
 
-            // Now load the local copy
-            System.out.println("Now loading owl file from " + base + filename);
+            if (filename.contains("http:") || filename.contains("HTTP:") || filename.contains("www.") || filename.contains("WWW.")) 
+            {
+                URL u = new URL(filename);
+                IRI iri;
+                try {
+                    iri = IRI.create(u);
+                    //load Ontology from IRI
+                    System.out.println("Now loading owl file from IRI: " + filename);
+                    ontology = manager.loadOntology(iri);
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(OntologyManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else 
+            {
+                // load ontology on local file
+                File inputOntologyFile = new File(base + filename);
+
+                // Now load the local copy
+                System.out.println("Now loading owl file from " + base + filename);
+
+                ontology = manager.loadOntologyFromOntologyDocument(inputOntologyFile);
+
+            }
             
-            ontology = manager.loadOntologyFromOntologyDocument(inputOntologyFile);
             String ontID = ontology.getOntologyID().toString();
             
             int length = ontID.length();
@@ -1156,7 +1178,7 @@ public class OntologyManager {
             //discoveryMgr = new OntologyManager("camera.owl.rdf");
             //discoveryMgr = new OntologyManager("SUMO_Finance.owl");
             //discoveryMgr = new OntologyManager("pizza.owl");
-            discoveryMgr = new OntologyManager("/home/alok/Desktop/SuggestionEngineWS/owl/obi.owl");
+            discoveryMgr = new OntologyManager("http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl");
         } catch (OWLOntologyCreationException e) {
             e.printStackTrace();
         }
