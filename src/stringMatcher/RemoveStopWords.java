@@ -25,7 +25,7 @@ public class RemoveStopWords
         while (stop.hasMoreTokens())
         {
             word = stop.nextToken();
-            word = word.replace("[`~!@#$%^&*()_+={}:;\"',<.>?/]", "");
+            word = word.replaceAll("[`~!@#$%^&*()_+={}:;\"',<.>?/]", "");
             if (!stopWords.contains(word.toLowerCase()))
             {
                 result = result + " " + word;

@@ -50,17 +50,29 @@ public class GetDocumentation
                 if (paramElement.getChild("annotation", nameSpace)!=null)
                     if (paramElement.getChild("annotation",nameSpace).getChild("documentation",nameSpace) !=null)
                         if(!paramElement.getChild("annotation",nameSpace).getChild("documentation",nameSpace).getText().equals(""))
-                                wsdlDoc = "Documentation:" + paramElement.getChild("annotation",nameSpace).getChild("documentation",nameSpace).getText();
+                                wsdlDoc = "Documentation : " + paramElement.getChild("annotation",nameSpace).getChild("documentation",nameSpace).getText();
                 
                 // Retriving the Cardinality from WSDL if Available
                 org.jdom.Attribute cardAttrMIN = paramElement.getAttribute("minOccurs");
                 org.jdom.Attribute cardAttrMAX = paramElement.getAttribute("maxOccurs");
+                int flag = 0;
+                String CardinalityInfo = "Cardinality Info : ";
                 if (cardAttrMIN!=null)
                     if(Integer.parseInt(cardAttrMIN.getValue()) != 0 )
-                        DocList.add("Cardinality Info : You need to enter a minimum of " + cardAttrMIN.getValue() + " of these.");
-                if (cardAttrMAX!=null)
-                    DocList.add("Cardinality Info : You can enter a maximum of " + cardAttrMAX.getValue() + " of these.");
+                    {
+                        flag = 1;
+                        CardinalityInfo += "You need to enter a minimum of " + cardAttrMIN.getValue() + " of these; ";
+                    }
 
+                if (cardAttrMAX!=null)
+                    if(Integer.parseInt(cardAttrMAX.getValue()) != 0 )
+                    {
+                        flag = 1;
+                        CardinalityInfo += "You can enter a maximum of " + cardAttrMAX.getValue() + " of these.";                        
+                    }
+
+                if (flag == 1)
+                    DocList.add(CardinalityInfo);
                 DocList.add(wsdlDoc);
                 
                 // Retriving the Definition, Usage, Description from the Ontology whichever available
@@ -78,11 +90,11 @@ public class GetDocumentation
                                     String description = parser.getClassDescription(conceptClass);
 
                                     if (!OntoDef.equals(""))
-                                        DocList.add("Definition:" + OntoDef);
+                                        DocList.add("Definition : " + OntoDef);
                                     if (!usage.equals(""))
-                                        DocList.add("Usage:" + usage);
+                                        DocList.add("Usage : " + usage);
                                     if (!description.equals(""))
-                                        DocList.add("Description:" + description);
+                                        DocList.add("Description : " + description);
                                 }// try ends
                             catch(Exception e)
                             {
@@ -115,11 +127,9 @@ public class GetDocumentation
     
     public static void main(String[] args)
     {
-        //System.out.println(getParamInfo("http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2.sawsd", "clustering", "/home/alok/Desktop/SuggestionEngine/webService.owl"));
+        //System.out.println(getParamInfo("http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2.sawsd", "clustering", "owl/webService.owl"));
         
-        //util.debuggingUtils.printCollection(getParamInfo("http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl", "sequence", "/home/alok/Desktop/SuggestionEngine/webService.owl"));
-
-        util.DebuggingUtils.printCollection(getParamInfo("http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2.sawsdl", "sequence", "owl/webService.owl"));
+        util.DebuggingUtils.printCollection(getParamInfo("http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2.sawsdl", "email", "owl/webService.owl"));
         
     }
 }

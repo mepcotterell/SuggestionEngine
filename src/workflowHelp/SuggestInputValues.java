@@ -1,7 +1,6 @@
 package workflowHelp;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.jdom.Element;
@@ -20,7 +19,6 @@ import parser.SchemaParser;
 */
 public class SuggestInputValues
 {
-    private static List<String> values = new ArrayList<String>();
 
     /**
 * A constructor for suggestInputValues class that given the name of the parameter,
@@ -33,10 +31,10 @@ public class SuggestInputValues
 * @param owlURI : URI for the owl file
 *
 */
-    public SuggestInputValues(String WSDLURL, String paramName, String owlURI)
+    public static List<String> SuggestParamValues(String WSDLURL, String paramName, String owlURI)
     {
-        
-        String paramIRI = "";
+        List<String> values = new ArrayList<String>();        
+        String paramIRI;
         
         Element paramElement= null;
         Namespace sawsdlNS = Namespace.getNamespace("sawsdl", "http://www.w3.org/ns/sawsdl");
@@ -55,8 +53,9 @@ public class SuggestInputValues
                         paramIRI = attribute.getValue();
                         OntologyManager parser = OntologyManager.getInstance(owlURI);
                         OWLClass conceptClass = parser.getConceptClass(paramIRI);
-                        getIndividuals(conceptClass, parser);
-                        getDirectSubClasses(conceptClass, parser);
+                        
+                        values = getIndividuals(conceptClass, parser);
+                        values.addAll(getDirectSubClasses(conceptClass, parser));
                     }
                     catch(Exception e)
                     {
@@ -75,17 +74,10 @@ public class SuggestInputValues
                 System.out.println("Following Exception Occurred: " + e);
                 values.add("Unexpected Error Occurred check server log for Details !");
             }
+        return values;
         
     }//Method ends
     
-    /**
-* Returns the list of InputValues calculated earlier
-* @return List<String> of possible input values, calculated using individuals / direct sub-classes
-*/
-    public List<String> getInputValues()
-    {
-        return values;
-    }
             
     /**
 *
@@ -94,8 +86,9 @@ public class SuggestInputValues
 * @param conceptClass : The class in the ontology, as an object of OWLClass to find subclasses for
 * @param parser : Object of ontology Manager
 */
-    private static void getDirectSubClasses(OWLClass conceptClass, OntologyManager parser)
+    private static List<String> getDirectSubClasses(OWLClass conceptClass, OntologyManager parser)
     {
+        List<String> values = new ArrayList<String>();        
         Set<OWLClass> subclasses = parser.getDirectSubClasses(conceptClass);
         String label = "";
         String className = "";
@@ -109,6 +102,7 @@ public class SuggestInputValues
             else if(!className.equals(""))
                 values.add(className);
         }//for ends
+        return values;
     }//method ends
 
     /**
@@ -118,17 +112,17 @@ public class SuggestInputValues
 * @param conceptClass : The class in the ontology, as an object of OWLClass to find subclasses for
 * @param parser : Object of ontology Manager
 */
-    private static void getIndividuals(OWLClass conceptClass, OntologyManager parser)
+    private static List<String> getIndividuals(OWLClass conceptClass, OntologyManager parser)
     {
+        List<String> values = new ArrayList<String>();        
         try{
             OWLOntology ontology = parser.getOntology();
-            Set<OWLIndividual> individuals = new HashSet<OWLIndividual>();
-            individuals = conceptClass.getIndividuals(ontology);
+            Set<OWLIndividual> individuals =  conceptClass.getIndividuals(ontology);
 
             for(OWLIndividual i : individuals)
             {
                 String name = i.toStringID();
-                String[] temp = new String [10];
+                String[] temp;
                 if (name.contains("#"))
                 {
                        temp = name.split("#");
@@ -141,13 +135,14 @@ public class SuggestInputValues
         {
             System.out.println("Exception Occured when getting the Individuals: " + e);
         }
+        return values;
     }// method ends
     
     public static void main (String[] args)
     {
-        SuggestInputValues s = new SuggestInputValues("http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl","program", "owl/webService.owl");
-
-        util.DebuggingUtils.printCollection(s.getInputValues());
+        util.DebuggingUtils.printCollection(SuggestInputValues.SuggestParamValues("http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl","program", "owl/webService.owl"));
+        System.out.println("----------------------------------------------------------------");
+        util.DebuggingUtils.printCollection(SuggestInputValues.SuggestParamValues("http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl","exp", "owl/webService.owl"));
     }
     
 }

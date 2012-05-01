@@ -22,6 +22,7 @@ import uk.ac.shef.wit.simmetrics.similaritymetrics.*;
 
 import org.semanticweb.owlapi.model.*;
 import parser.OntologyManager;
+import util.DebuggingUtils;
 
 /**
  * @author Rui Wang
@@ -52,18 +53,16 @@ public class PathRank {
 
         // get all paths of the input of the nextOP
         List<List<Element>> nextOpInPaths 
-                = dmp.getPathsList(sp.getInMsElem(nextOP.getWsdlName(), nextOP.getOpName()));
+                = dmp.getPathsList(sp.getInMsElem(nextOP.getWsdlName(), nextOP.getOpName()));        
         
-        List<OpWsdlPathScore_type> nextOpInPathScoreList 
-                = new ArrayList<OpWsdlPathScore_type>();
-
+        List<OpWsdlPathScore_type> nextOpInPathScoreList = new ArrayList<OpWsdlPathScore_type>();
         for (List<Element> inPath : nextOpInPaths) {
             nextOpInPathScoreList.add(new OpWsdlPathScore_type(nextOP.getOpName(), nextOP.getWsdlName(), inPath, true));
         } // for
-
+        DebuggingUtils.printPaths(nextOpInPaths,nextOP.getWsdlName(),nextOP.getOpName(),"input");
+        
         // get all paths of the output of the workflowOPs
-        List<OpWsdlPathScore_type> workflowOutPathScoreList 
-                = new ArrayList<OpWsdlPathScore_type>();
+        List<OpWsdlPathScore_type> workflowOutPathScoreList = new ArrayList<OpWsdlPathScore_type>();
 
         // only get paths of last op of workflowOPs, if do this, need turn off 
         // above section(get all output of workflow)
@@ -71,6 +70,8 @@ public class PathRank {
         
         List<List<Element>> workflowOpOutPath 
                 = dmp.getPathsList(sp.getOutMsElem(workflowOp.getWsdlName(), workflowOp.getOpName()));
+
+        DebuggingUtils.printPaths(workflowOpOutPath,nextOP.getWsdlName(),nextOP.getOpName(),"output");
 
         for (List<Element> outPath : workflowOpOutPath) {
             workflowOutPathScoreList.add(new OpWsdlPathScore_type(workflowOp.getOpName(), workflowOp.getWsdlName(), outPath, false));

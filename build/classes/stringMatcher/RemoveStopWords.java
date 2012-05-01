@@ -1,15 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package stringMatcher;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
-import util.PropertyFileManager;
+
 
 /**
  * This class is used for preprocess a string and removing all stop words from them
@@ -20,35 +15,10 @@ import util.PropertyFileManager;
 public class RemoveStopWords
 {
 
-    static ArrayList<String> stopWords = new ArrayList<String>();
-
-    public static void populateStopWords()
-    {      
-        String path = PropertyFileManager.getValueFromProperty("stopWords");
-        
-        if (stopWords.isEmpty())
-        {
-            File Stop = new File(path);
-            try
-            {
-                Scanner stopscanner = new Scanner(Stop);
-                while (stopscanner.hasNext())
-                {
-                    String temp = stopscanner.nextLine();
-                    temp = temp.trim();
-                    stopWords.add(temp);
-                }
-            } catch (FileNotFoundException e)
-            {
-                System.out.println("File not found.");
-                e.printStackTrace();
-            }
-        }
-    }//populateStopWords
+    static List<String> stopWords = (List<String>) Arrays.asList(StopWords.stopWords);
 
     public static String removeStop(String temp)
     {
-        populateStopWords();
         String result = "";
         StringTokenizer stop = new StringTokenizer(temp);
         String word = "";
@@ -56,12 +26,10 @@ public class RemoveStopWords
         {
             word = stop.nextToken();
             word = word.replaceAll("[`~!@#$%^&*()_+={}:;\"',<.>?/]", "");
-            word = word.replace("[", "");
-            word = word.replace("]", "");
             if (!stopWords.contains(word.toLowerCase()))
             {
                 result = result + " " + word;
-            }
+            }   
         }
         return result;
     }//removeStop
