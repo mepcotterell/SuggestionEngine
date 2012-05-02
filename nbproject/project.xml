@@ -14,5 +14,12 @@
         <libraries xmlns="http://www.netbeans.org/ns/ant-project-libraries/1">
             <definitions>./lib/nblibraries.properties</definitions>
         </libraries>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>Pathbased</word>
+            <word>Preconditons</word>
+            <word>Subscore</word>
+            <word>Subscores</word>
+            <word>Workflow</word>
+        </spellchecker-wordlist>
     </configuration>
 </project>

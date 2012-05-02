@@ -9,7 +9,7 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 import org.jdom.xpath.XPath;
-import util.OpWsdl;
+import util.WebServiceOpr;
 
 /**
  * @author Rui Wang
@@ -570,67 +570,67 @@ public class DmParser {
 //		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "getPrograms");
 //		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "getPrograms");
 
-        List<OpWsdl> candidateOp = new ArrayList<OpWsdl>();
-        candidateOp.add(new OpWsdl("blastp", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("blastn", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getOutput", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getXML", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("runWUBlast", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("checkStatus", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("checkStatus", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("poll", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getResults", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getMatrices", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getPrograms", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getDatabases", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getSort", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getStats", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getXmlFormats", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getSensitivity", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getFilters", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("polljob", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("doWUBlast", "wsdl/1/WSWUBlast.wsdl"));
+        List<WebServiceOpr> candidateOp = new ArrayList<WebServiceOpr>();
+        candidateOp.add(new WebServiceOpr("blastp", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("blastn", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getOutput", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getXML", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("runWUBlast", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("checkStatus", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("checkStatus", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("poll", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getResults", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getMatrices", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getPrograms", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getDatabases", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getSort", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getStats", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getXmlFormats", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getSensitivity", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getFilters", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("polljob", "wsdl/1/WSWUBlast.wsdl"));
+        candidateOp.add(new WebServiceOpr("doWUBlast", "wsdl/1/WSWUBlast.wsdl"));
         //19	
-        candidateOp.add(new OpWsdl("fetchBatch", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("fetchData", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getDatabaseInfo", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getDatabaseInfoList", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getDbFormats", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getFormatInfo", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getFormatStyles", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getStyleInfo", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getSupportedDBs", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getSupportedFormats", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getSupportedStyles", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("fetchBatch", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("fetchData", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("getDatabaseInfo", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("getDatabaseInfoList", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("getDbFormats", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("getFormatInfo", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("getFormatStyles", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("getStyleInfo", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("getSupportedDBs", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("getSupportedFormats", "wsdl/1/WSDbfetchDoclit.wsdl"));
+        candidateOp.add(new WebServiceOpr("getSupportedStyles", "wsdl/1/WSDbfetchDoclit.wsdl"));
 //19+11=30		
-        candidateOp.add(new OpWsdl("getParameters", "wsdl/1/clustalw2.wsdl"));
-        candidateOp.add(new OpWsdl("getParameterDetails", "wsdl/1/clustalw2.wsdl"));
-        candidateOp.add(new OpWsdl("run", "wsdl/1/clustalw2.wsdl"));
-        candidateOp.add(new OpWsdl("getStatus", "wsdl/1/clustalw2.wsdl"));
-        candidateOp.add(new OpWsdl("getResultTypes", "wsdl/1/clustalw2.wsdl"));
-        candidateOp.add(new OpWsdl("getResult", "wsdl/1/clustalw2.wsdl"));
+        candidateOp.add(new WebServiceOpr("getParameters", "wsdl/1/clustalw2.wsdl"));
+        candidateOp.add(new WebServiceOpr("getParameterDetails", "wsdl/1/clustalw2.wsdl"));
+        candidateOp.add(new WebServiceOpr("run", "wsdl/1/clustalw2.wsdl"));
+        candidateOp.add(new WebServiceOpr("getStatus", "wsdl/1/clustalw2.wsdl"));
+        candidateOp.add(new WebServiceOpr("getResultTypes", "wsdl/1/clustalw2.wsdl"));
+        candidateOp.add(new WebServiceOpr("getResult", "wsdl/1/clustalw2.wsdl"));
 //30+6=36
-        candidateOp.add(new OpWsdl("array2string", "wsdl/1/WSConverter.wsdl"));
-        candidateOp.add(new OpWsdl("base64toString", "wsdl/1/WSConverter.wsdl"));
+        candidateOp.add(new WebServiceOpr("array2string", "wsdl/1/WSConverter.wsdl"));
+        candidateOp.add(new WebServiceOpr("base64toString", "wsdl/1/WSConverter.wsdl"));
 //36+2=38
-        candidateOp.add(new OpWsdl("getParameters", "wsdl/1/tcoffee.wsdl"));
-        candidateOp.add(new OpWsdl("getParameterDetails", "wsdl/1/tcoffee.wsdl"));
-        candidateOp.add(new OpWsdl("run", "wsdl/1/tcoffee.wsdl"));
-        candidateOp.add(new OpWsdl("getStatus", "wsdl/1/tcoffee.wsdl"));
-        candidateOp.add(new OpWsdl("getResultTypes", "wsdl/1/tcoffee.wsdl"));
-        candidateOp.add(new OpWsdl("getResult", "wsdl/1/tcoffee.wsdl"));
+        candidateOp.add(new WebServiceOpr("getParameters", "wsdl/1/tcoffee.wsdl"));
+        candidateOp.add(new WebServiceOpr("getParameterDetails", "wsdl/1/tcoffee.wsdl"));
+        candidateOp.add(new WebServiceOpr("run", "wsdl/1/tcoffee.wsdl"));
+        candidateOp.add(new WebServiceOpr("getStatus", "wsdl/1/tcoffee.wsdl"));
+        candidateOp.add(new WebServiceOpr("getResultTypes", "wsdl/1/tcoffee.wsdl"));
+        candidateOp.add(new WebServiceOpr("getResult", "wsdl/1/tcoffee.wsdl"));
 //38+6=44		
-        candidateOp.add(new OpWsdl("getParameters", "wsdl/1/ncbiblast.wsdl"));
-        candidateOp.add(new OpWsdl("getParameterDetails", "wsdl/1/ncbiblast.wsdl"));
-        candidateOp.add(new OpWsdl("run", "wsdl/1/ncbiblast.wsdl"));
-        candidateOp.add(new OpWsdl("getStatus", "wsdl/1/ncbiblast.wsdl"));
-        candidateOp.add(new OpWsdl("getResultTypes", "wsdl/1/ncbiblast.wsdl"));
-        candidateOp.add(new OpWsdl("getResult", "wsdl/1/ncbiblast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getParameters", "wsdl/1/ncbiblast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getParameterDetails", "wsdl/1/ncbiblast.wsdl"));
+        candidateOp.add(new WebServiceOpr("run", "wsdl/1/ncbiblast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getStatus", "wsdl/1/ncbiblast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getResultTypes", "wsdl/1/ncbiblast.wsdl"));
+        candidateOp.add(new WebServiceOpr("getResult", "wsdl/1/ncbiblast.wsdl"));
 //44+6=50		
 
 
 //		Element inElem = sp.getInMsElem(candidateOp.get(38).getWsdlName(), candidateOp.get(43).getOpName());
-        Element inElem = sp.getOutMsElem(candidateOp.get(35).getWsdlName(), candidateOp.get(35).getOpName());
+        Element inElem = sp.getOutMsElem(candidateOp.get(35).getWsDescriptionDoc(), candidateOp.get(35).getOperationName());
 //		System.out.println(inElem.getName());
         DmParser pr = new DmParser();
         List<List<Element>> pList = pr.getPathsList(inElem);

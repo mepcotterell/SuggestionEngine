@@ -25,7 +25,7 @@ public class IODG {
 	/**
 	 * the operation name and wsdl name of this node, and the matching score between this node and its matchNode
 	 */
-	private OpWsdlScore opWsdlScore= null; 
+	private WebServiceOprScore opWsdlScore= null; 
 
 	/**
 	 * used for dfs algorithm
@@ -103,14 +103,14 @@ public class IODG {
 	 * @return the op name
 	 */
 	public String getOp() {
-		return opWsdlScore.getOpName();
+		return opWsdlScore.getOperationName();
 	}
 
 	/**
 	 * @return the Wsdl name
 	 */
 	public String getWsdl() {
-		return opWsdlScore.getWsdlName();
+		return opWsdlScore.getWsDescriptionDoc();
 	}
 	/**
 	 * @return the opWsdlScore
@@ -129,21 +129,21 @@ public class IODG {
 	/**
 	 * constructor full
 	 */
-	public IODG(Element node, OpWsdl opWsdl, List<IODG> children, int level) {
+	public IODG(Element node, WebServiceOpr opWsdl, List<IODG> children, int level) {
 		this.node = node;
 		this.children = children;
 		//initially, the matching score set to negative
-		this.opWsdlScore = new OpWsdlScore(opWsdl.getOpName(),opWsdl.getWsdlName(),-10);
+		this.opWsdlScore = new WebServiceOprScore(opWsdl.getOperationName(),opWsdl.getWsDescriptionDoc(),-10);
 		this.level =level;
 	}
 	
 	/**
 	 * constructor simple
 	 */
-	public IODG(Element node, OpWsdl opWsdl) {
+	public IODG(Element node, WebServiceOpr opWsdl) {
 		this.node = node;
 		//initially, the matching score set to negative
-		this.opWsdlScore = new OpWsdlScore(opWsdl.getOpName(),opWsdl.getWsdlName(),-10);
+		this.opWsdlScore = new WebServiceOprScore(opWsdl.getOperationName(),opWsdl.getWsDescriptionDoc(),-10);
 	}
 
 	/**for test

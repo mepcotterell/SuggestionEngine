@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import util.OpWsdl;
-import util.OpWsdlScore;
+import util.WebServiceOpr;
+import util.WebServiceOprScore;
 
 /**
  * @author Rui Wang
@@ -49,8 +49,8 @@ public class BidirectionSuggest {
 	 * @param initState   initial state file for the state before workflow prefix
 	 * @return the score of every candidate operation
 	 */
-	public List<OpWsdlScore> getSuggestServices(List<OpWsdl> workflowPrefixOPs, List<OpWsdl> workflowSuffixOPs,
-			List<OpWsdl> candidateOPs, String preferOp, String owlFileName, String initState) {
+	public List<WebServiceOprScore> getSuggestServices(List<WebServiceOpr> workflowPrefixOPs, List<WebServiceOpr> workflowSuffixOPs,
+			List<WebServiceOpr> candidateOPs, String preferOp, String owlFileName, String initState) {
 		
 		if (workflowPrefixOPs == null || workflowSuffixOPs==null ||candidateOPs ==null){
 			return null;
@@ -58,20 +58,20 @@ public class BidirectionSuggest {
 				
 		//reuse forward suggest
 		ForwardSuggest prefixSuggest = new ForwardSuggest();		
-		List<OpWsdlScore> prefixDmScores = prefixSuggest.getSuggestServices(workflowPrefixOPs, candidateOPs, preferOp, owlFileName, initState);
+		List<WebServiceOprScore> prefixDmScores = prefixSuggest.suggestNextService(workflowPrefixOPs, candidateOPs, preferOp, owlFileName, initState);
 		prefixDmResults = prefixSuggest.getDmResults();
 		
 		//reuse backward suggest, to adjust initial state for the suffix, currently null
 		BackwardSuggest suffixSuggest = new BackwardSuggest();
-		List<OpWsdlScore> suffixDmScores = suffixSuggest.getSuggestServices(workflowSuffixOPs, candidateOPs, preferOp, owlFileName, null);
+		List<WebServiceOprScore> suffixDmScores = suffixSuggest.getSuggestServices(workflowSuffixOPs, candidateOPs, preferOp, owlFileName, null);
 		suffixDmResults = suffixSuggest.getDmResults();
 		
 		//avg forward and backward score
-		List<OpWsdlScore> biDmScores = new ArrayList<OpWsdlScore>();
-		for(OpWsdlScore pre: prefixDmScores){
-			for(OpWsdlScore suf: suffixDmScores){
-				if (pre.getOpName().equals(suf.getOpName()) && pre.getWsdlName().equals(suf.getWsdlName())){
-					OpWsdlScore biScore = new OpWsdlScore(pre.getOpName(), pre.getWsdlName(),(pre.getScore()+suf.getScore())/2);
+		List<WebServiceOprScore> biDmScores = new ArrayList<WebServiceOprScore>();
+		for(WebServiceOprScore pre: prefixDmScores){
+			for(WebServiceOprScore suf: suffixDmScores){
+				if (pre.getOperationName().equals(suf.getOperationName()) && pre.getWsDescriptionDoc().equals(suf.getWsDescriptionDoc())){
+					WebServiceOprScore biScore = new WebServiceOprScore(pre.getOperationName(), pre.getWsDescriptionDoc(),(pre.getScore()+suf.getScore())/2);
 					biDmScores.add(biScore);
 					break;
 				}
@@ -81,58 +81,49 @@ public class BidirectionSuggest {
 		return biDmScores;
 	}
 	
-	/**given two separated workflow fragment, suggest an operation in between them
-	 * 
-	 * @param workflowPrefixOPs
-	 * @param workflowSuffixOPs
-	 * @param candidateOPs
-	 * @param preferOp
-	 * @param opOwlFileName
-	 * @param msgOwlFileName
-	 * @param initState
-	 * @return
-	 */
-	public List<OpWsdlScore> getSuggestServices2owl(List<OpWsdl> workflowPrefixOPs, List<OpWsdl> workflowSuffixOPs,
-			List<OpWsdl> candidateOPs, String preferOp, String opOwlFileName, String msgOwlFileName, String initState) {
-		
-		if (workflowPrefixOPs == null || workflowSuffixOPs==null ||candidateOPs ==null){
-			return null;
-		}
-				
-		//reuse forward suggest
-		ForwardSuggest prefixSuggest = new ForwardSuggest();		
-		List<OpWsdlScore> prefixDmScores = prefixSuggest.getSuggestServicesWith2owl(workflowPrefixOPs, candidateOPs, preferOp, opOwlFileName, msgOwlFileName, initState);
-		prefixDmResults = prefixSuggest.getDmResults();
-		
-		//reuse backward suggest, to adjust initial state for the suffix, currently null
-		BackwardSuggest suffixSuggest = new BackwardSuggest();
-		List<OpWsdlScore> suffixDmScores = suffixSuggest.getSuggestServices2owl(workflowSuffixOPs, candidateOPs, preferOp, opOwlFileName, msgOwlFileName, null);
-		suffixDmResults = suffixSuggest.getDmResults();
-		
-		//avg forward and backward score
-		List<OpWsdlScore> biDmScores = new ArrayList<OpWsdlScore>();
-		for(OpWsdlScore pre: prefixDmScores){
-			for(OpWsdlScore suf: suffixDmScores){
-				if (pre.getOpName().equals(suf.getOpName()) && pre.getWsdlName().equals(suf.getWsdlName())){
-					OpWsdlScore biScore = new OpWsdlScore(pre.getOpName(), pre.getWsdlName(),(pre.getScore()+suf.getScore())*0.5);
-					biDmScores.add(biScore);
-					break;
-				}
-			}
-		}
-		Collections.sort(biDmScores, Collections.reverseOrder());
-		return biDmScores;
-	}
+//	/**given two separated workflow fragment, suggest an operation in between them
+//	 * 
+//	 * @param workflowPrefixOPs
+//	 * @param workflowSuffixOPs
+//	 * @param candidateOPs
+//	 * @param preferOp
+//	 * @param opOwlFileName
+//	 * @param msgOwlFileName
+//	 * @param initState
+//	 * @return
+//	 */
+//	public List<WebServiceOprScore> getSuggestServices2owl(List<WebServiceOpr> workflowPrefixOPs, List<WebServiceOpr> workflowSuffixOPs,
+//			List<WebServiceOpr> candidateOPs, String preferOp, String opOwlFileName, String msgOwlFileName, String initState) {
+//		
+//		if (workflowPrefixOPs == null || workflowSuffixOPs==null ||candidateOPs ==null){
+//			return null;
+//		}
+//				
+//		//reuse forward suggest
+//		ForwardSuggest prefixSuggest = new ForwardSuggest();		
+//		List<WebServiceOprScore> prefixDmScores = prefixSuggest.getSuggestServicesWith2owl(workflowPrefixOPs, candidateOPs, preferOp, opOwlFileName, msgOwlFileName, initState);
+//		prefixDmResults = prefixSuggest.getDmResults();
+//		
+//		//reuse backward suggest, to adjust initial state for the suffix, currently null
+//		BackwardSuggest suffixSuggest = new BackwardSuggest();
+//		List<WebServiceOprScore> suffixDmScores = suffixSuggest.getSuggestServices2owl(workflowSuffixOPs, candidateOPs, preferOp, opOwlFileName, msgOwlFileName, null);
+//		suffixDmResults = suffixSuggest.getDmResults();
+//		
+//		//avg forward and backward score
+//		List<WebServiceOprScore> biDmScores = new ArrayList<WebServiceOprScore>();
+//		for(WebServiceOprScore pre: prefixDmScores){
+//			for(WebServiceOprScore suf: suffixDmScores){
+//				if (pre.getOperationName().equals(suf.getOperationName()) && pre.getWsDescriptionDoc().equals(suf.getWsDescriptionDoc())){
+//					WebServiceOprScore biScore = new WebServiceOprScore(pre.getOperationName(), pre.getWsDescriptionDoc(),(pre.getScore()+suf.getScore())*0.5);
+//					biDmScores.add(biScore);
+//					break;
+//				}
+//			}
+//		}
+//		Collections.sort(biDmScores, Collections.reverseOrder());
+//		return biDmScores;
+//	}
 
-	/**
-	 * constructor
-	 */
-	public BidirectionSuggest() {
-	}
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 
 	}

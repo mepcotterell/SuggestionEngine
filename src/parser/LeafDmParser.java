@@ -9,7 +9,7 @@ import java.util.List;
 import org.jdom.Element;
 
 import util.IODG;
-import util.OpWsdl;
+import util.WebServiceOpr;
 
 /**
  * @author Rui
@@ -22,7 +22,7 @@ public class LeafDmParser {
 	 * @param opWsdl
 	 * @return
 	 */
-	private List<Element> getMsBottomElemList(Element msElem, OpWsdl opWsdl){
+	private List<Element> getMsBottomElemList(Element msElem, WebServiceOpr opWsdl){
 		if(msElem==null || opWsdl==null){
 			System.out.println("LeafMediation.getMsBottomElemList:warning: given empty message element or opWsdl");
 			return null;
@@ -47,7 +47,7 @@ public class LeafDmParser {
 	public List<Element> getInBottomElemList(String wsdlName, String opName){
 		SawsdlParser sp = new SawsdlParser();
 		Element inMsElem = sp.getInMsElem(wsdlName, opName);
-		List<Element> inBottomElemList = this.getMsBottomElemList(inMsElem, new OpWsdl(opName, wsdlName));
+		List<Element> inBottomElemList = this.getMsBottomElemList(inMsElem, new WebServiceOpr(opName, wsdlName));
 		return inBottomElemList;
 		
 	}
@@ -61,7 +61,7 @@ public class LeafDmParser {
 	public List<Element> getOutBottomElemList(String wsdlName, String opName){
 		SawsdlParser sp = new SawsdlParser();
 		Element outMsElem = sp.getOutMsElem(wsdlName, opName);
-		List<Element> outBottomElemList = this.getMsBottomElemList(outMsElem, new OpWsdl(opName, wsdlName));
+		List<Element> outBottomElemList = this.getMsBottomElemList(outMsElem, new WebServiceOpr(opName, wsdlName));
 		return outBottomElemList;
 		
 	}

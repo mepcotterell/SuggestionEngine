@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import suggest.BackwardSuggest;
 import suggest.ForwardSuggest;
-import util.OpWsdl;
-import util.OpWsdlScore;
+import util.WebServiceOpr;
+import util.WebServiceOprScore;
 
 /**
  *
@@ -37,10 +37,10 @@ public class Test {
     public static void main (String[] args) {
         
         class Results {
-            Map<String, OpWsdlScore> test1 = new HashMap<String, OpWsdlScore>();
-            Map<String, OpWsdlScore> test2 = new HashMap<String, OpWsdlScore>();
-            Map<String, OpWsdlScore> test3 = new HashMap<String, OpWsdlScore>();
-            Map<String, OpWsdlScore> test4 = new HashMap<String, OpWsdlScore>();
+            Map<String, WebServiceOprScore> test1 = new HashMap<String, WebServiceOprScore>();
+            Map<String, WebServiceOprScore> test2 = new HashMap<String, WebServiceOprScore>();
+            Map<String, WebServiceOprScore> test3 = new HashMap<String, WebServiceOprScore>();
+            Map<String, WebServiceOprScore> test4 = new HashMap<String, WebServiceOprScore>();
         }
         
         Results results = new Results();
@@ -49,79 +49,79 @@ public class Test {
         String desiredOps = "";//retrieve sequences";
         //String desiredOps = "http://purl.obolibrary.org/obo/obi.owl#Class_40";
         
-        List<OpWsdl> candidateOpsOBI = new ArrayList<OpWsdl>();
+        List<WebServiceOpr> candidateOpsOBI = new ArrayList<WebServiceOpr>();
 
-//        candidateOpsOBI.add(new OpWsdl("filterByEvalScore", filerSeq));
-//        candidateOpsOBI.add(new OpWsdl("filterByEval", filerSeq));
+//        candidateOpsOBI.add(new WebServiceOpr("filterByEvalScore", filerSeq));
+//        candidateOpsOBI.add(new WebServiceOpr("filterByEval", filerSeq));
 //        
-//        candidateOpsOBI.add(new OpWsdl("array2string", wsconverter));
-//        candidateOpsOBI.add(new OpWsdl("base64toString", wsconverter));   
+//        candidateOpsOBI.add(new WebServiceOpr("array2string", wsconverter));
+//        candidateOpsOBI.add(new WebServiceOpr("base64toString", wsconverter));   
         
-//        candidateOpsOBI.add(new OpWsdl("getParameters", wublast));
-//        candidateOpsOBI.add(new OpWsdl("getParameterDetails", wublast));
-        candidateOpsOBI.add(new OpWsdl("getResult", wublast));
-//        candidateOpsOBI.add(new OpWsdl("getResultTypes", wublast));
-        //candidateOpsOBI.add(new OpWsdl("getStatus", wublast));
+//        candidateOpsOBI.add(new WebServiceOpr("getParameters", wublast));
+//        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", wublast));
+        candidateOpsOBI.add(new WebServiceOpr("getResult", wublast));
+//        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
+        //candidateOpsOBI.add(new WebServiceOpr("getStatus", wublast));
 
                 
-//        candidateOpsOBI.add(new OpWsdl("getParameters", ncbiblast));
-//        candidateOpsOBI.add(new OpWsdl("getParameterDetails", ncbiblast));
-//        candidateOpsOBI.add(new OpWsdl("getResult", ncbiblast));
-//        candidateOpsOBI.add(new OpWsdl("getResultTypes", ncbiblast));
-//        candidateOpsOBI.add(new OpWsdl("getStatus", ncbiblast));
-//        candidateOpsOBI.add(new OpWsdl("run", ncbiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("getParameters", ncbiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", ncbiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("getResult", ncbiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", ncbiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("getStatus", ncbiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("run", ncbiblast));
 //        
-//        candidateOpsOBI.add(new OpWsdl("getParameters", psiblast));
-//        candidateOpsOBI.add(new OpWsdl("getParameterDetails", psiblast));
-//        candidateOpsOBI.add(new OpWsdl("getResult", psiblast));
-//        candidateOpsOBI.add(new OpWsdl("getResultTypes", psiblast));
-//        candidateOpsOBI.add(new OpWsdl("getStatus", psiblast));
-//        candidateOpsOBI.add(new OpWsdl("run", psiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("getParameters", psiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", psiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("getResult", psiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", psiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("getStatus", psiblast));
+//        candidateOpsOBI.add(new WebServiceOpr("run", psiblast));
 //
-//        candidateOpsOBI.add(new OpWsdl("getStyleInfo", wsdbfetch));
-//        candidateOpsOBI.add(new OpWsdl("getFormatStyles", wsdbfetch));
-//        candidateOpsOBI.add(new OpWsdl("fetchData", wsdbfetch));
-//        candidateOpsOBI.add(new OpWsdl("getSupportedFormats", wsdbfetch));
-//        candidateOpsOBI.add(new OpWsdl("getDatabaseInfo", wsdbfetch));
-//        candidateOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
-//        candidateOpsOBI.add(new OpWsdl("getSupportedDBs", wsdbfetch));
-//        candidateOpsOBI.add(new OpWsdl("getFormatInfo", wsdbfetch));
-//        candidateOpsOBI.add(new OpWsdl("getSupportedStyles", wsdbfetch));
-//        candidateOpsOBI.add(new OpWsdl("getDatabaseInfoList", wsdbfetch));
-//        candidateOpsOBI.add(new OpWsdl("getDbFormats", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("getStyleInfo", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("getFormatStyles", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("fetchData", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("getSupportedFormats", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("getDatabaseInfo", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("fetchBatch", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("getSupportedDBs", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("getFormatInfo", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("getSupportedStyles", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("getDatabaseInfoList", wsdbfetch));
+//        candidateOpsOBI.add(new WebServiceOpr("getDbFormats", wsdbfetch));
 //
-//        candidateOpsOBI.add(new OpWsdl("getParameters", clustalW));
-//        candidateOpsOBI.add(new OpWsdl("getParameterDetails", clustalW));
-//        candidateOpsOBI.add(new OpWsdl("getResult", clustalW));
-//        candidateOpsOBI.add(new OpWsdl("getResultTypes", clustalW));
-//        candidateOpsOBI.add(new OpWsdl("getStatus", clustalW));
-//        candidateOpsOBI.add(new OpWsdl("run", clustalW));        
+//        candidateOpsOBI.add(new WebServiceOpr("getParameters", clustalW));
+//        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", clustalW));
+//        candidateOpsOBI.add(new WebServiceOpr("getResult", clustalW));
+//        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", clustalW));
+//        candidateOpsOBI.add(new WebServiceOpr("getStatus", clustalW));
+//        candidateOpsOBI.add(new WebServiceOpr("run", clustalW));        
 //
-//        candidateOpsOBI.add(new OpWsdl("getParameters", tcoffee));
-//        candidateOpsOBI.add(new OpWsdl("getParameterDetails", tcoffee));
-//        candidateOpsOBI.add(new OpWsdl("getResult", tcoffee));
-//        candidateOpsOBI.add(new OpWsdl("getResultTypes", tcoffee));
-//        candidateOpsOBI.add(new OpWsdl("getStatus", tcoffee));
-//        candidateOpsOBI.add(new OpWsdl("run", tcoffee));        
+//        candidateOpsOBI.add(new WebServiceOpr("getParameters", tcoffee));
+//        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", tcoffee));
+//        candidateOpsOBI.add(new WebServiceOpr("getResult", tcoffee));
+//        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", tcoffee));
+//        candidateOpsOBI.add(new WebServiceOpr("getStatus", tcoffee));
+//        candidateOpsOBI.add(new WebServiceOpr("run", tcoffee));        
 //        
-//        candidateOpsOBI.add(new OpWsdl("getParameters", muscle));
-//       candidateOpsOBI.add(new OpWsdl("getParameterDetails", muscle));
-//        candidateOpsOBI.add(new OpWsdl("getResult", muscle));
-//        candidateOpsOBI.add(new OpWsdl("getResultTypes", muscle));
-//        candidateOpsOBI.add(new OpWsdl("getStatus", muscle));
-//        candidateOpsOBI.add(new OpWsdl("run", muscle));        
+//        candidateOpsOBI.add(new WebServiceOpr("getParameters", muscle));
+//       candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", muscle));
+//        candidateOpsOBI.add(new WebServiceOpr("getResult", muscle));
+//        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", muscle));
+//        candidateOpsOBI.add(new WebServiceOpr("getStatus", muscle));
+//        candidateOpsOBI.add(new WebServiceOpr("run", muscle));        
 //        
-//        candidateOpsOBI.add(new OpWsdl("getParameters", fasta));
-//        candidateOpsOBI.add(new OpWsdl("getParameterDetails", fasta));
-//        candidateOpsOBI.add(new OpWsdl("getResult", fasta));
-//        candidateOpsOBI.add(new OpWsdl("getResultTypes", fasta));
-//        candidateOpsOBI.add(new OpWsdl("getStatus", fasta));
-//        candidateOpsOBI.add(new OpWsdl("run", fasta));    
+//        candidateOpsOBI.add(new WebServiceOpr("getParameters", fasta));
+//        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", fasta));
+//        candidateOpsOBI.add(new WebServiceOpr("getResult", fasta));
+//        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", fasta));
+//        candidateOpsOBI.add(new WebServiceOpr("getStatus", fasta));
+//        candidateOpsOBI.add(new WebServiceOpr("run", fasta));    
         
-        List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
-        //workflowOpsOBI.add(new OpWsdl("filterByEval", filerSeq));
-        workflowOpsOBI.add(new OpWsdl("run", wublast));
-        //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
+        List<WebServiceOpr> workflowOpsOBI = new ArrayList<WebServiceOpr>();
+        //workflowOpsOBI.add(new WebServiceOpr("filterByEval", filerSeq));
+        workflowOpsOBI.add(new WebServiceOpr("run", wublast));
+        //workflowOpsOBI.add(new WebServiceOpr("fetchBatch", wsdbfetch));
         
         System.out.println();
         System.out.println("--------------------------------------------------");
@@ -129,54 +129,56 @@ public class Test {
         System.out.println("Case 1: There is only one operation on the workflow Blast.run\n------------------------------------\n");
         //desiredOps = "multiple sequence alignment";//http://purl.obolibrary.org/obo/OBIws_0000063
         ForwardSuggest sugg2 = new ForwardSuggest();
-        BackwardSuggest suggB = new BackwardSuggest();
-        //List<OpWsdlScore> suggestOpListB = suggB.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         
-        List<OpWsdlScore> suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
-        for (OpWsdlScore suggestion: suggestOpList2) {
-            results.test1.put(suggestion.getOpName(), suggestion);
-            String[] ww = suggestion.getWsdlName().split("/");
+        
+        //BackwardSuggest suggB = new BackwardSuggest();
+        //List<OpWsdlScore> suggestOpListB = suggB.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+        
+        List<WebServiceOprScore> suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+        for (WebServiceOprScore suggestion: suggestOpList2) {
+            results.test1.put(suggestion.getOperationName(), suggestion);
+            String[] ww = suggestion.getWsDescriptionDoc().split("/");
             String wsName = ww[ww.length -1].replace("sawsdl", "");
 
-            System.out.println(wsName+ "." + suggestion.getOpName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore() + "\n");
+            System.out.println(wsName+ "." + suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore() + "\n");
             //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
         }
         
-//        workflowOpsOBI.add(new OpWsdl("getResult", wublast));
+//        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
 //        desiredOps = "retrieve sequences";
-//        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
+//        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
 //        System.out.println();   
 //        System.out.println("\nCase 2\n Workflow has two Operations Added\nBlast.run -> Blast.getResult--------------------------------------------------");
 //        System.out.println();
-//        for (OpWsdlScore suggestion: suggestOpList2) {
+//        for (WebServiceOprScore suggestion: suggestOpList2) {
 //            results.test1.put(suggestion.getOpName(), suggestion);
 //            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
 //            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
 //        }
 //
-//        //workflowOpsOBI.add(new OpWsdl("run", clustalW));
-//        workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
+//        //workflowOpsOBI.add(new WebServiceOpr("run", clustalW));
+//        workflowOpsOBI.add(new WebServiceOpr("fetchBatch", wsdbfetch));
 //        desiredOps = "global multiple sequence alignment";
-//        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
+//        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
 //        System.out.println();
 //        System.out.println("\nCase 3\n Workflow has three Operations Added\nBlast.run -> Blast.getResult -> FetchBatch\n--------------------------------------------------");
 //        System.out.println();
 //        
-//        for (OpWsdlScore suggestion: suggestOpList2) {
+//        for (WebServiceOprScore suggestion: suggestOpList2) {
 //            results.test1.put(suggestion.getOpName(), suggestion);
 //            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
 //            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
 //        }
 //    
-//        workflowOpsOBI.add(new OpWsdl("run", clustalW));
-//        //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
+//        workflowOpsOBI.add(new WebServiceOpr("run", clustalW));
+//        //workflowOpsOBI.add(new WebServiceOpr("fetchBatch", wsdbfetch));
 //        desiredOps = "";
-//        suggestOpList2 = sugg2.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
+//        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);        
 //        System.out.println();
 //        System.out.println("\nCase 4\n Workflow has three Operations Added\nBlast.run -> Blast.getResult -> WSDBFetch.FetchBatch -> ClustalW.run\n--------------------------------------------------");
 //        System.out.println();
 //        
-//        for (OpWsdlScore suggestion: suggestOpList2) {
+//        for (WebServiceOprScore suggestion: suggestOpList2) {
 //            results.test1.put(suggestion.getOpName(), suggestion);
 //            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\t" + suggestion.getDmScore() + "\t" + suggestion.getFnScore() + "\t" + suggestion.getPeScore() + "\n");
 //            System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");

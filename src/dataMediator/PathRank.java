@@ -15,8 +15,8 @@ import org.jdom.Namespace;
 
 import parser.DmParser;
 import parser.SawsdlParser;
-import util.OpWsdl;
-import util.OpWsdlPathScore_type;
+import util.WebServiceOpr;
+import util.WebServiceOprScore_type;
 import util.GeometricSeries;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.*;
 
@@ -43,43 +43,43 @@ public class PathRank {
      * @param owl ontology
      * @return
      */
-    public static Map<OpWsdlPathScore_type, OpWsdlPathScore_type> dataMediation(List<OpWsdl> workflowOPs, OpWsdl nextOP, String owlURI) {
+    public static Map<WebServiceOprScore_type, WebServiceOprScore_type> dataMediation(List<WebServiceOpr> workflowOPs, WebServiceOpr nextOP, String owlURI) {
         
         SawsdlParser sp = new SawsdlParser();
         DmParser dmp = new DmParser();
         
-        Map<OpWsdlPathScore_type, OpWsdlPathScore_type> matchPathMap 
-                = new HashMap<OpWsdlPathScore_type, OpWsdlPathScore_type>();
+        Map<WebServiceOprScore_type, WebServiceOprScore_type> matchPathMap 
+                = new HashMap<WebServiceOprScore_type, WebServiceOprScore_type>();
 
         // get all paths of the input of the nextOP
         List<List<Element>> nextOpInPaths 
-                = dmp.getPathsList(sp.getInMsElem(nextOP.getWsdlName(), nextOP.getOpName()));        
+                = dmp.getPathsList(sp.getInMsElem(nextOP.getWsDescriptionDoc(), nextOP.getOperationName()));        
         
-        List<OpWsdlPathScore_type> nextOpInPathScoreList = new ArrayList<OpWsdlPathScore_type>();
+        List<WebServiceOprScore_type> nextOpInPathScoreList = new ArrayList<WebServiceOprScore_type>();
         for (List<Element> inPath : nextOpInPaths) {
-            nextOpInPathScoreList.add(new OpWsdlPathScore_type(nextOP.getOpName(), nextOP.getWsdlName(), inPath, true));
+            nextOpInPathScoreList.add(new WebServiceOprScore_type(nextOP.getOperationName(), nextOP.getWsDescriptionDoc(), inPath, true));
         } // for
-        DebuggingUtils.printPaths(nextOpInPaths,nextOP.getWsdlName(),nextOP.getOpName(),"input");
+        DebuggingUtils.printPaths(nextOpInPaths,nextOP.getWsDescriptionDoc(),nextOP.getOperationName(),"input");
         
         // get all paths of the output of the workflowOPs
-        List<OpWsdlPathScore_type> workflowOutPathScoreList = new ArrayList<OpWsdlPathScore_type>();
+        List<WebServiceOprScore_type> workflowOutPathScoreList = new ArrayList<WebServiceOprScore_type>();
 
         // only get paths of last op of workflowOPs, if do this, need turn off 
         // above section(get all output of workflow)
-        OpWsdl workflowOp = workflowOPs.get(workflowOPs.size() - 1);
+        WebServiceOpr workflowOp = workflowOPs.get(workflowOPs.size() - 1);
         
         List<List<Element>> workflowOpOutPath 
-                = dmp.getPathsList(sp.getOutMsElem(workflowOp.getWsdlName(), workflowOp.getOpName()));
+                = dmp.getPathsList(sp.getOutMsElem(workflowOp.getWsDescriptionDoc(), workflowOp.getOperationName()));
 
-        DebuggingUtils.printPaths(workflowOpOutPath,nextOP.getWsdlName(),nextOP.getOpName(),"output");
+        DebuggingUtils.printPaths(workflowOpOutPath,nextOP.getWsDescriptionDoc(),nextOP.getOperationName(),"output");
 
         for (List<Element> outPath : workflowOpOutPath) {
-            workflowOutPathScoreList.add(new OpWsdlPathScore_type(workflowOp.getOpName(), workflowOp.getWsdlName(), outPath, false));
+            workflowOutPathScoreList.add(new WebServiceOprScore_type(workflowOp.getOperationName(), workflowOp.getWsDescriptionDoc(), outPath, false));
         } // for
 
         // find matched path for each path of the input of nextOP
-        for (OpWsdlPathScore_type inPathScore : nextOpInPathScoreList) {
-            OpWsdlPathScore_type matchedPath = findMatchPath(workflowOutPathScoreList, inPathScore, owlURI);
+        for (WebServiceOprScore_type inPathScore : nextOpInPathScoreList) {
+            WebServiceOprScore_type matchedPath = findMatchPath(workflowOutPathScoreList, inPathScore, owlURI);
             inPathScore.setScore(matchedPath.getScore());
             matchPathMap.put(inPathScore, matchedPath);
         } // for
@@ -96,9 +96,9 @@ public class PathRank {
      * @param owlFileName
      * @return  matched path with wsdl and score and (isInput or not)
      */
-    private static OpWsdlPathScore_type findMatchPath(List<OpWsdlPathScore_type> pathsList, OpWsdlPathScore_type keyPath, String owlURI) {
+    private static WebServiceOprScore_type findMatchPath(List<WebServiceOprScore_type> pathsList, WebServiceOprScore_type keyPath, String owlURI) {
 
-        for (OpWsdlPathScore_type path : pathsList) {
+        for (WebServiceOprScore_type path : pathsList) {
 
             List<Element> outPath = path.getPath();
             List<Element> inPath  = keyPath.getPath();

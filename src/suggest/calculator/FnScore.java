@@ -8,7 +8,7 @@ import parser.OntologyManager;
 import ontology.similarity.ConceptSimilarity;
 import parser.SawsdlParser;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.*;
-import util.OpWsdl;
+import util.WebServiceOpr;
 import util.Timer;
 
 /**
@@ -28,7 +28,7 @@ public class FnScore
      * @param owlFileName
      * @return
      */
-    public double calculateFnScore(String preferOp, OpWsdl op, String owlFileName)
+    public double calculateFnScore(String preferOp, WebServiceOpr op, String owlFileName)
     {
         double fnScore = 0;
         String owlURI = owlFileName;
@@ -42,13 +42,13 @@ public class FnScore
         }
 
         SawsdlParser sawsdl = new SawsdlParser();
-        String opMr = sawsdl.getOpModelreference(op.getOpName(), op.getWsdlName());
+        String opMr = sawsdl.getOpModelreference(op.getOperationName(), op.getWsDescriptionDoc());
         //user did not give a uri but a normal string, or no annotation(mordelreference) on the operation
         //user's prefered operation name v.s candidate operation's name
         if (!preferOp.startsWith("http://") || opMr == null)
         {
             String tempPreferOp = preferOp;
-            String tempOpName = op.getOpName();
+            String tempOpName = op.getOperationName();
             if (preferOp.startsWith("http://"))
             {
                 OWLClass preferopClass = parser.getConceptClass(preferOp);
@@ -65,7 +65,7 @@ public class FnScore
             }
             //operation name's syntax similarity
             QGramsDistance mc = new QGramsDistance();
-            String t = op.getOpName();
+            String t = op.getOperationName();
             fnScore = penality * mc.getSimilarity(tempPreferOp, tempOpName);
         } else
         {
@@ -78,9 +78,9 @@ public class FnScore
                 if (!opMr.startsWith("http://"))
                 {
                     QGramsDistance mc = new QGramsDistance();
-                    if (preferOp != null && op.getOpName() != null)
+                    if (preferOp != null && op.getOperationName() != null)
                     {
-                        fnScore = mc.getSimilarity(preferOp, op.getOpName());
+                        fnScore = mc.getSimilarity(preferOp, op.getOperationName());
                     } else
                     {
                         fnScore = 0;
@@ -122,7 +122,7 @@ public class FnScore
     {
         Timer.startTimer();
         FnScore test = new FnScore();
-        double score = test.calculateFnScore("http://purl.obolibrary.org/obo/obi.owl#array2string", new OpWsdl("array2string", "wsdl/3/WSConverter.wsdl"), "owl/obi.owl");
+        double score = test.calculateFnScore("http://purl.obolibrary.org/obo/obi.owl#array2string", new WebServiceOpr("array2string", "wsdl/3/WSConverter.wsdl"), "owl/obi.owl");
         System.out.println(score);
         Timer.endTimer();
 

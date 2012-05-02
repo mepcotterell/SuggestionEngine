@@ -1,19 +1,21 @@
 package util;
 
 import java.util.List;
-
 import org.jdom.Element;
 
 /**
- * @author Rui
- *
+ * @author Rui Wang
+ * @author Alok Dhamanaskar
+ * @see LICENSE (MIT style license file).
+ * 
  */
-public class OpWsdlPathScore_type extends OpWsdlScore implements Comparable<OpWsdlScore> {
+public class WebServiceOprScore_type extends WebServiceOprScore implements Comparable<WebServiceOprScore> {
 
     private boolean isInput = false;
     private List<Element> path = null;
     private double isSemSafeMatchOutpath = 0;
     private double isTypeSafeMatchOutpath = 0;
+    
     public static double require = 1;
     public static double unknown = 0.8;
     public static double optional = 0.1;
@@ -147,7 +149,7 @@ public class OpWsdlPathScore_type extends OpWsdlScore implements Comparable<OpWs
      * @param path
      * @param isInput
      */
-    public OpWsdlPathScore_type(String op, String wsdl, List<Element> path, boolean isInput) {
+    public WebServiceOprScore_type(String op, String wsdl, List<Element> path, boolean isInput) {
         //score = -1 means it is not calculated yet
         super(op, wsdl, -1);
         this.isInput = isInput;

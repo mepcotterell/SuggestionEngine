@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import util.OpWsdl;
-import util.OpWsdlPathScore_type;
-import util.OpWsdlScore;
+import util.WebServiceOpr;
+import util.WebServiceOprScore_type;
+import util.WebServiceOprScore;
 
 /**
  * @author Rui Wang
@@ -23,7 +23,7 @@ public class BackwardSuggest {
 	
 	//data mediation result for all candidateOPs: map[candidateOP, mapPath]
 	//mapPath is a map for input of an candidateOP: map [path of the input of candidateOP, matched path in output&globalInput of workflow]
-	private Map<OpWsdl, Map<OpWsdlPathScore_type, OpWsdlPathScore_type>> dmResults = new HashMap<OpWsdl, Map<OpWsdlPathScore_type, OpWsdlPathScore_type>>();
+	private Map<WebServiceOpr, Map<WebServiceOprScore_type, WebServiceOprScore_type>> dmResults = new HashMap<WebServiceOpr, Map<WebServiceOprScore_type, WebServiceOprScore_type>>();
 	
 	
 	/**to get a complete data mediation result
@@ -33,7 +33,7 @@ public class BackwardSuggest {
 	 * matchedOutputPaths has output paths match each input path, isSafeMath(0,1)
 	 * @return the dmResults
 	 */
-	public Map<OpWsdl, Map<OpWsdlPathScore_type, OpWsdlPathScore_type>> getDmResults() {
+	public Map<WebServiceOpr, Map<WebServiceOprScore_type, WebServiceOprScore_type>> getDmResults() {
 		return dmResults;
 	}	
 
@@ -46,29 +46,29 @@ public class BackwardSuggest {
 	 * @param candidateOPs
 	 * @return
 	 */
-	public List<OpWsdlScore> getSuggestServices(List<OpWsdl> workflowOPs,
-			List<OpWsdl> candidateOPs, String preferOp, String owlFileName, String initState) {
+	public List<WebServiceOprScore> getSuggestServices(List<WebServiceOpr> workflowOPs,
+			List<WebServiceOpr> candidateOPs, String preferOp, String owlFileName, String initState) {
 		//initState may have to adjust, one initState for every candidate op?
 		
 		if (workflowOPs == null || candidateOPs ==null){
 			return null;
 		}
 		
-		List<OpWsdlScore> suggestionList = new ArrayList<OpWsdlScore>();
+		List<WebServiceOprScore> suggestionList = new ArrayList<WebServiceOprScore>();
 
 		//reuse some of forward method
 		ForwardSuggest suggest = new ForwardSuggest();
 		
 		//each candate op is a one op process in forwardsuggest, first op of workflow is candidate op in forwardsuggest
-		List<OpWsdl> candidateForward = new ArrayList<OpWsdl>();
+		List<WebServiceOpr> candidateForward = new ArrayList<WebServiceOpr>();
 			candidateForward.add(workflowOPs.get(0));
-		for (OpWsdl op : candidateOPs){
-			List<OpWsdl> processForward = new ArrayList<OpWsdl>();
+		for (WebServiceOpr op : candidateOPs){
+			List<WebServiceOpr> processForward = new ArrayList<WebServiceOpr>();
 			processForward.add(op);
-			List<OpWsdlScore> oneSuggestionList = new ArrayList<OpWsdlScore>();			
+			List<WebServiceOprScore> oneSuggestionList = new ArrayList<WebServiceOprScore>();			
 			
-			oneSuggestionList = suggest.getSuggestServices(processForward, candidateForward, preferOp, owlFileName, initState);
-			OpWsdlScore result = new OpWsdlScore(op.getOpName(), op.getWsdlName(), oneSuggestionList.get(0).getScore());
+			oneSuggestionList = suggest.suggestNextService(processForward, candidateForward, preferOp, owlFileName, initState);
+			WebServiceOprScore result = new WebServiceOprScore(op.getOperationName(), op.getWsDescriptionDoc(), oneSuggestionList.get(0).getScore());
 			suggestionList.add(result);
 			
 			//update data mediation results
@@ -83,67 +83,58 @@ public class BackwardSuggest {
 		
 		return suggestionList;
 	}
-	
-	/**
-	 * given 2 owl files, one to annotate operation, one to annotate input/output
-	 * given operations in current workflow, all candidated operations return a
-	 * list of suggested operations and their rank score, 
-	 * 
-	 * @param workflowOPs
-	 * @param candidateOPs
-	 * @param preferOp
-	 * @param opOwlFileName
-	 * @param msgOwlFileName
-	 * @param initState
-	 * @return
-	 */
-	public List<OpWsdlScore> getSuggestServices2owl(List<OpWsdl> workflowOPs,
-			List<OpWsdl> candidateOPs, String preferOp, String opOwlFileName, String msgOwlFileName, String initState) {
-		//initState may have to adjust, one initState for every candidate op?
-		
-		if (workflowOPs == null || candidateOPs ==null){
-			return null;
-		}
-		
-		List<OpWsdlScore> suggestionList = new ArrayList<OpWsdlScore>();
-
-		//reuse some of forward method
-		ForwardSuggest suggest = new ForwardSuggest();
-		
-		//each candate op is a one op process in forwardsuggest, first op of workflow is candidate op in forwardsuggest
-		List<OpWsdl> candidateForward = new ArrayList<OpWsdl>();
-			candidateForward.add(workflowOPs.get(0));
-		for (OpWsdl op : candidateOPs){
-			List<OpWsdl> processForward = new ArrayList<OpWsdl>();
-			processForward.add(op);
-			List<OpWsdlScore> oneSuggestionList = new ArrayList<OpWsdlScore>();			
-			
-			oneSuggestionList = suggest.getSuggestServicesWith2owl(processForward, candidateForward, preferOp, opOwlFileName, msgOwlFileName, initState);
-			OpWsdlScore result = new OpWsdlScore(op.getOpName(), op.getWsdlName(), oneSuggestionList.get(0).getScore());
-			suggestionList.add(result);
-			
-			//update data mediation results
-			dmResults.putAll( suggest.getDmResults());
-		}
-		
-		Collections.sort(suggestionList, Collections.reverseOrder());
-//		if (suggestionList.size() > maxSuggest) {
-//			suggestionList = suggestionList.subList(0, maxSuggest);
-//
+//	
+//	/**
+//	 * given 2 owl files, one to annotate operation, one to annotate input/output
+//	 * given operations in current workflow, all candidated operations return a
+//	 * list of suggested operations and their rank score, 
+//	 * 
+//	 * @param workflowOPs
+//	 * @param candidateOPs
+//	 * @param preferOp
+//	 * @param opOwlFileName
+//	 * @param msgOwlFileName
+//	 * @param initState
+//	 * @return
+//	 */
+//	public List<WebServiceOprScore> getSuggestServices2owl(List<WebServiceOpr> workflowOPs,
+//			List<WebServiceOpr> candidateOPs, String preferOp, String opOwlFileName, String msgOwlFileName, String initState) {
+//		//initState may have to adjust, one initState for every candidate op?
+//		
+//		if (workflowOPs == null || candidateOPs ==null){
+//			return null;
 //		}
-		
-		return suggestionList;
-	}
+//		
+//		List<WebServiceOprScore> suggestionList = new ArrayList<WebServiceOprScore>();
+//
+//		//reuse some of forward method
+//		ForwardSuggest suggest = new ForwardSuggest();
+//		
+//		//each candate op is a one op process in forwardsuggest, first op of workflow is candidate op in forwardsuggest
+//		List<WebServiceOpr> candidateForward = new ArrayList<WebServiceOpr>();
+//			candidateForward.add(workflowOPs.get(0));
+//		for (WebServiceOpr op : candidateOPs){
+//			List<WebServiceOpr> processForward = new ArrayList<WebServiceOpr>();
+//			processForward.add(op);
+//			List<WebServiceOprScore> oneSuggestionList = new ArrayList<WebServiceOprScore>();			
+//			
+//			oneSuggestionList = suggest.getSuggestServicesWith2owl(processForward, candidateForward, preferOp, opOwlFileName, msgOwlFileName, initState);
+//			WebServiceOprScore result = new WebServiceOprScore(op.getOperationName(), op.getWsDescriptionDoc(), oneSuggestionList.get(0).getScore());
+//			suggestionList.add(result);
+//			
+//			//update data mediation results
+//			dmResults.putAll( suggest.getDmResults());
+//		}
+//		
+//		Collections.sort(suggestionList, Collections.reverseOrder());
+////		if (suggestionList.size() > maxSuggest) {
+////			suggestionList = suggestionList.subList(0, maxSuggest);
+////
+////		}
+//		
+//		return suggestionList;
+//	}
 	
-	/**
-	 * 
-	 */
-	public BackwardSuggest() {
-	}
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 
 	}

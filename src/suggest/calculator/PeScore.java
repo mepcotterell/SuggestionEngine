@@ -9,7 +9,7 @@ import java.util.List;
 import parser.WsdlSparser;
 import processMediator.pe.KBMS;
 
-import util.OpWsdl;
+import util.WebServiceOpr;
 import util.Timer;
 
 /**
@@ -32,16 +32,16 @@ public class PeScore {
 	 * @param candidateOP    candidate operation, if no precondition, score=0
 	 * @return
 	 */
-	public double calculatePeScore(String initState, List<OpWsdl> workflowOPs,
-			OpWsdl candidateOP) {
+	public double calculatePeScore(String initState, List<WebServiceOpr> workflowOPs,
+			WebServiceOpr candidateOP) {
 		
 		if (workflowOPs == null || candidateOP == null ){
 		return 0;	
 		}
 		
 		WsdlSparser wsdls = new WsdlSparser();
-		String precondition = wsdls.getOpPrecondition(candidateOP.getOpName(),
-				candidateOP.getWsdlName());
+		String precondition = wsdls.getOpPrecondition(candidateOP.getOperationName(),
+				candidateOP.getWsDescriptionDoc());
 		
 		if (precondition == null)
 			return 0;
@@ -59,15 +59,15 @@ public class PeScore {
 
 		if (workflowOPs != null) {
 			//compute current state for the given workflow
-			for (OpWsdl opW : workflowOPs) {
-				String effect = wsdls.getOpEffect(opW.getOpName(), opW
-						.getWsdlName());
+			for (WebServiceOpr opW : workflowOPs) {
+				String effect = wsdls.getOpEffect(opW.getOperationName(), opW
+						.getWsDescriptionDoc());
 				//we assume state of every step will entail the precondition of succeeding op, so we only warning if not entail
-				String currentPre = wsdls.getOpPrecondition(opW.getOpName(),
-						opW.getWsdlName());
+				String currentPre = wsdls.getOpPrecondition(opW.getOperationName(),
+						opW.getWsDescriptionDoc());
 				if (!state.isEntail(currentPre)) {
 					//strict checking states of current process, can be loosen as only warning without affect pe score
-					System.out.println("Spe score is set to 0: in current process, one state does not entail precondition of succeeding op = " + opW.getOpName());
+					System.out.println("Spe score is set to 0: in current process, one state does not entail precondition of succeeding op = " + opW.getOperationName());
 					return 0;
 				}
 					// if any of op in workflow has no effect,
@@ -102,16 +102,16 @@ public class PeScore {
 		Timer.startTimer();
 		PeScore test = new PeScore();
 		String iniState = "pl/initialState.pl";
-//		OpWsdl cop = new OpWsdl("getIds", "wsdl/2/WSWUBlast.wsdl");
-//		OpWsdl cop = new OpWsdl("array2string", "wsdl/2/WSConverter.wsdl");
-		OpWsdl cop = new OpWsdl("fetchBatch", "wsdl/2/WSDbfetchDoclit.wsdl");
-//		currentProcess.add(new OpWsdl("run", "wsdl/2/clustalw2.wsdl"));
-//		currentProcess.add(new OpWsdl("getResult", "wsdl/2/clustalw2.wsdl"));
+//		WebServiceOpr cop = new WebServiceOpr("getIds", "wsdl/2/WSWUBlast.wsdl");
+//		WebServiceOpr cop = new WebServiceOpr("array2string", "wsdl/2/WSConverter.wsdl");
+		WebServiceOpr cop = new WebServiceOpr("fetchBatch", "wsdl/2/WSDbfetchDoclit.wsdl");
+//		currentProcess.add(new WebServiceOpr("run", "wsdl/2/clustalw2.wsdl"));
+//		currentProcess.add(new WebServiceOpr("getResult", "wsdl/2/clustalw2.wsdl"));
 		
-		List<OpWsdl> ops = new ArrayList<OpWsdl>();
-		ops.add(new OpWsdl("runWUBlast", "wsdl/2/WSWUBlast.wsdl"));
-		ops.add(new OpWsdl("getIds", "wsdl/2/WSWUBlast.wsdl"));
-		ops.add(new OpWsdl("array2string", "wsdl/2/WSConverter.wsdl"));
+		List<WebServiceOpr> ops = new ArrayList<WebServiceOpr>();
+		ops.add(new WebServiceOpr("runWUBlast", "wsdl/2/WSWUBlast.wsdl"));
+		ops.add(new WebServiceOpr("getIds", "wsdl/2/WSWUBlast.wsdl"));
+		ops.add(new WebServiceOpr("array2string", "wsdl/2/WSConverter.wsdl"));
 
 		
 		

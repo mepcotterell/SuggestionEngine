@@ -39,7 +39,7 @@ public class EvUtils {
 	 * @param fileName
 	 * @param notes     print out some notes at the beginning of the file content
 	 */
-	public void printFile (List<OpWsdl> origOps, List<OpWsdlScore> rankedOps, String fileName, String notes){
+	public void printFile (List<WebServiceOpr> origOps, List<WebServiceOprScore> rankedOps, String fileName, String notes){
 		
 		int[] orders = this.getRankOrder(origOps, rankedOps);
 		try {    
@@ -48,7 +48,7 @@ public class EvUtils {
             pw.println("======================================"+ notes+"=====================================================================");   
            
             for (int i=0; i<rankedOps.size(); i++){
-	             pw.println((i+1) + "**" + rankedOps.get(i).getOpName()+"--------------------------"+ rankedOps.get(i).getWsdlName()+"---------------------------"+ rankedOps.get(i).getScore());   
+	             pw.println((i+1) + "**" + rankedOps.get(i).getOperationName()+"--------------------------"+ rankedOps.get(i).getWsDescriptionDoc()+"---------------------------"+ rankedOps.get(i).getScore());   
 
             }	
             for (int j=0; j<orders.length; j++){
@@ -68,11 +68,11 @@ public class EvUtils {
 	 * @param rankedOps
 	 * @return
 	 */
-	public int[] getRankOrder (List<OpWsdl> origOps, List<OpWsdlScore> rankedOps){
+	public int[] getRankOrder (List<WebServiceOpr> origOps, List<WebServiceOprScore> rankedOps){
 		int[] orders = new int[origOps.size()];
 		for(int i=0; i<origOps.size(); i++){
 			for(int j=0; j<rankedOps.size(); j++){
-				if (origOps.get(i).getOpName().equals(rankedOps.get(j).getOpName()) && origOps.get(i).getWsdlName().equals(rankedOps.get(j).getWsdlName())){
+				if (origOps.get(i).getOperationName().equals(rankedOps.get(j).getOperationName()) && origOps.get(i).getWsDescriptionDoc().equals(rankedOps.get(j).getWsDescriptionDoc())){
 					orders[i]=j+1;
 					break;
 				}
