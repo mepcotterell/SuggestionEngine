@@ -59,7 +59,7 @@ public class Test {
         
 //        candidateOpsOBI.add(new OpWsdl("getParameters", wublast));
 //        candidateOpsOBI.add(new OpWsdl("getParameterDetails", wublast));
-//        candidateOpsOBI.add(new OpWsdl("getResult", wublast));
+        candidateOpsOBI.add(new OpWsdl("getResult", wublast));
 //        candidateOpsOBI.add(new OpWsdl("getResultTypes", wublast));
         //candidateOpsOBI.add(new OpWsdl("getStatus", wublast));
 
@@ -95,7 +95,7 @@ public class Test {
 //        candidateOpsOBI.add(new OpWsdl("getResult", clustalW));
 //        candidateOpsOBI.add(new OpWsdl("getResultTypes", clustalW));
 //        candidateOpsOBI.add(new OpWsdl("getStatus", clustalW));
-        candidateOpsOBI.add(new OpWsdl("run", clustalW));        
+//        candidateOpsOBI.add(new OpWsdl("run", clustalW));        
 //
 //        candidateOpsOBI.add(new OpWsdl("getParameters", tcoffee));
 //        candidateOpsOBI.add(new OpWsdl("getParameterDetails", tcoffee));
@@ -119,8 +119,8 @@ public class Test {
 //        candidateOpsOBI.add(new OpWsdl("run", fasta));    
         
         List<OpWsdl> workflowOpsOBI = new ArrayList<OpWsdl>();
-        workflowOpsOBI.add(new OpWsdl("filterByEval", filerSeq));
-        //workflowOpsOBI.add(new OpWsdl("run", wublast));
+        //workflowOpsOBI.add(new OpWsdl("filterByEval", filerSeq));
+        workflowOpsOBI.add(new OpWsdl("run", wublast));
         //workflowOpsOBI.add(new OpWsdl("fetchBatch", wsdbfetch));
         
         System.out.println();
