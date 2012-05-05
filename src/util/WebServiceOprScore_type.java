@@ -16,7 +16,7 @@ public class WebServiceOprScore_type extends WebServiceOprScore implements Compa
     private double isSemSafeMatchOutpath = 0;
     private double isTypeSafeMatchOutpath = 0;
     
-    public static double require = 1;
+    public static  double require = 1;
     public static double unknown = 0.8;
     public static double optional = 0.1;
 
@@ -68,76 +68,54 @@ public class WebServiceOprScore_type extends WebServiceOprScore implements Compa
     public double isRequired() {
         
         double required = this.unknown;
-        
         Element leafElem = path.get(0);
 
         // Check to see if any parent node is optional
-        
         for (int i = 1; i < path.size(); i++) {
-            
             // get a parent element
             Element parent = path.get(i);
-            
+
             if (parent.getAttribute("nillable") != null) {
-            
                 boolean nillable = parent.getAttributeValue("nillable").equals("true");            
-            
-                if (nillable) {
+                if (nillable)
                     return this.optional;
-                } // if
-                
-            } // if
-             
-        } // for
+            }// if ends
+        }// for ends
         
         
-        // Below this line means that all parent nodes are required
-        
+        // All parent Nodes are either Required or not Specified
         if (leafElem.getAttribute("nillable") == null && leafElem.getAttribute("minOccurs") == null) {
             required = this.unknown;
         }
 
 
         if (leafElem.getAttribute("nillable") != null) {
-            
             boolean nillable = leafElem.getAttributeValue("nillable").equals("true");            
             
             if (nillable) {
-                
                 // if the element is nillable then...
                 required = this.optional;
-            
             } else {
-                
                 // if the element isn't nillable then..
                 if (leafElem.getAttribute("minOccurs") != null) { 
-                    
                     // if minOccurs is present
                     if (leafElem.getAttributeValue("minOccurs").equals("0")) {
-                        
                         // if minOccurs = 0 and the element is not nillable
                         required = this.optional;
-                        
                     } else {
-                        
                         // if minOccurs > 0 and the element is not nillable
                         required = this.require;
-                        
                     } // if
                 } else {
-                    
                     // if minOccurs is not present and the element is not nillable
                     required = this.require;
-                    
                 } // if
                 
             } // if
             
         } else {
-            
             // if nillable isn't there at all
             required = this.require;
-            
         } // if
 
         return required;
@@ -156,9 +134,5 @@ public class WebServiceOprScore_type extends WebServiceOprScore implements Compa
         this.path = path;
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-    }
+
 }

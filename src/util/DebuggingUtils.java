@@ -6,6 +6,7 @@ package util;
 
 import java.util.List;
 import java.util.Set;
+import org.jdom.Attribute;
 import org.jdom.Element;
 
 /**
@@ -39,5 +40,18 @@ public class DebuggingUtils
             }
             System.out.println("-----------------------------------------");
         }
+    }
+    
+    public static void printPath(List<Element> Paths)
+    {
+            for ( Element e1 : Paths)        
+            {
+                Attribute name = e1.getAttribute("name");
+                //Attribute nillable = e1.getAttribute("nillable");
+                System.out.print(name.getValue() + "--");
+                //System.out.print(nillable.getValue());
+            }
+            System.out.println();
+
     }
 }

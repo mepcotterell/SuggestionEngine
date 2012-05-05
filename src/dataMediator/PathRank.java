@@ -1,28 +1,16 @@
 
 package dataMediator;
 
-import util.NodeType;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 import ontology.similarity.ConceptSimilarity;
-
 import org.jdom.Element;
 import org.jdom.Namespace;
-
+import org.semanticweb.owlapi.model.OWLClass;
 import parser.DmParser;
-import parser.SawsdlParser;
-import util.WebServiceOpr;
-import util.WebServiceOprScore_type;
-import util.GeometricSeries;
-import uk.ac.shef.wit.simmetrics.similaritymetrics.*;
-
-import org.semanticweb.owlapi.model.*;
 import parser.OntologyManager;
-import util.DebuggingUtils;
+import parser.SawsdlParser;
+import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
+import util.*;
 
 /**
  * @author Rui Wang
@@ -43,40 +31,45 @@ public class PathRank {
      * @param owl ontology
      * @return
      */
-    public static Map<WebServiceOprScore_type, WebServiceOprScore_type> dataMediation(List<WebServiceOpr> workflowOPs, WebServiceOpr nextOP, String owlURI) {
+    public static Map<WebServiceOprScore_type, WebServiceOprScore_type> dataMediation
+                    (List<WebServiceOpr> workflowOPs, WebServiceOpr nextOP, String owlURI) {
         
         SawsdlParser sp = new SawsdlParser();
         DmParser dmp = new DmParser();
+        //TODO : For Rest Support, Parsers for REST WS will have to be called here
         
+        //The MatchedPath Map that would be returned
         Map<WebServiceOprScore_type, WebServiceOprScore_type> matchPathMap 
                 = new HashMap<WebServiceOprScore_type, WebServiceOprScore_type>();
 
-        // get all paths of the input of the nextOP
+         //Get Paths for Input of next Operation--------------------------------
+
+        // get all paths of the input of the nextOP, as a List of list of elements
         List<List<Element>> nextOpInPaths 
                 = dmp.getPathsList(sp.getInMsElem(nextOP.getWsDescriptionDoc(), nextOP.getOperationName()));        
         
+        //Create a list of WebSeviveOprScore_Type, and add each path to it
         List<WebServiceOprScore_type> nextOpInPathScoreList = new ArrayList<WebServiceOprScore_type>();
         for (List<Element> inPath : nextOpInPaths) {
             nextOpInPathScoreList.add(new WebServiceOprScore_type(nextOP.getOperationName(), nextOP.getWsDescriptionDoc(), inPath, true));
         } // for
         DebuggingUtils.printPaths(nextOpInPaths,nextOP.getWsDescriptionDoc(),nextOP.getOperationName(),"input");
         
-        // get all paths of the output of the workflowOPs
-        List<WebServiceOprScore_type> workflowOutPathScoreList = new ArrayList<WebServiceOprScore_type>();
-
-        // only get paths of last op of workflowOPs, if do this, need turn off 
-        // above section(get all output of workflow)
+        //Get Paths for Output of Workflowops-----------------------------------
+        //TODO:FIX Only get paths of last op of workflowOPs, if do this, need turn off 
         WebServiceOpr workflowOp = workflowOPs.get(workflowOPs.size() - 1);
-        
         List<List<Element>> workflowOpOutPath 
                 = dmp.getPathsList(sp.getOutMsElem(workflowOp.getWsDescriptionDoc(), workflowOp.getOperationName()));
-
-        DebuggingUtils.printPaths(workflowOpOutPath,nextOP.getWsDescriptionDoc(),nextOP.getOperationName(),"output");
-
+                
+        // Get ALL the paths (Output-paths) of the output of the ALL the workflowOPs
+        List<WebServiceOprScore_type> workflowOutPathScoreList = new ArrayList<WebServiceOprScore_type>();
         for (List<Element> outPath : workflowOpOutPath) {
             workflowOutPathScoreList.add(new WebServiceOprScore_type(workflowOp.getOperationName(), workflowOp.getWsDescriptionDoc(), outPath, false));
         } // for
-
+        DebuggingUtils.printPaths(workflowOpOutPath,workflowOp.getWsDescriptionDoc(),workflowOp.getOperationName(),"output");
+        
+        //----------------------------------------------------------------------
+        
         // find matched path for each path of the input of nextOP
         for (WebServiceOprScore_type inPathScore : nextOpInPathScoreList) {
             WebServiceOprScore_type matchedPath = findMatchPath(workflowOutPathScoreList, inPathScore, owlURI);
@@ -96,7 +89,8 @@ public class PathRank {
      * @param owlFileName
      * @return  matched path with wsdl and score and (isInput or not)
      */
-    private static WebServiceOprScore_type findMatchPath(List<WebServiceOprScore_type> pathsList, WebServiceOprScore_type keyPath, String owlURI) {
+    private static WebServiceOprScore_type findMatchPath
+            (List<WebServiceOprScore_type> pathsList, WebServiceOprScore_type keyPath, String owlURI) {
 
         for (WebServiceOprScore_type path : pathsList) {
 
@@ -132,7 +126,7 @@ public class PathRank {
         // return the highest score path
         return pathsList.get(0);
         
-    } // findMatchPath
+    }// findMatchPath
 
     /** Compare two nodes in the path.
      * @param outNode
@@ -143,7 +137,6 @@ public class PathRank {
     public static double compare2node (Element outNode, Element inNode, String owlURI, NodeType type) 
     {
         OntologyManager parser = OntologyManager.getInstance(owlURI);
-
         double score = 0.0;
         double scoreSyn = 0.0;
         double scoreSem = 0.0;
@@ -152,14 +145,7 @@ public class PathRank {
         double weightSyn = 0.5;
         double weightSem = 0.5;
         double weightTyp = 0.0;
-  
-        org.jdom.Attribute outName = outNode.getAttribute("name", xsdNS);
-        org.jdom.Attribute outMR = outNode.getAttribute("modelReference", sawsdlNS);
-        
-        org.jdom.Attribute inName = inNode.getAttribute("name", xsdNS);
-        org.jdom.Attribute inMR = inNode.getAttribute("modelReference", sawsdlNS);
-        
-        
+
         // compare modelreference if exist
         if (outNode.getAttribute("modelReference", sawsdlNS) != null && inNode.getAttribute("modelReference", sawsdlNS) != null) {
             
@@ -181,11 +167,8 @@ public class PathRank {
                         weightSyn = 0.1;
                         weightSem = 0.9;
                     } // if
-
                 } // if
-
             } // if
-
         } // if
 
         // compare element's name if exist
@@ -200,16 +183,22 @@ public class PathRank {
                 QGramsDistance mc = new QGramsDistance();
                 scoreSyn = mc.getSimilarity(outNodeName, inNodeName);
             } // if
-
         } else {
             // nonleaf node has no name attribute
         } // if
 
-        if (type == NodeType.LEAF_NODE) {
+        if (type == NodeType.LEAF_NODE){
             
-            weightSyn = 0.2;
-            weightSem = 0.6;
-            weightTyp = 0.2;
+            if (outNode.getAttribute("modelReference", sawsdlNS) != null && inNode.getAttribute("modelReference", sawsdlNS) != null){
+                weightSyn = 0.1;
+                weightSem = 0.7;
+                weightTyp = 0.2;
+            }
+            else{
+                weightSyn = 0.4;
+                weightSem = 0.4;
+                weightTyp = 0.2;
+            }
 
             //compare leaf's type attribute if exist
             if (outNode.getAttribute("type") != null && inNode.getAttribute("type") != null) {
@@ -223,7 +212,6 @@ public class PathRank {
                     //can be more complicated, maybe another class to give score between any two xsd buildin 44 types
                     scoreTyp = 0;
                 } // if 
-
             } else {
                 //if input leaf has no type, 
                 //which implies no need to give value to this input to invoke this op, always correct to invoke this op 
@@ -231,9 +219,7 @@ public class PathRank {
                 //or the type is defined inside the leaf node, but without any element, may only change some attribute, e.g. arrayofstring complextype
                 //since this type distract user's attention from the op has input/output, so we make this score lower than 1
                 scoreTyp = 0.5;
-
             } // if
-
         } // if (type == NodeType.LEAF_NODE)
 
         // weighted sum
