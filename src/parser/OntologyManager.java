@@ -2,24 +2,25 @@ package parser;
 
 import java.io.File;
 import java.io.IOException;
-import static java.lang.System.*;
+import static java.lang.System.out;
 import java.net.URISyntaxException;
 import java.net.URL;
-
 import java.util.*;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-
 import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
 
-/***************************************************************************************
+/**
+ * @author Frank, 
+ * @see LICENSE (MIT style license file).
+ * 
  * This class is used to load OWL files or URL's into memory.  Clients of this class
  * must handle the following classes from the OWLAPI: OWLClass, OWLDataProperty and
  * OWLObjectProperty.
+ * 
  */
 public class OntologyManager {
 
@@ -1166,8 +1167,7 @@ public class OntologyManager {
     /***********************************************************************************
      * Main method for testing.
      * 
-     * @param args
-     *            The command-line arguments.
+     * @param args The command-line arguments.
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {

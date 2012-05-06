@@ -2,129 +2,123 @@ package suggest.calculator;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.semanticweb.owlapi.model.*;
-import parser.OntologyManager;
-
 import ontology.similarity.ConceptSimilarity;
+import org.semanticweb.owlapi.model.OWLClass;
+import parser.OntologyManager;
 import parser.SawsdlParser;
-import uk.ac.shef.wit.simmetrics.similaritymetrics.*;
+import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
 import util.WebServiceOpr;
-import util.Timer;
 
 /**
  * @author Rui Wang 
  * @author Alok Dhamanaskar
- *
+ * @see LICENSE (MIT style license file).
+ * 
+ * Class to calculate FnScore component of Forward/Backward or Bidirectional Suggest
  */
 public class FnScore
 {
-
-    /**given owl file name
-     * given the user prefered operation concept, candidate operation, owl file name, 
-     * return the matching score for the candidate operation v.s prefered operation
-     * preferOp v.s op's name or modelreference (if preferOp starts with http://)
-     * @param preferOp
-     * @param op
-     * @param owlFileName
-     * @return
+    /**
+     * Calculates and return FnScore depending upon how well the desiredFn (keywords/Concept) 
+     * aligns with the objective specification of the WebService Operation passed to it. 
+     * 
+     * @param desiredFn   The desired Functionality entered by the user as a URI of the concept in the Ontology
+     * @param op          The WebService operation for which the FnScore has to be calculated
+     * @param owlFileName URI of the Ontology file
+     * @return            FnScore as double value
      */
-    public double calculateFnScore(String preferOp, WebServiceOpr op, String owlFileName)
+    @SuppressWarnings("LoggerStringConcat")
+    public double calculateFnScore(String desiredFn, WebServiceOpr op, String owlFileName)
     {
         double fnScore = 0;
         String owlURI = owlFileName;
         OntologyManager parser = OntologyManager.getInstance(owlURI);
         //penality for only syntax match
-        double penality = 0.5;
-        if (preferOp == null || op == null)
-        {
-
+        double penality = 0.7;
+        if (desiredFn == null || desiredFn.trim().equals("") || op == null )
             return fnScore;
-        }
 
         SawsdlParser sawsdl = new SawsdlParser();
-        String opMr = sawsdl.getOpModelreference(op.getOperationName(), op.getWsDescriptionDoc());
-        //user did not give a uri but a normal string, or no annotation(mordelreference) on the operation
-        //user's prefered operation name v.s candidate operation's name
-        if (!preferOp.startsWith("http://") || opMr == null)
+        String oprModelRefr = sawsdl.getOpModelreference(op.getOperationName(), op.getWsDescriptionDoc());
+        
+        if(oprModelRefr == null || oprModelRefr.trim().equals(""))
         {
-            String tempPreferOp = preferOp;
-            String tempOpName = op.getOperationName();
-            if (preferOp.startsWith("http://"))
+            //ModelReference Is NOT Present, therefore use OperationName from WSDL
+            String operationName = op.getOperationName();
+            if(!desiredFn.startsWith("http://"))
             {
-                OWLClass preferopClass = parser.getConceptClass(preferOp);
-                tempPreferOp = parser.getClassLabel(preferopClass);
+                //Desired Funcionality is Specified as Key Words
+                QGramsDistance mc = new QGramsDistance();
+                fnScore = penality * mc.getSimilarity(desiredFn, operationName);
             }
-            if (opMr != null)
+            else
             {
-                if (opMr.startsWith("http://") && owlFileName != null)
+                //Desired Functionality is specified as Concept URI
+                OWLClass preferopClass = parser.getConceptClass(desiredFn);
+                QGramsDistance mc = new QGramsDistance();
+                if (preferopClass != null)
+                    fnScore = penality * mc.getSimilarity(parser.getClassLabel(preferopClass), operationName);
+                else
                 {
-                    OWLClass Oprcls = parser.getConceptClass(opMr);
-                    tempOpName = parser.getClassLabel(Oprcls);
-
+                    String errMsg = "The concept URI doesnt seem to exist: "+ desiredFn +" provided as desired functionality ";
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, errMsg);
+                }
+            }    
+        }//if ends
+        else
+        {
+            //ModelReference is specified as a concept in the Ontology
+            if(!desiredFn.startsWith("http://"))
+            {
+                //Desired Funcionality is Specified as Key Words
+                OWLClass MrClass = parser.getConceptClass(oprModelRefr);
+                QGramsDistance mc = new QGramsDistance();
+                if (MrClass != null)
+                {
+                   String label = parser.getClassLabel(MrClass);
+                   fnScore = penality * mc.getSimilarity(desiredFn, label);
+                }
+                else
+                {
+                    String errMsg = "The concept URI doesnt seem to exist: "+ oprModelRefr +" found in "+ op.getWsDescriptionDoc();
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, errMsg);
                 }
             }
-            //operation name's syntax similarity
-            QGramsDistance mc = new QGramsDistance();
-            String t = op.getOperationName();
-            fnScore = penality * mc.getSimilarity(tempPreferOp, tempOpName);
-        } else
-        {
-            //user's prefered operation concept v.s candidate operation's concept annotation
-            if (preferOp.equalsIgnoreCase(opMr))
+            else
             {
-                fnScore = 1;
-            } else
-            {
-                if (!opMr.startsWith("http://"))
+                //Desired Functionality is specified as Concept URI
+                if (oprModelRefr.equalsIgnoreCase(desiredFn))
+                    return 1;
+                OWLClass MrClass = parser.getConceptClass(oprModelRefr);
+                OWLClass preferopClass = parser.getConceptClass(desiredFn);
+                if( MrClass != null && preferopClass != null)
+                    fnScore = ConceptSimilarity.getConceptSimScore(MrClass, preferopClass, owlURI);
+                else
                 {
-                    QGramsDistance mc = new QGramsDistance();
-                    if (preferOp != null && op.getOperationName() != null)
-                    {
-                        fnScore = mc.getSimilarity(preferOp, op.getOperationName());
-                    } else
-                    {
-                        fnScore = 0;
-                    }
-                } else if (owlFileName != null)
-                {
-
-                    OWLClass cls1 = parser.getConceptClass(preferOp);
-                    OWLClass cls2 = parser.getConceptClass(opMr);
-
-
-                    if (cls1 == null || cls2 == null)
-                    {
-                        fnScore = 0;
-                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "One of the concepts doesn''t seem to exist. cls1 = {0} ({1}), cls2 = {2} ({3})", new Object[]
-                                {
-                                    cls1, preferOp, cls2, opMr
-                                });
-                    } // if
-
-                    fnScore = ConceptSimilarity.getConceptSimScore(cls1, cls2, owlURI);
-
-                    //fnScore = cs.getConceptSimScore(opMr, preferOp, owlFileName);
+                    String errMsg = "One of the concepts doesnt seem to exist: "+ oprModelRefr +" found in "+ op.getWsDescriptionDoc() +" or "+ desiredFn;
+                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, errMsg);
                 }
-            }
-        }
+             }
+        }       
         return fnScore;
-
-    }
-
-    /**
-     * constructor
-     */
-    public FnScore()
-    {
-    }
+    }// calculateFnScore ends
 
     public static void main(String[] args)
     {
-        Timer.startTimer();
-        FnScore test = new FnScore();
-        double score = test.calculateFnScore("http://purl.obolibrary.org/obo/obi.owl#array2string", new WebServiceOpr("array2string", "wsdl/3/WSConverter.wsdl"), "owl/obi.owl");
-        System.out.println(score);
-        Timer.endTimer();
+        //Test Code
+        String desiredFn = "pairwise sequence alignment";
+        String OWLURI = "owl/webService.owl";
+        WebServiceOpr opr = new WebServiceOpr("run", "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl");
+        
+        FnScore fn =  new FnScore();
+        System.out.println("FnScore =  "+fn.calculateFnScore(desiredFn, opr, OWLURI));
 
+        desiredFn = "http://purl.obolibrary.org/obo/OBI_0200081e";
+        System.out.println("\n\nFnScore =  "+fn.calculateFnScore(desiredFn, opr, OWLURI));
+        
+        opr = new WebServiceOpr("getFormatStyles", "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/WSDbfetch.sawsdl");
+        desiredFn = "http://purl.obolibrary.org/obo/OBI_0200081";
+        System.out.println("\n\nFnScore =  "+fn.calculateFnScore(desiredFn, opr, OWLURI));        
+        
     }
 }

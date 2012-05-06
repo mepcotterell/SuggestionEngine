@@ -5,8 +5,9 @@ import org.jdom.Element;
 
 /**
  * @author Rui Wang
- * @author Alok Dhamanaskar
  * @see LICENSE (MIT style license file).
+ * 
+ * A class that represents Input/Output paths, score for that path, Web service and operation it belongs to. 
  * 
  */
 public class WebServiceOprScore_type extends WebServiceOprScore implements Comparable<WebServiceOprScore> {
@@ -21,49 +22,54 @@ public class WebServiceOprScore_type extends WebServiceOprScore implements Compa
     public static double optional = 0.1;
 
     /**
-     * @param isSemSafeMatchOutpath the isSemSafeMatchOutpath to set
+     * Setter for isSemSafeMatchOutpath
+     * @param isSemSafeMatchOutpath 
      */
     public void setIsSemSafeMatchOutpath(double isSemSafeMatchOutpath) {
         this.isSemSafeMatchOutpath = isSemSafeMatchOutpath;
     }
 
-    /**getter if this path is semantic safe as an output path to map to the input
-     * @return the isSemSafeMatchOutpath
+    /**Getter for isSemSafeMatchOutpath
+     * @return isSemSafeMatchOutpath
      */
     public double getIsSemSafeMatchOutpath() {
         return isSemSafeMatchOutpath;
     }
 
     /**
-     * @param isTypeSafeMatchOutpath the isTypeSafeMatchOutpath to set
+     * Setter for setIsTypeSafeMatchOutpath
+     * @param setIsTypeSafeMatchOutpath t
      */
     public void setIsTypeSafeMatchOutpath(double isTypeSafeMatchOutpath) {
         this.isTypeSafeMatchOutpath = isTypeSafeMatchOutpath;
     }
 
-    /**getter if this path is xsd type safe as an output path to map to the input
-     * @return the isTypeSafeMatchOutpath
+    /**Getter for isTypeSafeMatchOutpath
+     * @return isTypeSafeMatchOutpath
      */
     public double getIsTypeSafeMatchOutpath() {
         return isTypeSafeMatchOutpath;
     }
 
     /**
-     * @return the isInput
+     * Returns a boolean value, true if it is input path and false if output path
+     * @return isInput as a Boolean value
      */
     public boolean isInput() {
         return isInput;
     }
 
     /**
-     * @return the path
+     * Returns the path as List<Element>
+     * @return path
      */
     public List<Element> getPath() {
         return path;
     }
 
-    /**check whether the leaf of the path is required input
-     * @return  1: required, 0.2: not required, 0.8: unknown
+    /**
+     * Checks if the path is required or not
+     * @return  Double value 1 for required, 0.2 for not required and 0.8: unknown
      */
     public double isRequired() {
         
@@ -122,10 +128,12 @@ public class WebServiceOprScore_type extends WebServiceOprScore implements Compa
     }
 
     /**
-     * @param op
-     * @param wsdl
-     * @param path
-     * @param isInput
+     * Constructor to create a WebServiceOprScore_type which would basically denote an input/output path
+     * 
+     * @param op Operation Name
+     * @param wsdl Web service Description document location
+     * @param path Input / output path as a list of elements
+     * @param isInput Boolean value that determines if its an input / output path
      */
     public WebServiceOprScore_type(String op, String wsdl, List<Element> path, boolean isInput) {
         //score = -1 means it is not calculated yet
@@ -134,5 +142,4 @@ public class WebServiceOprScore_type extends WebServiceOprScore implements Compa
         this.path = path;
     }
 
-
-}
+}//class ends

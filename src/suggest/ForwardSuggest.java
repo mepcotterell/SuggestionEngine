@@ -169,7 +169,6 @@ public class ForwardSuggest {
         OntologyManager o = OntologyManager.getInstance(owlURI);
 
         //Adjusting weight, if Pre-Conditions and Effect is considered, they have to be re-weighted
-        
         if (preferOp == null) {
             weightDm = 1;
             weightPe = 0;
@@ -215,7 +214,6 @@ public class ForwardSuggest {
             suggestionList.add(opScore);
 
         }// For ends
-
         Collections.sort(suggestionList, Collections.reverseOrder());
 
         return suggestionList;

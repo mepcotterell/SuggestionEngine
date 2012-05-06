@@ -14,6 +14,7 @@ import util.*;
 
 /**
  * @author Rui Wang
+ * @see LICENSE (MIT style license file).
  * 
  */
 public class PathRank {
@@ -22,14 +23,15 @@ public class PathRank {
     private static Namespace wsdlNS = Namespace.getNamespace("wsdl", "http://schemas.xmlsoap.org/wsdl/");
     private static Namespace sawsdlNS = Namespace.getNamespace("sawsdl", "http://www.w3.org/ns/sawsdl");
 
-    /** Given an ontology, operations in current workflow and next operation to 
-     *  be added, return a map [path of the input of nextOP, matched path in 
-     *  output & globalInput of the workflow]
+    /** 
+     * Given an ontology, operations in current workflow and next operation to be added, 
+     * returns a map [InputPathsOfCandidateOperation,MatchedPathofWorkflowOps]
      * 
-     * @param workflowOPs
-     * @param nextOP
-     * @param owl ontology
-     * @return
+     * @param workflowOPs List of operations Currently in the Workflow
+     * @param candidateOP The Candidate operation for which Data mediation sub-score has to be calculated
+     * @param owlFileName The location of the Ontology file (Can be Relative location
+     *                      in the system or a URI of the web)
+     * @return a map [InputPathsOfCandidateOperation,MatchedPathofWorkflowOps]
      */
     public static Map<WebServiceOprScore_type, WebServiceOprScore_type> dataMediation
                     (List<WebServiceOpr> workflowOPs, WebServiceOpr nextOP, String owlURI) {
@@ -58,8 +60,8 @@ public class PathRank {
         //Get Paths for Output of Workflowops-----------------------------------
         //TODO:FIX Only get paths of last op of workflowOPs, if do this, need turn off 
         WebServiceOpr workflowOp = workflowOPs.get(workflowOPs.size() - 1);
-        List<List<Element>> workflowOpOutPath 
-                = dmp.getPathsList(sp.getOutMsElem(workflowOp.getWsDescriptionDoc(), workflowOp.getOperationName()));
+        Element opMSG = sp.getOutMsElem(workflowOp.getWsDescriptionDoc(), workflowOp.getOperationName());
+        List<List<Element>> workflowOpOutPath = dmp.getPathsList(opMSG);
                 
         // Get ALL the paths (Output-paths) of the output of the ALL the workflowOPs
         List<WebServiceOprScore_type> workflowOutPathScoreList = new ArrayList<WebServiceOprScore_type>();

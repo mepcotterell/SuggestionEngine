@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import suggest.BackwardSuggest;
 import suggest.ForwardSuggest;
 import util.WebServiceOpr;
 import util.WebServiceOprScore;
@@ -56,9 +57,9 @@ public class Test {
         
 //        candidateOpsOBI.add(new WebServiceOpr("getParameters", wublast));
 //        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", wublast));
-        candidateOpsOBI.add(new WebServiceOpr("getResult", wublast));
-//        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
-        //candidateOpsOBI.add(new WebServiceOpr("getStatus", wublast));
+        candidateOpsOBI.add(new WebServiceOpr("run", wublast));
+        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
+        candidateOpsOBI.add(new WebServiceOpr("getStatus", wublast));
 
                 
 //        candidateOpsOBI.add(new WebServiceOpr("getParameters", ncbiblast));
@@ -117,7 +118,7 @@ public class Test {
         
         List<WebServiceOpr> workflowOpsOBI = new ArrayList<WebServiceOpr>();
         //workflowOpsOBI.add(new WebServiceOpr("filterByEval", filerSeq));
-        workflowOpsOBI.add(new WebServiceOpr("run", wublast));
+        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
         //workflowOpsOBI.add(new WebServiceOpr("fetchBatch", wsdbfetch));
         
         System.out.println();
@@ -128,10 +129,11 @@ public class Test {
         ForwardSuggest sugg2 = new ForwardSuggest();
         
         
-        //BackwardSuggest suggB = new BackwardSuggest();
-        //List<OpWsdlScore> suggestOpListB = suggB.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+        BackwardSuggest suggB = new BackwardSuggest();
+        List<WebServiceOprScore> suggestOpList2 = suggB.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         
-        List<WebServiceOprScore> suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+        //List<WebServiceOprScore> suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+        
         for (WebServiceOprScore suggestion: suggestOpList2) {
             results.test1.put(suggestion.getOperationName(), suggestion);
             String[] ww = suggestion.getWsDescriptionDoc().split("/");

@@ -1,13 +1,10 @@
-/**
- * 
- */
+
 package suggest;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import util.WebServiceOpr;
 import util.WebServiceOprScore;
 
@@ -81,49 +78,6 @@ public class BidirectionSuggest {
 		return biDmScores;
 	}
 	
-//	/**given two separated workflow fragment, suggest an operation in between them
-//	 * 
-//	 * @param workflowPrefixOPs
-//	 * @param workflowSuffixOPs
-//	 * @param candidateOPs
-//	 * @param preferOp
-//	 * @param opOwlFileName
-//	 * @param msgOwlFileName
-//	 * @param initState
-//	 * @return
-//	 */
-//	public List<WebServiceOprScore> getSuggestServices2owl(List<WebServiceOpr> workflowPrefixOPs, List<WebServiceOpr> workflowSuffixOPs,
-//			List<WebServiceOpr> candidateOPs, String preferOp, String opOwlFileName, String msgOwlFileName, String initState) {
-//		
-//		if (workflowPrefixOPs == null || workflowSuffixOPs==null ||candidateOPs ==null){
-//			return null;
-//		}
-//				
-//		//reuse forward suggest
-//		ForwardSuggest prefixSuggest = new ForwardSuggest();		
-//		List<WebServiceOprScore> prefixDmScores = prefixSuggest.getSuggestServicesWith2owl(workflowPrefixOPs, candidateOPs, preferOp, opOwlFileName, msgOwlFileName, initState);
-//		prefixDmResults = prefixSuggest.getDmResults();
-//		
-//		//reuse backward suggest, to adjust initial state for the suffix, currently null
-//		BackwardSuggest suffixSuggest = new BackwardSuggest();
-//		List<WebServiceOprScore> suffixDmScores = suffixSuggest.getSuggestServices2owl(workflowSuffixOPs, candidateOPs, preferOp, opOwlFileName, msgOwlFileName, null);
-//		suffixDmResults = suffixSuggest.getDmResults();
-//		
-//		//avg forward and backward score
-//		List<WebServiceOprScore> biDmScores = new ArrayList<WebServiceOprScore>();
-//		for(WebServiceOprScore pre: prefixDmScores){
-//			for(WebServiceOprScore suf: suffixDmScores){
-//				if (pre.getOperationName().equals(suf.getOperationName()) && pre.getWsDescriptionDoc().equals(suf.getWsDescriptionDoc())){
-//					WebServiceOprScore biScore = new WebServiceOprScore(pre.getOperationName(), pre.getWsDescriptionDoc(),(pre.getScore()+suf.getScore())*0.5);
-//					biDmScores.add(biScore);
-//					break;
-//				}
-//			}
-//		}
-//		Collections.sort(biDmScores, Collections.reverseOrder());
-//		return biDmScores;
-//	}
-
 	public static void main(String[] args) {
 
 	}
