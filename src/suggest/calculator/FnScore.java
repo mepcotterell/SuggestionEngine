@@ -27,7 +27,6 @@ public class FnScore
      * @param owlFileName URI of the Ontology file
      * @return            FnScore as double value
      */
-    @SuppressWarnings("LoggerStringConcat")
     public double calculateFnScore(String desiredFn, WebServiceOpr op, String owlFileName)
     {
         double fnScore = 0;
@@ -105,7 +104,7 @@ public class FnScore
 
     public static void main(String[] args)
     {
-        //Test Code
+        //Test Code, To test it idependently of Other score
         String desiredFn = "pairwise sequence alignment";
         String OWLURI = "owl/webService.owl";
         WebServiceOpr opr = new WebServiceOpr("run", "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl");

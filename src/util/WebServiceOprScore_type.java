@@ -5,6 +5,7 @@ import org.jdom.Element;
 
 /**
  * @author Rui Wang
+ * @author ALok Dhamanaskar
  * @see LICENSE (MIT style license file).
  * 
  * A class that represents Input/Output paths, score for that path, Web service and operation it belongs to. 
@@ -14,6 +15,7 @@ public class WebServiceOprScore_type extends WebServiceOprScore implements Compa
 
     private boolean isInput = false;
     private List<Element> path = null;
+
     private double isSemSafeMatchOutpath = 0;
     private double isTypeSafeMatchOutpath = 0;
     
@@ -66,7 +68,13 @@ public class WebServiceOprScore_type extends WebServiceOprScore implements Compa
     public List<Element> getPath() {
         return path;
     }
-
+    /**
+     * Returns the path as List<Element>
+     * @return path
+     */
+    public void setPath(List<Element> p) {
+        this.path = p;
+    }
     /**
      * Checks if the path is required or not
      * @return  Double value 1 for required, 0.2 for not required and 0.8: unknown

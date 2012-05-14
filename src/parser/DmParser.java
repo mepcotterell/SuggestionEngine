@@ -507,7 +507,7 @@ public class DmParser {
         //This is a Temporary patch as on some occassions the above code is replicating paths e.g.
         // a-b-c-d; a-c-d; a-d
         //The ollowing code should fix it
-        //TODO: if time permits, else this should work just fine
+        //TODO: Temp FIX, though Works just fine now
         int i = 0;
         List<List<Element>> filteredPathsList = new ArrayList<List<Element>>();        
         Map<Element,Integer> map = new HashMap<Element, Integer>();

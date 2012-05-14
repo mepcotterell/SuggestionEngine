@@ -5,10 +5,7 @@ import parser.OntologyManager;
 import suggest.calculator.DmScore;
 import suggest.calculator.FnScore;
 import suggest.calculator.PeScore;
-import util.IODG;
-import util.WebServiceOprScore_type;
-import util.WebServiceOpr;
-import util.WebServiceOprScore;
+import util.*;
 
 /**
  * @author Rui Wang
@@ -95,16 +92,15 @@ public class ForwardSuggest {
      */
     private double getDmScore(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlFileName) {
         
-        //TODO: Changes for Backward / Bi directional Suggestions
         double dmScore = 0;
-
-        if (workflowOPs != null && candidateOP != null) {
+ 
+       if (workflowOPs != null && candidateOP != null) {
             DmScore ds = new DmScore();
 
             //path-based data mediation
             dmScore = ds.calculatePathDmScore(workflowOPs, candidateOP, owlFileName);
             dmResults.put(candidateOP, ds.getDmResults());
-
+    
             //structure-based data mediation(subtree homeomorphism)
             //dmScore = ds.calculateHomeoDmScore(workflowOPs, candidateOP, owlFileName);
             //homeoDmResults.put(candidateOP, ds.getHomeoDmResult());
@@ -165,8 +161,8 @@ public class ForwardSuggest {
         if (workflowOPs == null || candidateOPs == null) {
             return null;
         }
-
-        OntologyManager o = OntologyManager.getInstance(owlURI);
+        
+        OntologyManager instance = OntologyManager.getInstance(owlURI);
 
         //Adjusting weight, if Pre-Conditions and Effect is considered, they have to be re-weighted
         if (preferOp == null) {
@@ -194,7 +190,7 @@ public class ForwardSuggest {
             double score = 0;
 
             dmScore = this.getDmScore(workflowOPs, op, owlURI);
-
+            
             if (preferOp != null) {
                 fnScore = this.getFnScore(preferOp, op, owlURI);
             }
@@ -211,6 +207,29 @@ public class ForwardSuggest {
             opScore.setFnScore(fnScore);
             opScore.setPeScore(peScore);
             opScore.setExtraInfo(op.getExtraInfo());
+
+            //----------------------------------------------------------------
+            // Finding the matched path
+            Map<WebServiceOprScore_type, WebServiceOprScore_type> matchedPaths = dmResults.get(op);
+            Set<WebServiceOprScore_type> ipPaths = matchedPaths.keySet();
+                    
+            MatchedIOPaths mps = new MatchedIOPaths();
+
+            for (WebServiceOprScore_type a : ipPaths) {
+                
+                mps.setMatchedWsOpr(a.getOperationName());
+                mps.setMatchedoprWsDoc(a.getWsDescriptionDoc());
+                mps.setWsoOpr(matchedPaths.get(a).getOperationName());
+                mps.setWsDoc(matchedPaths.get(a).getWsDescriptionDoc());
+                mps.addMatchedPaths(
+                        a.getPath().get(0).getAttributeValue("name"), 
+                        matchedPaths.get(a).getPath().get(0).getAttributeValue("name"), 
+                        a.getScore()
+                        );
+            }
+            mps.sort();
+            opScore.setMatchedPaths(mps);
+
             suggestionList.add(opScore);
 
         }// For ends
@@ -218,7 +237,6 @@ public class ForwardSuggest {
 
         return suggestionList;
     }
-
 
     public static void main(String[] args) {
         //Test code

@@ -276,7 +276,7 @@ public class SawsdlParser {
 //			
 //			}
 //		} catch (JDOMException e) {
-//			// TODO Auto-generated catch block
+//			
 //			e.printStackTrace();
 //		}
 

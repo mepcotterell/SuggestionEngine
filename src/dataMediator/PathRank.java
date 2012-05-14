@@ -16,6 +16,7 @@ import util.*;
  * @author Rui Wang
  * @see LICENSE (MIT style license file).
  * 
+ * Calculates DmScore and Matched Paths by implementing the PathBased DaataMediation Algorithm
  */
 public class PathRank {
 
@@ -55,20 +56,25 @@ public class PathRank {
         for (List<Element> inPath : nextOpInPaths) {
             nextOpInPathScoreList.add(new WebServiceOprScore_type(nextOP.getOperationName(), nextOP.getWsDescriptionDoc(), inPath, true));
         } // for
-        DebuggingUtils.printPaths(nextOpInPaths,nextOP.getWsDescriptionDoc(),nextOP.getOperationName(),"input");
+        
+       // DebuggingUtils.printPaths(nextOpInPaths,nextOP.getWsDescriptionDoc(),nextOP.getOperationName(),"input");
         
         //Get Paths for Output of Workflowops-----------------------------------
-        //TODO:FIX Only get paths of last op of workflowOPs, if do this, need turn off 
-        WebServiceOpr workflowOp = workflowOPs.get(workflowOPs.size() - 1);
-        Element opMSG = sp.getOutMsElem(workflowOp.getWsDescriptionDoc(), workflowOp.getOperationName());
-        List<List<Element>> workflowOpOutPath = dmp.getPathsList(opMSG);
-                
         // Get ALL the paths (Output-paths) of the output of the ALL the workflowOPs
         List<WebServiceOprScore_type> workflowOutPathScoreList = new ArrayList<WebServiceOprScore_type>();
-        for (List<Element> outPath : workflowOpOutPath) {
-            workflowOutPathScoreList.add(new WebServiceOprScore_type(workflowOp.getOperationName(), workflowOp.getWsDescriptionDoc(), outPath, false));
-        } // for
-        DebuggingUtils.printPaths(workflowOpOutPath,workflowOp.getWsDescriptionDoc(),workflowOp.getOperationName(),"output");
+        
+        for(WebServiceOpr wrkfloOp : workflowOPs)
+        {
+            Element opMSG = sp.getOutMsElem(wrkfloOp.getWsDescriptionDoc(), wrkfloOp.getOperationName());
+            List<List<Element>> workflowOpOutPath = dmp.getPathsList(opMSG);
+            for (List<Element> outPath : workflowOpOutPath) {
+                workflowOutPathScoreList.add(new WebServiceOprScore_type
+                        (wrkfloOp.getOperationName(), wrkfloOp.getWsDescriptionDoc(), outPath, false));
+            } // for
+
+            //DebuggingUtils.printPaths(workflowOpOutPath,wrkfloOp.getWsDescriptionDoc(),wrkfloOp.getOperationName(),"output");
+        }
+        
         
         //----------------------------------------------------------------------
         
@@ -79,17 +85,16 @@ public class PathRank {
             matchPathMap.put(inPathScore, matchedPath);
         } // for
         
-        // here?
-        
         return matchPathMap;
         
     } // dataMediation
 
-    /** Find matched path for the keyPath (patten) from pathsList
-     * @param pathsList
-     * @param keyPath
-     * @param owlFileName
-     * @return  matched path with wsdl and score and (isInput or not)
+    /** Finds the matched output path for the key-path which is an input path for the candidate operation in consideration
+     * @param pathsList List of Output paths to find the match from
+     * @param keyPath The input path to find the match for
+     * @param owlFileName The location of the Ontology file (Can be Relative location
+     *                      in the system or a URI of the web)
+     * @return The matched path with wsdl and score and (isInput or not)
      */
     private static WebServiceOprScore_type findMatchPath
             (List<WebServiceOprScore_type> pathsList, WebServiceOprScore_type keyPath, String owlURI) {
@@ -109,32 +114,31 @@ public class PathRank {
             double[] nodeWeights = gs.getWeights(pathLength);
 
             for (int i = 0; i < pathLength; i++) {
-                if (i == 0) {
+                if (i == 0)
                     outPathScore = outPathScore + nodeWeights[i] * compare2node(outPath.get(i), inPath.get(i), owlURI, NodeType.LEAF_NODE);
-                } else {
+                else 
                     outPathScore = outPathScore + nodeWeights[i] * compare2node(outPath.get(i), inPath.get(i), owlURI, NodeType.NON_LEAF_NODE);
-                } // if
-            } // for
+            } // for ends
             
-            //outPathScore
             path.setScore(outPathScore);
             
-        } // for
+        } // for ends
         
         // sort, higher score first
-        
         Collections.sort(pathsList, Collections.reverseOrder());
-
         // return the highest score path
         return pathsList.get(0);
         
     }// findMatchPath
 
-    /** Compare two nodes in the path.
-     * @param outNode
-     * @param inNode
-     * @param owlFileName
-     * @return
+    /** Returns the score computed by comparing two nodes in the path. The scoring mechanism 
+     * calculates Semantic match score, syntactic match score and type match score for leaf nodes
+     * 
+     * @param outNode A node in the output path being compared
+     * @param inNode A node in the input path being compared
+     * @param owlFileName The location of the Ontology file (Can be Relative location
+     *                      in the system or a URI of the web)
+     * @return score as a double value
      */
     public static double compare2node (Element outNode, Element inNode, String owlURI, NodeType type) 
     {
@@ -148,30 +152,27 @@ public class PathRank {
         double weightSem = 0.5;
         double weightTyp = 0.0;
 
-        // compare modelreference if exist
+        // Compare modelreference if exist
         if (outNode.getAttribute("modelReference", sawsdlNS) != null && inNode.getAttribute("modelReference", sawsdlNS) != null) {
             
             String outNodeMF = outNode.getAttributeValue("modelReference", sawsdlNS);
             String inNodeMF = inNode.getAttributeValue("modelReference", sawsdlNS);
-
             OWLClass inConceptClass = parser.getConceptClass(inNodeMF);
             OWLClass outConceptClass = parser.getConceptClass(outNodeMF);
 
             if (owlURI != null) {
-
                if (inConceptClass == null || outConceptClass == null) {
                     scoreSem = 0.0;
                 } else {
-
                    scoreSem = ConceptSimilarity.getConceptSimScore(inConceptClass, outConceptClass, owlURI);
                     
                    if (type != NodeType.LEAF_NODE){
-                        weightSyn = 0.1;
-                        weightSem = 0.9;
-                    } // if
-                } // if
-            } // if
-        } // if
+                        weightSyn = 0.2;
+                        weightSem = 0.8;
+                    } // if ends
+                } // else ends
+            } // if (owlURI != null) ends
+        } // if (ModelRef != null) ends
 
         // compare element's name if exist
         if (outNode.getAttribute("name") != null && inNode.getAttribute("name") != null) {
@@ -186,7 +187,8 @@ public class PathRank {
                 scoreSyn = mc.getSimilarity(outNodeName, inNodeName);
             } // if
         } else {
-            // nonleaf node has no name attribute
+            // node has no name attribute
+            scoreSyn = 0;
         } // if
 
         if (type == NodeType.LEAF_NODE){
@@ -211,7 +213,8 @@ public class PathRank {
                 if (outNodeType.equalsIgnoreCase(inNodeType)) {
                     scoreTyp = 1;
                 } else {
-                    //can be more complicated, maybe another class to give score between any two xsd buildin 44 types
+                    //TODO: MOre Comprehensive Typing if done would go here
+                    //Can be more complicated, maybe another class to give score between any two xsd buildin 44 types
                     scoreTyp = 0;
                 } // if 
             } else {
@@ -226,9 +229,8 @@ public class PathRank {
 
         // weighted sum
         score = (weightSyn * scoreSyn) + (weightSem * scoreSem) + (weightTyp * scoreTyp);
-
         return score;
-        
+
     } // compare2node
 
 } // PathRank

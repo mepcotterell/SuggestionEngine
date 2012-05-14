@@ -1,14 +1,14 @@
 
 package test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import suggest.BackwardSuggest;
 import suggest.ForwardSuggest;
+import util.DebuggingUtils;
+import util.MatchedIOPaths;
 import util.WebServiceOpr;
 import util.WebServiceOprScore;
+import util.WebServiceOprScore_type;
 
 /**
  *
@@ -29,8 +29,8 @@ public class Test {
     public static String fasta = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/fasta.sawsdl";
     public static String muscle = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/muscle.sawsdl";
     
-    public static String ontology = "http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";
-    //"owl/webService.owl";   
+    public static String ontology = "owl/webService.owl";
+    //"http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";   
     
     public static void main (String[] args) {
         
@@ -57,8 +57,8 @@ public class Test {
         
 //        candidateOpsOBI.add(new WebServiceOpr("getParameters", wublast));
 //        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", wublast));
-        candidateOpsOBI.add(new WebServiceOpr("run", wublast));
-        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
+        candidateOpsOBI.add(new WebServiceOpr("getResult", wublast));
+//        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
         candidateOpsOBI.add(new WebServiceOpr("getStatus", wublast));
 
                 
@@ -118,8 +118,8 @@ public class Test {
         
         List<WebServiceOpr> workflowOpsOBI = new ArrayList<WebServiceOpr>();
         //workflowOpsOBI.add(new WebServiceOpr("filterByEval", filerSeq));
-        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
-        //workflowOpsOBI.add(new WebServiceOpr("fetchBatch", wsdbfetch));
+        workflowOpsOBI.add(new WebServiceOpr("run", wublast));
+        workflowOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
         
         System.out.println();
         System.out.println("--------------------------------------------------");
@@ -130,18 +130,27 @@ public class Test {
         
         
         BackwardSuggest suggB = new BackwardSuggest();
-        List<WebServiceOprScore> suggestOpList2 = suggB.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+        //List<WebServiceOprScore> suggestOpList2 = suggB.getSuggestServices(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         
-        //List<WebServiceOprScore> suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
-        
+        List<WebServiceOprScore> suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+                    System.out.println("\n");
         for (WebServiceOprScore suggestion: suggestOpList2) {
             results.test1.put(suggestion.getOperationName(), suggestion);
             String[] ww = suggestion.getWsDescriptionDoc().split("/");
             String wsName = ww[ww.length -1].replace("sawsdl", "");
 
-            System.out.println(wsName+ "." + suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore() + "\n");
-            //System.out.println(suggestion.getOpName() + "\t" + suggestion.getScore() + "\n");
+            System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
+            System.out.println();
+            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPaths().getMatchedPaths();
+            //System.out.println(mps + "\n");
+            for(MatchedIOPaths.PathMatches mp : mps)
+            {
+                System.out.print("\t" + mp.getIpName() + "-->" + mp.getOpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
+            }
+            System.out.println("\n");
         }
+        
+
         
 //        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
 //        desiredOps = "retrieve sequences";

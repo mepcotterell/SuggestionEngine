@@ -3,6 +3,7 @@ package util;
 
 /**
  * @author Rui Wang
+ * @author Alok Dhamanaskar
  * @see LICENSE (MIT style license file).
  * 
  * A class that represents scores and sub-scores (DataMediation, Functionality and Preconditons & effects)
@@ -21,6 +22,9 @@ public class WebServiceOprScore extends WebServiceOpr implements Comparable<WebS
     private double dmScore;
     private double fnScore;
     private double peScore;
+  
+    private MatchedIOPaths matchedPaths;
+         
 
     /**
      * Returns the score assigned to this operation which is the weighted sum of sub scores
@@ -116,6 +120,22 @@ public class WebServiceOprScore extends WebServiceOpr implements Comparable<WebS
     public void setPeScore(double peScore)
     {
         this.peScore = peScore;
+    }
+
+    /**
+     * Returns the matched paths
+     * @return the matchedPaths
+     */
+    public MatchedIOPaths getMatchedPaths() {
+        return matchedPaths;
+    }
+
+    /**
+     * Sets the matched paths
+     * @param matchedPaths the matchedPaths to set
+     */
+    public void setMatchedPaths(MatchedIOPaths matchedPaths) {
+        this.matchedPaths = matchedPaths;
     }
 
 }

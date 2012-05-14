@@ -26,9 +26,10 @@ public class TestPathBasedDataMediation {
     
     public static void main (String[] args) {
             
-        WebServiceOpr candidateop = new WebServiceOpr("run",clustalW);
+        WebServiceOpr candidateop = new WebServiceOpr("getResult",wublast);
         List<WebServiceOpr> workflowOps = new ArrayList<WebServiceOpr>();
-        workflowOps.add(new WebServiceOpr("filterByEval", filerSeq));
+        workflowOps.add(new WebServiceOpr("run", wublast));
+        //workflowOps.add(new WebServiceOpr("getResultTypes", wublast));
         
         DmScore dm = new DmScore();
         Double Score = dm.calculatePathDmScore(workflowOps, candidateop, ontology);

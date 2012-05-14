@@ -5,7 +5,6 @@ import dataMediator.PathRank;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.jdom.Element;
 import util.WebServiceOpr;
 import util.WebServiceOprScore_type;
 
@@ -13,6 +12,8 @@ import util.WebServiceOprScore_type;
  * @author Rui Wang
  * @author Alok Dhamanaskar
  * @see LICENSE (MIT style license file).
+ * 
+ * Invokes Path Based DataMediation to get the score as well as Matched paths
  */
 public class DmScore {
 
@@ -28,7 +29,6 @@ public class DmScore {
     {
         return dmResults;
     }
-
 
     /** Calculates the DataMediation score for a candidate operation, using the Path-based data-mediation algorithm.
      * Invokes PathRank.dataMediation() that returns the best matched path for every Input 
@@ -67,11 +67,11 @@ public class DmScore {
                 int noOFOptionalPaths = 0;
 
                 for (WebServiceOprScore_type path : candidateOPpaths) {
-                    //TODO: Look into What happens if all the Paths wre unspecified, are these weighted twice
-                    if (path.isRequired() == 1)
-                        noOFRequirePaths = noOFRequirePaths + 1;
-                    else
+                    //TODO: Look into What happens if all the Paths wre unspecified, are these weighted twice ??
+                    if (path.isRequired() < 0.8)
                         noOFOptionalPaths = noOFOptionalPaths + 1;
+                    else
+                        noOFRequirePaths = noOFRequirePaths + 1;
 
                     dmScore = dmScore + path.getScore() * path.isRequired();
                 }
@@ -93,18 +93,7 @@ public class DmScore {
 
     } // calculatePathDmScore
 
-/**
- * 
- * 
- * @param candidateInputPath
- * @return 
- */
-    public List<Element> getMatchedPath(WebServiceOprScore_type candidateInputPath)
-    {
-        //TODO: Suggesting Matched Path goes here, should be good point to start
-        return null;
-    }
-    
+
 //    /**leaf-based data mediation score for a candidate operation
 //     * @param workflowOPs  operations in current workflow, topologic order
 //     * @param candidateOP   one candidate operation
