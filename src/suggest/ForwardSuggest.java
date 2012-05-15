@@ -46,12 +46,7 @@ public class ForwardSuggest {
     }
 
     /**
-     * to get a complete path-based/leaf-base data mediation result for all
-     * candidateOPs:map[candidateOP, mapPath] mapPath is a map for input of an
-     * candidateOP: map <inputPaths, matchedOutputPaths> inputPaths has every
-     * input path and its matching score, isRequired(1,0.6,0.2), isInput(0,1)
-     * matchedOutputPaths has output paths match each input path,
-     * isSafeMath(0,1)
+     * Returns the data mediation result for all candidateOPs.
      *
      * @return the dmResults
      */
@@ -69,7 +64,7 @@ public class ForwardSuggest {
      * @param owlFileName The location of the Ontology file (Can be Relative location in the system or a URI of the web)
      * @return the functionality sub-score as double value
      */
-    private double getFnScore(String preferOp, WebServiceOpr op, String owlFileName) {
+    double getFnScore(String preferOp, WebServiceOpr op, String owlFileName) {
         double fnScore = 0;
         if (preferOp != null && op != null) {
             FnScore fs = new FnScore();
@@ -90,7 +85,7 @@ public class ForwardSuggest {
      * in the system or a URI of the web)
      * @return DataMediation Sub-score
      */
-    private double getDmScore(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlFileName) {
+    double getDmScore(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlFileName) {
         
         double dmScore = 0;
  
@@ -213,22 +208,22 @@ public class ForwardSuggest {
             Map<WebServiceOprScore_type, WebServiceOprScore_type> matchedPaths = dmResults.get(op);
             Set<WebServiceOprScore_type> ipPaths = matchedPaths.keySet();
                     
-            MatchedIOPaths mps = new MatchedIOPaths();
+            MatchedIOPaths mpsIn = new MatchedIOPaths();
 
             for (WebServiceOprScore_type a : ipPaths) {
                 
-                mps.setMatchedWsOpr(a.getOperationName());
-                mps.setMatchedoprWsDoc(a.getWsDescriptionDoc());
-                mps.setWsoOpr(matchedPaths.get(a).getOperationName());
-                mps.setWsDoc(matchedPaths.get(a).getWsDescriptionDoc());
-                mps.addMatchedPaths(
+                mpsIn.setMatchedWsOpr(a.getOperationName());
+                mpsIn.setMatchedoprWsDoc(a.getWsDescriptionDoc());
+                mpsIn.setWsoOpr(matchedPaths.get(a).getOperationName());
+                mpsIn.setWsDoc(matchedPaths.get(a).getWsDescriptionDoc());
+                mpsIn.addMatchedPaths(
                         a.getPath().get(0).getAttributeValue("name"), 
                         matchedPaths.get(a).getPath().get(0).getAttributeValue("name"), 
                         a.getScore()
                         );
             }
-            mps.sort();
-            opScore.setMatchedPaths(mps);
+            mpsIn.sort();
+            opScore.setMatchedPathsIp(mpsIn);
 
             suggestionList.add(opScore);
 
@@ -240,6 +235,6 @@ public class ForwardSuggest {
 
     public static void main(String[] args) {
         //Test code
-        //For Testing this Use test.Test class
+        //For Testing this Use test.TestFwdSuggest 
     }
 }

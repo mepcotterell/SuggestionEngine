@@ -23,7 +23,8 @@ public class WebServiceOprScore extends WebServiceOpr implements Comparable<WebS
     private double fnScore;
     private double peScore;
   
-    private MatchedIOPaths matchedPaths;
+    private MatchedIOPaths matchedPathsIp;
+    private MatchedIOPaths matchedPathsOp;
          
 
     /**
@@ -123,19 +124,39 @@ public class WebServiceOprScore extends WebServiceOpr implements Comparable<WebS
     }
 
     /**
-     * Returns the matched paths
-     * @return the matchedPaths
+     * Returns the matched paths for Input.
+     * Used in ForwardSuggest and BidirectionalSuggest
+     * @return the matchedPathsIp
      */
-    public MatchedIOPaths getMatchedPaths() {
-        return matchedPaths;
+    public MatchedIOPaths getMatchedPathsIp() {
+        return matchedPathsIp;
     }
 
     /**
-     * Sets the matched paths
-     * @param matchedPaths the matchedPaths to set
+     * Sets the matched paths for Input.
+     * Used in ForwardSuggest and BidirectionalSuggest
+     * @param matchedPathsIp the matchedPathsIp to set
      */
-    public void setMatchedPaths(MatchedIOPaths matchedPaths) {
-        this.matchedPaths = matchedPaths;
+    public void setMatchedPathsIp(MatchedIOPaths mIps) {
+        this.matchedPathsIp = mIps;
+    }
+
+    /**
+     * Returns the matched paths for Output.
+     * Used in BackwardSuggest and BidirectionalSuggest
+     * @return the matchedPathsOp
+     */
+    public MatchedIOPaths getMatchedPathsOp() {
+        return matchedPathsOp;
+    }
+
+    /**
+     * Sets the matched paths for Output.
+     * Used in BackwardSuggest and BidirectionalSuggest
+     * @param matchedPathsOp the matchedPathsOp to set
+     */
+    public void setMatchedPathsOp(MatchedIOPaths mOps) {
+        this.matchedPathsOp = mOps;
     }
 
 }

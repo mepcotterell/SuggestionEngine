@@ -67,7 +67,7 @@ public class DmScore {
                 int noOFOptionalPaths = 0;
 
                 for (WebServiceOprScore_type path : candidateOPpaths) {
-                    //TODO: Look into What happens if all the Paths wre unspecified, are these weighted twice ??
+                    // If the path is unknown / required it is counted as REQUIRED else optional
                     if (path.isRequired() < 0.8)
                         noOFOptionalPaths = noOFOptionalPaths + 1;
                     else
@@ -75,7 +75,6 @@ public class DmScore {
 
                     dmScore = dmScore + path.getScore() * path.isRequired();
                 }
-                //Seems like this weighting would work well; to change go to WebServiceOprScore_type.isRequired()
                 dmScore = dmScore / ((WebServiceOprScore_type.require * noOFRequirePaths) + (WebServiceOprScore_type.optional * noOFOptionalPaths));
             } //If ends 
             else 

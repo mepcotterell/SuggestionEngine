@@ -60,22 +60,31 @@ public class PathRank {
        // DebuggingUtils.printPaths(nextOpInPaths,nextOP.getWsDescriptionDoc(),nextOP.getOperationName(),"input");
         
         //Get Paths for Output of Workflowops-----------------------------------
-        // Get ALL the paths (Output-paths) of the output of the ALL the workflowOPs
+        // Uncommennt to consider ALL the paths (Output-paths) of the output of the ALL the workflowOPs
+        //But is giving undesirable results 
+//        List<WebServiceOprScore_type> workflowOutPathScoreList = new ArrayList<WebServiceOprScore_type>();
+//        
+//        for(WebServiceOpr wrkfloOp : workflowOPs)
+//        {
+//            Element opMSG = sp.getOutMsElem(wrkfloOp.getWsDescriptionDoc(), wrkfloOp.getOperationName());
+//            List<List<Element>> workflowOpOutPath = dmp.getPathsList(opMSG);
+//            for (List<Element> outPath : workflowOpOutPath) {
+//                workflowOutPathScoreList.add(new WebServiceOprScore_type
+//                        (wrkfloOp.getOperationName(), wrkfloOp.getWsDescriptionDoc(), outPath, false));
+//            } // for
+//
+//            //DebuggingUtils.printPaths(workflowOpOutPath,wrkfloOp.getWsDescriptionDoc(),wrkfloOp.getOperationName(),"output");
+//        }
+        //----------------------------------------------------------------------
+        WebServiceOpr workflowOp = workflowOPs.get(workflowOPs.size() - 1);
+        Element opMSG = sp.getOutMsElem(workflowOp.getWsDescriptionDoc(), workflowOp.getOperationName());
+        List<List<Element>> workflowOpOutPath = dmp.getPathsList(opMSG);
+                
+        // Get ALL the paths (Output-paths) of the output of the LAST workflowOPs
         List<WebServiceOprScore_type> workflowOutPathScoreList = new ArrayList<WebServiceOprScore_type>();
-        
-        for(WebServiceOpr wrkfloOp : workflowOPs)
-        {
-            Element opMSG = sp.getOutMsElem(wrkfloOp.getWsDescriptionDoc(), wrkfloOp.getOperationName());
-            List<List<Element>> workflowOpOutPath = dmp.getPathsList(opMSG);
-            for (List<Element> outPath : workflowOpOutPath) {
-                workflowOutPathScoreList.add(new WebServiceOprScore_type
-                        (wrkfloOp.getOperationName(), wrkfloOp.getWsDescriptionDoc(), outPath, false));
-            } // for
-
-            //DebuggingUtils.printPaths(workflowOpOutPath,wrkfloOp.getWsDescriptionDoc(),wrkfloOp.getOperationName(),"output");
-        }
-        
-        
+        for (List<Element> outPath : workflowOpOutPath) {
+            workflowOutPathScoreList.add(new WebServiceOprScore_type(workflowOp.getOperationName(), workflowOp.getWsDescriptionDoc(), outPath, false));
+        } // for        
         //----------------------------------------------------------------------
         
         // find matched path for each path of the input of nextOP
