@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package parser;
 
 import java.io.File;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import suggest.BackwardSuggest;
 import suggest.BidirectionSuggest;
 import util.MatchedIOPaths;
 import util.WebServiceOpr;
