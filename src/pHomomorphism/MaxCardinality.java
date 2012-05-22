@@ -11,7 +11,7 @@ import java.util.*;
 public class MaxCardinality {
     
     private List<match> mapping = new ArrayList<match>();
-    private List<match> I = new ArrayList<match>();
+
     public MaxCardinality() {
     }
     
@@ -35,54 +35,72 @@ public class MaxCardinality {
          * doing this would make the algorithm equivalent to Homeomorphism. 
          * Un-comment it to confining it to Homomorphism
          */      
-        //Boolean[][] H2 = H2Closure.closure(G2);
+        Boolean[][] H2 = TransitiveClosure.closure(G2);
         
-        while ( H.getSize() > getMapping().size() )
+        while ( H.getSize() >= this.getMapping().size() )
         {
             combination c = greedyMatch(H1adj, G2, H);
             List<match> map = c.matches;
             List<match> conflicts = c.conflicts;
+                    for(match m : map)
+        {
+            System.out.println(m.g1node + " --> " + m.g2node);
+        }
+            System.out.println();
+            for (match m : conflicts)
+            {
+                if(H.getGood().containsKey(m.g1node))
+                    H.getGood().get(m.g1node).remove(m.g2node);
+    
+                if(H.getGood().containsKey(m.g1node) && H.getGood().get(m.g1node).isEmpty())
+                        H.getGood().remove(m.g1node);
+            }
             
-//            for (match m : conflicts)
-//            {
-//                H.getGood().get(m.g1node).remove(m.g2node);
-//            }
-            
-            setMapping((map.size() > getMapping().size()) ? map : getMapping());
+            setMapping((map.size() >= getMapping().size()) ? map : getMapping());
         }//while
-        
-        
         
     }//calcMaxCardMapping    
 
 
     private combination greedyMatch(H1adjacency H1adj, Boolean[][] H2, HGoodMinus H) {    
 
-        if (H.getSize() == 0)
-        {
-            ArrayList<match> empty = new ArrayList<match>();
-            combination c = new combination(empty, empty);
-            return c;
-        }
 
-         int G1node = 0;
+        ArrayList<match> empty = new ArrayList<match>();
+        combination c = new combination(empty, empty);
+        if (H.getSize() == 0)
+            return c;
+
+         Integer G1node = 0;
+         Integer G2node = 0;
+         boolean flag = false;
          Set<Integer> G1nodes = H.getGood().keySet();
-         for (int i : G1nodes)
+         ArrayList<Integer> G2nodes = new ArrayList<Integer>();
+         for (Integer i : G1nodes)
          {
-             G1node = i; break;
+             G1node = i; 
+             G2nodes = H.getGood().get(G1node);
+             if(!G2nodes.isEmpty())
+             {
+                 G2node = G2nodes.get(0);
+                 flag = true;
+                 break;
+             }//if
+         }//for
+
+         if(flag == false) {
+             return c;
          }
-         ArrayList<Integer> G2nodes = H.getGood().get(G1node);
-         int G2node = G2nodes.get(0);
+             
          
          G2nodes.remove(0);
          H.setMinus(G1node, G2nodes);
          H.setGood(G1node, new ArrayList<Integer>());
          
-        //H = trimMatching(G1node, G2node, H1adj, H2, H);
+        H = TrimMatching.trimPosibleMatches(G1node, G2node, H1adj, H2, H);
          HGoodMinus Ha = new HGoodMinus();
          HGoodMinus Hb = new HGoodMinus();
          
-         for(int v : H.getGood().keySet())
+         for(Integer v : H.getGood().keySet())
          {
              
              if(!H.getGood().get(v).isEmpty())
@@ -135,49 +153,6 @@ public class MaxCardinality {
 
     }//greedyMatch
 
-    private HGoodMinus trimMatching(int G1node, int G2node, H1adjacency H1adj, Boolean[][] H2, HGoodMinus H) {
-
-        
-        HGoodMinus Hnew = new HGoodMinus();
-        Hnew.setGood(H.getGood());
-        Hnew.setMinus(H.getMinus());
-        
-        ArrayList<Integer> H1Prev = H1adj.getPrev().get(G1node);
-        Set<Integer> H_values = H.getGood().keySet();
-        ArrayList<Integer> H1Post = H1adj.getPost().get(G1node);
-        
-        ArrayList<Integer> HnH1Prev = util.intersection(H1Prev,H_values); 
-        ArrayList<Integer> HnH1Post = util.intersection(H1Post,H_values);         
-        
-        for (int i : HnH1Post)
-        {
-            for(int j : H.getGood().get(i))
-                if(H2[j][G2node] == false)
-                {
-                    ArrayList<Integer> temp = H.getGood().get(i);
-                    temp.remove(j);
-//                    Hnew.getGood().get(i).remove(j);
-//                    Hnew.getMinus().get(i).add(j);
-                }
-        }//outer for 
-        
-        for (int i : HnH1Prev) 
-        {
-            for (int j : H.getGood().get(i)) 
-            {
-                if (H2[G2node][j] == false) 
-                {
-                    ArrayList<Integer> temp = H.getGood().get(i);
-                    temp.remove(j);
-//                    Hnew.getGood().get(i).remove(j);
-//                    Hnew.getMinus().get(i).add(j);
-                }
-            }
-        }//outer for
-        
-        return Hnew;
-    }//trimMatching
-
     /**
      * @return the mapping
      */
@@ -189,15 +164,18 @@ public class MaxCardinality {
      * @param mapping the mapping to set
      */
     public void setMapping(List<match> mapping) {
-        this.mapping = mapping;
+        List<match> newMapping = new ArrayList<match>();
+        for (match m : mapping)
+            newMapping.add(new match(m.g1node, m.g2node));
+        this.mapping = newMapping;
     }
     
     public class match
     {
-        int g1node;
-        int g2node;
+        Integer g1node;
+        Integer g2node;
 
-        public match(int G1node, int G2node) {
+        public match(Integer G1node, Integer G2node) {
             g1node = G1node;
             g2node = G2node;
         }
@@ -244,7 +222,7 @@ public class MaxCardinality {
             this.conflicts = conflicts;
         }
     
-    }
+    }//combination
         
     public static void main(String[] args)
     {
@@ -277,13 +255,20 @@ public class MaxCardinality {
             /*6*/{0.2, 0.2, 0.2, 0.15},           
         };
         
-        double threshhold = 0.4;
+        double threshHold = 0.4;
+        
+
         
         MaxCardinality maxCard =  new MaxCardinality();
-        maxCard.calcMaxCardMapping(G1, G2, mat, threshhold);
+        maxCard.calcMaxCardMapping(G1, G2, mat, threshHold);
         List <match> op = maxCard.getMapping();
+        for (match m : op) {
+            System.out.println(m.g1node + " --> " + m.g2node);
+        }
         
     
+        
+        
     }//main
 
     

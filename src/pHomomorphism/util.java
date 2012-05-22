@@ -17,7 +17,8 @@ public class util {
  * @param List2
  * @return 
  */
-    public static ArrayList<Integer> intersection(ArrayList<Integer> List1, ArrayList<Integer> List2) {
+    public static ArrayList<Integer> intersection(ArrayList<Integer> List1, ArrayList<Integer> List2) 
+    {
         ArrayList<Integer> intersection =  new ArrayList<Integer>();
         
         for (int i : List1)
@@ -26,6 +27,23 @@ public class util {
         
         return intersection;
     }
+    
+/**
+ * Returns the intersection of two lists passed to it.
+ * @param List1
+ * @param List2
+ * @return 
+ */        
+    static ArrayList<Integer> intersection(ArrayList<Integer> List1, Set<Integer> List2) 
+    {
+        ArrayList<Integer> intersection =  new ArrayList<Integer>();
+        
+        for (Integer i : List1)
+            if(List2.contains(i))
+                intersection.add(i);
+        
+        return intersection;    
+    }//intersection
     
     public static void main(String[] args)
     {
@@ -45,13 +63,4 @@ public class util {
         
     }
 
-    static ArrayList<Integer> intersection(ArrayList<Integer> List1, Set<Integer> List2) {
-        ArrayList<Integer> intersection =  new ArrayList<Integer>();
-        
-        for (int i : List1)
-            if(List2.contains(i))
-                intersection.add(i);
-        
-        return intersection;    }
-
-}
+}//util

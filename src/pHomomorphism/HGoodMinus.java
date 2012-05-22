@@ -51,7 +51,7 @@ public class HGoodMinus {
 
     public int getSize()
     {
-        return (good.size() > minus.size()) ? good.size() : minus.size();
+        return (good.size() > minus.size()) ?  minus.size() : good.size();
     }
     
     /**
@@ -64,11 +64,16 @@ public class HGoodMinus {
     /**
      * @param good the good to set
      */
-    public void setGood(HashMap<Integer, ArrayList<Integer>> good) {
-        this.good = good;
-    }
+    public void setGood(HashMap<Integer, ArrayList<Integer>> good) 
+    {
+        //Deep Copy
+        HashMap<Integer, ArrayList<Integer>> newHash = new HashMap<Integer, ArrayList<Integer>>();
+        for (Integer i : good.keySet())
+            newHash.put(new Integer(i), new ArrayList<Integer>(good.get(i)));
+        this.good = newHash;
+    }//setGood
     
-    void setGood(int G1node, ArrayList<Integer> arrayList) {
+    void setGood(Integer G1node, ArrayList<Integer> arrayList) {
         this.good.put(G1node, arrayList);
     }
 
@@ -83,8 +88,12 @@ public class HGoodMinus {
      * @param minus the minus to set
      */
     public void setMinus(HashMap<Integer, ArrayList<Integer>> minus) {
-        this.minus = minus;
-    }
+        //Deep Copy
+        HashMap<Integer, ArrayList<Integer>> newHash = new HashMap<Integer, ArrayList<Integer>>();
+        for (Integer i : minus.keySet())
+            newHash.put(new Integer(i), new ArrayList<Integer>(minus.get(i)));
+        this.minus = newHash;
+    }//set Minus
     
     public void setMinus(int G1node, ArrayList<Integer> G2nodes) {
         this.minus.put(G1node, G2nodes);

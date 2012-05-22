@@ -7,7 +7,7 @@ import static java.lang.System.out;
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
  */
-public class H2Closure {
+public class TransitiveClosure {
 
     /**
      * Calculates and returns Transitive closure of a directed Graph using Warshall's algorithm in cubic time
@@ -33,7 +33,7 @@ public class H2Closure {
             }
         }
         return adj;
-    }
+    }//closure
     
     public static void main(String args[])
     {
