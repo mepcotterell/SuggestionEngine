@@ -3,17 +3,17 @@ package pHomomorphism;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import static java.lang.System.out;
 
 /**
  *
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
+ * Class with functions to Store, Retrieve and Manipulate the H list in the pHomorphism algorithm 
  */
 public class HGoodMinus {
     
-    private HashMap<Integer, ArrayList<Integer>> good  = new HashMap<Integer, ArrayList<Integer>>();
-    private HashMap<Integer, ArrayList<Integer>> minus = new HashMap<Integer, ArrayList<Integer>>();
+    private HashMap<Integer, ArrayList<Integer>> good;
+    private HashMap<Integer, ArrayList<Integer>> minus;
 
     /**
      * Constructor that populates the good and Minus HashMaps which together represent
@@ -24,6 +24,9 @@ public class HGoodMinus {
      */
     public HGoodMinus(double[][] mappingScores, double threshHold) {
 
+        good  = new HashMap<Integer, ArrayList<Integer>>();
+        minus = new HashMap<Integer, ArrayList<Integer>>();
+
         // mappingScores.length will give the height (Vertical)
         // mappingScores[0].length will give the length (Horizontal)
         for(int y=0; y < mappingScores.length; y++)
@@ -33,9 +36,7 @@ public class HGoodMinus {
             
             for (int x=0; x < mappingScores[0].length; x++)
             {
-                if(mappingScores[y][x] < threshHold)
-                    tempMinus.add(x);
-                else
+                if(mappingScores[y][x] > threshHold)
                     tempGood.add(x);
             }//Inner for
             
@@ -46,58 +47,80 @@ public class HGoodMinus {
     }//HGoodMinus constructor
 
     public HGoodMinus() {
-        
-    }
+        good  = new HashMap<Integer, ArrayList<Integer>>();
+        minus = new HashMap<Integer, ArrayList<Integer>>();
+    }//constructor
 
-    public int getSize()
-    {
-        return (good.size() > minus.size()) ?  minus.size() : good.size();
-    }
+    /**
+     * Returns the Size of H, in terms of vertices for which possible candidate matches exist
+     * @return size
+     */
+    public int getSize() {
+        int size = 0;
+        for (Integer I : this.good.keySet())
+            if (!this.good.get(I).isEmpty())
+                size++;
+        return size;
+    }//getSize
     
     /**
-     * @return the good
+     * Returns the Good (Candidate) matches for all v in H
+     * @return good as a HashMap<Integer, ArrayList<Integer>> 
      */
     public HashMap<Integer, ArrayList<Integer>> getGood() {
         return good;
-    }
+    }//getGood
 
     /**
-     * @param good the good to set
+     * Sets the Good (Candidate) matches for all v in H
+     * @param good as a HashMap<Integer, ArrayList<Integer>> 
      */
-    public void setGood(HashMap<Integer, ArrayList<Integer>> good) 
-    {
+    public void setGood(HashMap<Integer, ArrayList<Integer>> gd) {
         //Deep Copy
-        HashMap<Integer, ArrayList<Integer>> newHash = new HashMap<Integer, ArrayList<Integer>>();
-        for (Integer i : good.keySet())
-            newHash.put(new Integer(i), new ArrayList<Integer>(good.get(i)));
-        this.good = newHash;
+        HashMap<Integer, ArrayList<Integer>> newGood = new HashMap<Integer, ArrayList<Integer>>();
+        for (Integer i : gd.keySet())
+            newGood.put(new Integer(i), new ArrayList<Integer>(gd.get(i)));
+        this.good = newGood;
     }//setGood
     
-    void setGood(Integer G1node, ArrayList<Integer> arrayList) {
-        this.good.put(G1node, arrayList);
-    }
+    /**
+     * Sets the Good (Candidate) matches for a particular v in H
+     * @param G1node the node in H for which to set the Good matches
+     * @param arrayList Possible matches in G2 to update for v
+     */
+    void setGood(Integer G1node, ArrayList<Integer> G2nodes) {
+        this.good.put(G1node, G2nodes);
+    }//setGood
 
     /**
+     * Returns the NOT Good (Candidate) matches for all v in H
      * @return the minus
      */
     public HashMap<Integer, ArrayList<Integer>> getMinus() {
         return minus;
-    }
+    }//getMinus
 
     /**
-     * @param minus the minus to set
+     * Sets the Not Good (Candidate) matches for all v in H
+     * @param minus the minus to set as a HashMap<Integer, ArrayList<Integer>> 
      */
-    public void setMinus(HashMap<Integer, ArrayList<Integer>> minus) {
+    public void setMinus(HashMap<Integer, ArrayList<Integer>> min) {
         //Deep Copy
-        HashMap<Integer, ArrayList<Integer>> newHash = new HashMap<Integer, ArrayList<Integer>>();
-        for (Integer i : minus.keySet())
-            newHash.put(new Integer(i), new ArrayList<Integer>(minus.get(i)));
-        this.minus = newHash;
+        HashMap<Integer, ArrayList<Integer>> newMinus = new HashMap<Integer, ArrayList<Integer>>();
+        for (Integer i : min.keySet())
+            newMinus.put(new Integer(i), new ArrayList<Integer>(min.get(i)));
+        this.minus = newMinus;
     }//set Minus
     
+    /**
+     * 
+     * Sets the NOT Good (Candidate) matches for a particular v in H
+     * @param G1node the node in H for which to set the NOT Good matches
+     * @param G2nodes Possible matches in G2 to update for v
+     */
     public void setMinus(int G1node, ArrayList<Integer> G2nodes) {
         this.minus.put(G1node, G2nodes);
-    }
+    }//set Minus
     
     public static void main(String args[])
     {
@@ -112,12 +135,8 @@ public class HGoodMinus {
             /*6*/{0.2, 0.2, 0.2, 0.15},           
         };
         
-        HGoodMinus test =  new HGoodMinus(mat, 0.4);
-            out.println("G1\t|--Good--\t|--Minus--");        
-        for(int i = 0; i < test.getSize(); i++)
-        {
-            out.println(i + "\t" + test.getGood().get(i) + "\t\t" + test.getMinus().get(i));
-        }
+        HGoodMinus H =  new HGoodMinus(mat, 0.4);
+        util.printH(H);
      
     }//main
 

@@ -9,6 +9,7 @@ import static java.lang.System.out;
  *
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
+ * The class creates and stores previous and post adjacency lists for a given DAG
  */
 public class H1adjacency {
     
@@ -46,33 +47,37 @@ public class H1adjacency {
     }//H1adjacency
 
     /**
-     * @return the prev
+     * Returns the Prev Adjacency List for all nodes
+     * @return the prev adjacency list
      */
     public HashMap<Integer, ArrayList<Integer>> getPrev() {
         return prev;
-    }
+    }//getPrev
 
     /**
-     * @param prev the prev to set
+     * Sets the Prev Adjacency List for all nodes
+     * @param prev 
      */
     public void setPrev(HashMap<Integer, ArrayList<Integer>> prev) {
         this.prev = prev;
-    }
+    }//setPrev
 
     /**
+     * Returns the post Adjacency List for all nodes
      * @return the post
      */
     public HashMap<Integer, ArrayList<Integer>> getPost() {
         return post;
-    }
+    }//getPost
 
     /**
+     * Sets the post Adjacency List for all nodes
      * @param post the post to set
      */
     public void setPost(HashMap<Integer, ArrayList<Integer>> post) {
         this.post = post;
-    }
-
+    }//setPost
+    
     public static void main(String args[])
     {
         //Test code
@@ -101,4 +106,5 @@ public class H1adjacency {
        out.println("Prev List : " + h1.getPrev());
  
     }//main
+    
 }// H1adjacency

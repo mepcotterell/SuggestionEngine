@@ -1,275 +1,289 @@
-
 package pHomomorphism;
 
 import java.util.*;
+import static java.lang.System.out;
 
 /**
  *
  * @author Alok Dhamanaskar (alokd@uga.edu)
- * @see LICENSE (MIT style license file). 
+ * @see LICENSE (MIT style license file).
  */
 public class MaxCardinality {
-    
-    private List<match> mapping = new ArrayList<match>();
+
+    private List<Match> mapping = new ArrayList<Match>();
+    private final boolean debug = false;
+
+    /**
+     * Returns the p-Hom Mapping between G1 and G2
+     * @return the mapping as a List of Match <node1, node2>
+     */
+    public List<Match> getMapping() {
+        return mapping;
+    }//get Mapping
+
+    /**
+     * Sets the p-Hom Mapping between G1 and G2
+     * @param mapping the mapping as a List of Match <node1, node2>
+     */
+    public void setMapping(List<Match> mapping) {
+        //Deep Copy
+        List<Match> newMapping = new ArrayList<Match>();
+        for (Match m : mapping) {
+            newMapping.add(new Match(m.g1node, m.g2node));
+        }
+        this.mapping = newMapping;
+    }//set Mapping
 
     public MaxCardinality() {
-    }
-    
+    }//constructor
+
     /**
-     * Calculates Mapping from Nodes of G1 to G2.
-     * i.e. The Direction of p-Homomorphism is : G1 p-HOM G2 
-     * When Matching Web Service Input-Outputs : G1 -> IODAG for Input (ofCandidateOp) and  G2 -> IODAG for Output (ofWorkflowOp)
-     * 
+     * Calculates p-Hom Mapping from Nodes of G1 to G2. 
+     * i.e. The Direction of p-Homomorphism is G1 p-HOM G2 When Matching Web Service Input-Outputs :
+     * G1 -> IODAG for Input (ofCandidateOp) and G2 -> IODAG for Output (ofWorkflowOp)
+     *
      * @param G1 Adjacency Matrix Representation of Graph1
      * @param G2 Adjacency Matrix Representation of Graph2
-     * @param mappingScores Matrix that stores Match scores for every node v in G1 to every node v' in graph V2
-     * @param threshHold A threshold value between 0-1, v-v' matches scoring below threshold will not be considered
+     * @param mappingScores Matrix that stores Match scores for every node v in
+     * G1 to every node v' in graph V2
+     * @param threshHold value between 0-1 s.t. v-v' matches scoring above it will only be considered
      */
-    public void calcMaxCardMapping(Boolean[][] G1, Boolean[][] G2, double[][] mappingScores, double threshHold)
+    public void calcMaxCardMapping(Boolean[][] G1, Boolean[][] G2, double[][] mappingScores, double threshHold) 
     {
+        //Create Adjacency Matrix for G1
         H1adjacency H1adj = new H1adjacency(G1);
-        
+        if(debug) out.println("H1 Adjacency List:\n" + "Prev List : " + H1adj.getPrev() + "\nPost List : " + H1adj.getPost() + "\n");
+       
+        //Create List H of Candidate Matches
         HGoodMinus H = new HGoodMinus(mappingScores, threshHold);
+        if(debug) util.printH(H);
         
-        /* Note : Set the Matrix for G2 to represent Closure of the Graph G2. At this point it seems like,
-         * doing this would make the algorithm equivalent to Homeomorphism. 
-         * Un-comment it to confining it to Homomorphism
-         */      
+        /*
+         * Note : Set the Matrix for G2 to represent Closure of the Graph G2. At
+         * this point it seems like, doing this would make the algorithm
+         * equivalent to Homeomorphism. Un-comment it to confining it to
+         * Homomorphism
+         */
         Boolean[][] H2 = TransitiveClosure.closure(G2);
+        if(debug) TransitiveClosure.print(H2);
         
-        while ( H.getSize() >= this.getMapping().size() )
+        while (H.getSize() > this.getMapping().size()) 
         {
-            combination c = greedyMatch(H1adj, G2, H);
-            List<match> map = c.matches;
-            List<match> conflicts = c.conflicts;
-                    for(match m : map)
-        {
-            System.out.println(m.g1node + " --> " + m.g2node);
-        }
-            System.out.println();
-            for (match m : conflicts)
-            {
-                if(H.getGood().containsKey(m.g1node))
-                    H.getGood().get(m.g1node).remove(m.g2node);
-    
-                if(H.getGood().containsKey(m.g1node) && H.getGood().get(m.g1node).isEmpty())
-                        H.getGood().remove(m.g1node);
+            Combination c = greedyMatch(H1adj, H2, H);
+            List<Match> map = c.getMatches();
+            List<Match> conflicts = c.getConflicts();
+
+            //For Debugging
+            if (debug){
+                out.println("Macthes Found:");
+                for (Match m : map) out.println(m.g1node + " --> " + m.g2node);
+                out.println("Conflicts that will be Removed:");
+                for (Match m : conflicts) out.println(m.g1node + " --> " + m.g2node);
             }
-            
-            setMapping((map.size() >= getMapping().size()) ? map : getMapping());
+
+            //Remove Conflicting pairs
+            for (Match m : conflicts) {
+                if (H.getGood().containsKey(m.g1node)) 
+                    H.getGood().get(m.g1node).remove(m.g2node);
+            }
+            setMapping((map.size() > getMapping().size()) ? map : getMapping());
         }//while
-        
+
     }//calcMaxCardMapping    
 
+    private Combination greedyMatch(H1adjacency H1adj, Boolean[][] H2, HGoodMinus H) {
 
-    private combination greedyMatch(H1adjacency H1adj, Boolean[][] H2, HGoodMinus H) {    
-
-
-        ArrayList<match> empty = new ArrayList<match>();
-        combination c = new combination(empty, empty);
+        if (debug) out.println("\n---------------------------------\nEntering GREEDY MATCH\n---------------------------------\n");
+        
         if (H.getSize() == 0)
-            return c;
+            return new Combination();
 
-         Integer G1node = 0;
-         Integer G2node = 0;
-         boolean flag = false;
-         Set<Integer> G1nodes = H.getGood().keySet();
-         ArrayList<Integer> G2nodes = new ArrayList<Integer>();
-         for (Integer i : G1nodes)
-         {
-             G1node = i; 
-             G2nodes = H.getGood().get(G1node);
-             if(!G2nodes.isEmpty())
-             {
-                 G2node = G2nodes.get(0);
-                 flag = true;
-                 break;
-             }//if
-         }//for
+        Integer G1node = 0;
+        Integer G2node = 0;
+        boolean flag = true;
+        
+        //Setting the Candidate Match
+        Set<Integer> G1nodes = H.getGood().keySet();
+        ArrayList<Integer> G2nodes = new ArrayList<Integer>();
+        for (Integer i : G1nodes) {
+            G1node = i;
+            G2nodes = H.getGood().get(G1node);
+            if (!G2nodes.isEmpty()) {
+                G2node = G2nodes.get(0);
+                flag = false;
+                break;
+            }//if
+        }//for
 
-         if(flag == false) {
-             return c;
-         }
-             
-         
-         G2nodes.remove(0);
-         H.setMinus(G1node, G2nodes);
-         H.setGood(G1node, new ArrayList<Integer>());
-         
+        if (flag) return new Combination();
+        
+        if (debug)util.printH("\nMatch Selected " + G1node + "-->" + G2node , H);
+        
+        G2nodes.remove(G2node);
+        H.getMinus().get(G1node).addAll(G2nodes);
+        H.setGood(G1node, new ArrayList<Integer>());
+
+        if (debug) util.printH("H before trimming",H);
+
         H = TrimMatching.trimPosibleMatches(G1node, G2node, H1adj, H2, H);
-         HGoodMinus Ha = new HGoodMinus();
-         HGoodMinus Hb = new HGoodMinus();
-         
-         for(Integer v : H.getGood().keySet())
-         {
-             
-             if(!H.getGood().get(v).isEmpty())
-             {
-                 ArrayList<Integer> t = H.getGood().get(v);
-                 Ha.setGood(v,t);
-                 Ha.setMinus(v, new ArrayList<Integer>());
-             }
-             if(!H.getMinus().get(v).isEmpty())
-             {
-                 ArrayList<Integer> t = H.getMinus().get(v);
-                 Hb.setGood(v,t);
-                 Hb.setMinus(v, new ArrayList<Integer>());
-             }               
-         }//for
-                  
-        combination mappingA = greedyMatch(H1adj, H2, Ha);
-        combination mappingB = greedyMatch(H1adj, H2, Hb);
-        combination mappingOut = new combination();
-                 
-         int mapAsize = (mappingA.getMatches().isEmpty()) ? 0 : mappingA.getMatches().size();
-         int mapBsize = (mappingB.getMatches().isEmpty()) ? 0 : mappingB.getMatches().size();
-         
-         int conAsize = (mappingA.getConflicts().isEmpty()) ? 0 : mappingA.getConflicts().size();
-         int conBsize = (mappingB.getConflicts().isEmpty()) ? 0 : mappingB.getConflicts().size();
+        
+        if (debug) util.printH("H After trimming ",H);
+        
+        HGoodMinus Ha = new HGoodMinus();
+        HGoodMinus Hb = new HGoodMinus();
 
-         if(mapAsize + 1 > mapBsize)
-         {
-             match m = new match (G1node,G2node);
-             mappingA.matches.add(m);
-             mappingOut.setMatches(mappingA.getMatches());
-         }
-         else
-         {
-             mappingOut.setMatches(mappingB.getMatches());
-         }
-         
-         if(conAsize > conBsize + 1)
-         {
-             mappingOut.setConflicts(mappingA.getConflicts());         
-         }
-         else
-         {
-             match m = new match (G1node,G2node);
-             mappingB.conflicts.add(m);
-             mappingOut.setConflicts(mappingB.getConflicts());          
-         }
-         
-         return mappingOut;
+        //Splitting H into Ha and Hb
+        for (Integer v : H.getGood().keySet()) {
+
+            if (!H.getGood().get(v).isEmpty()) {
+                ArrayList<Integer> t = H.getGood().get(v);
+                Ha.setGood(v, t);
+                Ha.setMinus(v, new ArrayList<Integer>());
+            }
+            if (!H.getMinus().get(v).isEmpty()) {
+                ArrayList<Integer> t = H.getMinus().get(v);
+                Hb.setGood(v, t);
+                Hb.setMinus(v, new ArrayList<Integer>());
+            }
+        }//for
+
+        //Recursive call
+        Combination mappingA = greedyMatch(H1adj, H2, Ha);
+        Combination mappingB = greedyMatch(H1adj, H2, Hb);
+        Combination mappingOut = new Combination();
+        
+        Match m = new Match(G1node, G2node);
+        mappingA.addAmatch(m);
+        mappingB.addAconflict(m);
+
+        int mapAsize =  mappingA.getMatches().size();
+        int mapBsize =  mappingB.getMatches().size();
+
+        int conAsize =  mappingA.getConflicts().size();
+        int conBsize =  mappingB.getConflicts().size();
+
+        if (mapAsize > mapBsize) {
+            mappingOut.setMatches(mappingA.getMatches());
+        } else {
+            mappingOut.setMatches(mappingB.getMatches());
+        }
+
+        if (conAsize > conBsize) {
+            mappingOut.setConflicts(mappingA.getConflicts());
+        } else {
+            mappingOut.setConflicts(mappingB.getConflicts());
+        }
+        
+        if (debug) out.println("-----------------------------\nExiting Greedy Match\n(-----------------------------");
+        if (debug) util.printMatches(mappingOut);
+        return mappingOut;
 
     }//greedyMatch
 
-    /**
-     * @return the mapping
-     */
-    public List<match> getMapping() {
-        return mapping;
-    }
-
-    /**
-     * @param mapping the mapping to set
-     */
-    public void setMapping(List<match> mapping) {
-        List<match> newMapping = new ArrayList<match>();
-        for (match m : mapping)
-            newMapping.add(new match(m.g1node, m.g2node));
-        this.mapping = newMapping;
-    }
     
-    public class match
-    {
-        Integer g1node;
-        Integer g2node;
-
-        public match(Integer G1node, Integer G2node) {
-            g1node = G1node;
-            g2node = G2node;
-        }
-    }//Match
-    
-    public class combination
-    {
-        private List<match> matches;
-        private List<match> conflicts;
-
-        private combination(ArrayList<match> m, ArrayList<match> c) {
-            this.matches = m;
-            this.conflicts = c;
-        }
-
-        private combination() {
-        }
-
-        /**
-         * @return the matches
-         */
-        public List<match> getMatches() {
-            return matches;
-        }
-
-        /**
-         * @param matches the matches to set
-         */
-        public void setMatches(List<match> matches) {
-            this.matches = matches;
-        }
-
-        /**
-         * @return the conflicts
-         */
-        public List<match> getConflicts() {
-            return conflicts;
-        }
-
-        /**
-         * @param conflicts the conflicts to set
-         */
-        public void setConflicts(List<match> conflicts) {
-            this.conflicts = conflicts;
-        }
-    
-    }//combination
-        
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         //Test code
+        //Test 1
         Boolean[][] G1 = {
-          //   1,     2,     3,     4,     5,     6
-       /*1*/{false, true,  true,  false, false, false},
-       /*2*/{false, false, false, true,  true,  false},
-       /*3*/{false, false, false, false, false, true},
-       /*4*/{false, false, false, false, false, false},            
-       /*5*/{false, false, false, false, false, false},            
-       /*6*/{false, false, false, false, false, false},            
+            //      1,     2,     3,     4,     5,     6
+            /*1*/{false, true,  true,  false, false, false},
+            /*2*/{false, false, false, true,  true,  false},
+            /*3*/{false, false, false, false, false, true},
+            /*4*/{false, false, false, false, false, false},
+            /*5*/{false, false, false, false, false, false},
+            /*6*/{false, false, false, false, false, false}
         };
-         
+
         Boolean[][] G2 = {
-          //   1,     2,     3,     4
-       /*1*/{false, true,  false, true},
-       /*2*/{false, false, true,  false},
-       /*3*/{false, false, false, false},
-       /*4*/{false, false, false, false},
-        };       
-        
+            //     1,     2,     3,     4
+            /*1*/{false, true,  false, true},
+            /*2*/{false, false, true,  false},
+            /*3*/{false, false, false, false},
+            /*4*/{false, false, false, false}
+        };
+
         double[][] mat = {
          //G1\G2-> 1,   2,   3,   4
             /*1*/{0.6, 0.4, 0.3, 0.2},
             /*2*/{0.6, 0.8, 0.3, 0.2},
             /*3*/{0.2, 0.3, 0.2, 0.3},
-            /*4*/{0.4, 0.3, 0.7, 0.4},           
+            /*4*/{0.4, 0.3, 0.7, 0.4},
             /*5*/{0.3, 0.3, 0.3, 0.8},
-            /*6*/{0.2, 0.2, 0.2, 0.15},           
+            /*6*/{0.2, 0.2, 0.2, 0.15}
+        };
+
+        double threshHold = 0.4;
+
+
+        MaxCardinality maxCard = new MaxCardinality();
+        maxCard.calcMaxCardMapping(G1, G2, mat, threshHold);
+        List<Match> op = maxCard.getMapping();
+        out.println("Final Mapping");
+        for (Match m : op) 
+            System.out.println(m.g1node + " --> " + m.g2node);
+        
+        //----------------------------------------------------------------------
+        //Test 2 : Passed
+ 
+        threshHold = 0.55;
+        G1 = new Boolean[][] {
+            {false, true , true , false},
+            {false, false, false, true },
+            {false, false, false, false},
+            {false, false, false, false},    };
+        
+        G2 = new Boolean[][] {
+            {false, true , true},
+            {false, false, false},
+            {false, false, false}          
+    };
+        
+        mat = new double[][]{
+         //G1\G2-> 0,   1,   2, 
+            /*0*/{0.8, 0.5, 0.6},
+            /*1*/{0.5, 0.4, 0.9},
+            /*2*/{0.4, 0.9, 0.5},
+            /*3*/{0.4, 0.3, 0.3},
+        };
+        maxCard.calcMaxCardMapping(G1, G2, mat, threshHold);
+        List<Match> op1 = maxCard.getMapping();
+        out.println("Final Mapping");
+        for (Match m : op1) 
+            System.out.println(m.g1node + " --> " + m.g2node);
+                
+        //----------------------------------------------------------------------
+        //Test 3 : Passed for Different variations of mat
+ 
+        threshHold = 0.6;
+        G1 = new Boolean[][] {
+        //     0,    1,      2,     3,     4
+        /*0*/{false, true , true , false, false},
+        /*1*/{false, false, false, true,  true },
+        /*2*/{false, false, false, false, false},
+        /*3*/{false, false, false, false, false},
+        /*4*/{false, false, false, false, false},
         };
         
-        double threshHold = 0.4;
+        G2 = new Boolean[][] {
+            {false, true , true , false},
+            {false, false, false, true},
+            {false, false, false, false},
+            {false, false, false, false}            
+    };
         
-
-        
-        MaxCardinality maxCard =  new MaxCardinality();
+        mat = new double[][]{
+         //G1\G2-> 0,   1,   2,   3
+            /*0*/{0.9, 0.2, 0.3, 0.2},
+            /*1*/{0.0, 0.8, 0.3, 0.1},
+            /*2*/{0.2, 0.3, 0.2, 0.1},
+            /*3*/{0.2, 0.4, 0.9, 0.3},
+            /*4*/{0.3, 0.5, 0.3, 0.8}
+        };
         maxCard.calcMaxCardMapping(G1, G2, mat, threshHold);
-        List <match> op = maxCard.getMapping();
-        for (match m : op) {
+        List<Match> op2 = maxCard.getMapping();
+        out.println("Final Mapping");
+        for (Match m : op2) 
             System.out.println(m.g1node + " --> " + m.g2node);
-        }
-        
-    
-        
         
     }//main
-
-    
 }//MaxCardinality

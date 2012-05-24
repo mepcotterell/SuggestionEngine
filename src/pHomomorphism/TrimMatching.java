@@ -8,10 +8,20 @@ import java.util.Set;
  *
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
+ * Implements TrimMatching part of the pHomomorphism algorithm that given a match (G1node, G2node)
+ * Removed bad matches from H 
  */
 public class TrimMatching 
 {
-    
+    /**
+     * Removed bad matches from H assuming (G1node, G2node) is a match.
+     * @param G1node Node from Graph G1 matched to G2node
+     * @param G2node Node from Graph G2 matched to G1node
+     * @param H1adj Adjacency List for matrix G1
+     * @param H2 Matrix Representation for Graph G2
+     * @param H List of candidate Matches
+     * @return A trimmed H
+     */
     public static HGoodMinus trimPosibleMatches(Integer G1node, Integer G2node, H1adjacency H1adj, Boolean[][] H2, HGoodMinus H) 
     {
         HGoodMinus Hnew = new HGoodMinus();
@@ -89,7 +99,11 @@ public class TrimMatching
         HGoodMinus H = new HGoodMinus(mat, threshHold);
         Boolean[][] H2 = TransitiveClosure.closure(G2);
         
+        util.printH("Before Trim",H);        
+        
         H = trimPosibleMatches(G1node, G2node, H1adj, H2, H);
+        
+        util.printH("After Trim",H);
         
     }//main
 
