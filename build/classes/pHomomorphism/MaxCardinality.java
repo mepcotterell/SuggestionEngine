@@ -1,4 +1,3 @@
-
 package pHomomorphism;
 
 import java.util.*;
@@ -57,7 +56,7 @@ public class MaxCardinality {
        
         //Create List H of Candidate Matches
         HGoodMinus H = new HGoodMinus(mappingScores, threshHold);
-        if(debug) Util.printH(H);
+        if(debug) util.printH(H);
         
         /*
          * Note : Set the Matrix for G2 to represent Closure of the Graph G2. At
@@ -92,14 +91,6 @@ public class MaxCardinality {
 
     }//calcMaxCardMapping    
 
-    /**
-     * Takes the current matching list as input a calculates p-Hom mapping from G1 to G2
-     * 
-     * @param H1adj Adjacency List for matrix G1
-     * @param H2 Matrix representation for graph G2 
-     * @param H List of candidate Matches
-     * @return The mappings for Matched nodes
-     */
     private Combination greedyMatch(H1adjacency H1adj, Boolean[][] H2, HGoodMinus H) {
 
         if (debug) out.println("\n---------------------------------\nEntering GREEDY MATCH\n---------------------------------\n");
@@ -126,17 +117,17 @@ public class MaxCardinality {
 
         if (flag) return new Combination();
         
-        if (debug)Util.printH("\nMatch Selected " + G1node + "-->" + G2node , H);
+        if (debug)util.printH("\nMatch Selected " + G1node + "-->" + G2node , H);
         
         G2nodes.remove(G2node);
         H.getMinus().get(G1node).addAll(G2nodes);
         H.setGood(G1node, new ArrayList<Integer>());
 
-        if (debug) Util.printH("H before trimming",H);
+        if (debug) util.printH("H before trimming",H);
 
         H = TrimMatching.trimPosibleMatches(G1node, G2node, H1adj, H2, H);
         
-        if (debug) Util.printH("H After trimming ",H);
+        if (debug) util.printH("H After trimming ",H);
         
         HGoodMinus Ha = new HGoodMinus();
         HGoodMinus Hb = new HGoodMinus();
@@ -145,17 +136,12 @@ public class MaxCardinality {
         for (Integer v : H.getGood().keySet()) {
 
             if (!H.getGood().get(v).isEmpty()) {
-                ArrayList<Integer> t = new ArrayList<Integer>();
-                for(Integer i : H.getGood().get(v))
-                    t.add(i);
+                ArrayList<Integer> t = H.getGood().get(v);
                 Ha.setGood(v, t);
                 Ha.setMinus(v, new ArrayList<Integer>());
             }
             if (!H.getMinus().get(v).isEmpty()) {
-
-                ArrayList<Integer> t = new ArrayList<Integer>();
-                for(Integer i : H.getMinus().get(v))
-                    t.add(i);
+                ArrayList<Integer> t = H.getMinus().get(v);
                 Hb.setGood(v, t);
                 Hb.setMinus(v, new ArrayList<Integer>());
             }
@@ -189,7 +175,7 @@ public class MaxCardinality {
         }
         
         if (debug) out.println("-----------------------------\nExiting Greedy Match\n(-----------------------------");
-        if (debug) Util.printMatches(mappingOut);
+        if (debug) util.printMatches(mappingOut);
         return mappingOut;
 
     }//greedyMatch
@@ -230,12 +216,12 @@ public class MaxCardinality {
 
 
         MaxCardinality maxCard = new MaxCardinality();
-//        maxCard.calcMaxCardMapping(G1, G2, mat, threshHold);
-//        List<Match> op = maxCard.getMapping();
-//        out.println("Final Mapping");
-//        for (Match m : op) 
-//            System.out.println(m.g1node + " --> " + m.g2node);
-//        
+        maxCard.calcMaxCardMapping(G1, G2, mat, threshHold);
+        List<Match> op = maxCard.getMapping();
+        out.println("Final Mapping");
+        for (Match m : op) 
+            System.out.println(m.g1node + " --> " + m.g2node);
+        
         //----------------------------------------------------------------------
         //Test 2 : Passed
  
@@ -259,12 +245,12 @@ public class MaxCardinality {
             /*2*/{0.4, 0.9, 0.5},
             /*3*/{0.4, 0.3, 0.3},
         };
-//        maxCard.calcMaxCardMapping(G1, G2, mat, threshHold);
-//        List<Match> op1 = maxCard.getMapping();
-//        out.println("Final Mapping");
-//        for (Match m : op1) 
-//            System.out.println(m.g1node + " --> " + m.g2node);
-//                
+        maxCard.calcMaxCardMapping(G1, G2, mat, threshHold);
+        List<Match> op1 = maxCard.getMapping();
+        out.println("Final Mapping");
+        for (Match m : op1) 
+            System.out.println(m.g1node + " --> " + m.g2node);
+                
         //----------------------------------------------------------------------
         //Test 3 : Passed for Different variations of mat
  
@@ -287,7 +273,7 @@ public class MaxCardinality {
         
         mat = new double[][]{
          //G1\G2-> 0,   1,   2,   3
-            /*0*/{0.9, 0.7, 0.3, 0.2},
+            /*0*/{0.9, 0.2, 0.3, 0.2},
             /*1*/{0.0, 0.8, 0.3, 0.1},
             /*2*/{0.2, 0.3, 0.2, 0.1},
             /*3*/{0.2, 0.4, 0.9, 0.3},

@@ -14,7 +14,7 @@ import parser.MsIODGparser;
 import parser.SawsdlParser;
 
 import util.IODG;
-import util.OpWsdl;
+import util.WebServiceOpr;
 
 import org.semanticweb.owlapi.model.*;
 
@@ -169,17 +169,17 @@ public class TreeHomeomorphism {
      * @param owlURI
      * @return
      */
-    public List<IODG> dm(List<OpWsdl> workflowOPs, OpWsdl candidateOP, String owlURI) {
+    public List<IODG> dm(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlURI) {
         SawsdlParser sp = new SawsdlParser();
-        Element inElem = sp.getInMsElem(candidateOP.getWsdlName(), candidateOP.getOpName());
+        Element inElem = sp.getInMsElem(candidateOP.getWsDescriptionDoc(), candidateOP.getOperationName());
         MsIODGparser mp = new MsIODGparser();
         List<IODG> postorderInNodes = new ArrayList<IODG>();
         postorderInNodes.addAll(mp.getMsPostorderNodeList(inElem, candidateOP));
-        Element globalInElem = sp.getInMsElem(workflowOPs.get(0).getWsdlName(), workflowOPs.get(0).getOpName());
+        Element globalInElem = sp.getInMsElem(workflowOPs.get(0).getWsDescriptionDoc(), workflowOPs.get(0).getOperationName());
         List<IODG> postorderOutNodes = new ArrayList<IODG>();
         postorderOutNodes.addAll(mp.getMsPostorderNodeList(globalInElem, workflowOPs.get(0)));
-        for (OpWsdl op : workflowOPs) {
-            Element tempOutElem = sp.getOutMsElem(op.getWsdlName(), op.getOpName());
+        for (WebServiceOpr op : workflowOPs) {
+            Element tempOutElem = sp.getOutMsElem(op.getWsDescriptionDoc(), op.getOperationName());
             postorderOutNodes.addAll(mp.getMsPostorderNodeList(tempOutElem, op));
 
         }

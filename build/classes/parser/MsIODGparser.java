@@ -13,7 +13,7 @@ import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 
 import util.IODG;
-import util.OpWsdl;
+import util.WebServiceOpr;
 
 /**
  * @author Rui
@@ -29,7 +29,7 @@ public class MsIODGparser {
 	 * @param opWsdl
 	 * @return
 	 */
-	public List<IODG> getMsPostorderNodeList (Element messageElem, OpWsdl opWsdl){
+	public List<IODG> getMsPostorderNodeList (Element messageElem, WebServiceOpr opWsdl){
 		if (messageElem == null || opWsdl==null){
 			return null;
 		}
@@ -74,7 +74,7 @@ public class MsIODGparser {
 	 * @param opWsdl
 	 * @return
 	 */
-	private List<IODG> complextypeIODG (Element complextypeElem, OpWsdl opWsdl){
+	private List<IODG> complextypeIODG (Element complextypeElem, WebServiceOpr opWsdl){
 		if (!complextypeElem.getName().equalsIgnoreCase("complexType")) {
 			System.out.println("complextypeIODG warning: given element is not a complexType, return null");
 			return null;
@@ -143,7 +143,7 @@ public class MsIODGparser {
 	 * @param opWsdl
 	 * @return
 	 */
-	private IODG elementIODG (Element elementElem, OpWsdl opWsdl){
+	private IODG elementIODG (Element elementElem, WebServiceOpr opWsdl){
 		if (!elementElem.getName().equalsIgnoreCase("element")) {
 			System.out.println("elementIODG warning: given element is not a element, return null");
 			return null;
@@ -229,7 +229,7 @@ public class MsIODGparser {
 	 * @param opWsdl
 	 * @return
 	 */
-	private IODG partIODG (Element partElem, OpWsdl opWsdl){
+	private IODG partIODG (Element partElem, WebServiceOpr opWsdl){
 		if (!partElem.getName().equalsIgnoreCase("part")) {
 			System.out.println("partIODG warning: given element is not a part, return null");
 			return null;
@@ -321,7 +321,7 @@ public class MsIODGparser {
 	 * @param opWsdl
 	 * @return root node of IODG type for the tree
 	 */
-	public IODG messageIODG (Element messageElem, OpWsdl opWsdl){
+	public IODG messageIODG (Element messageElem, WebServiceOpr opWsdl){
 		if (!messageElem.getName().equalsIgnoreCase("message")) {
 			System.out.println("messageIODG warning: given element is not a message, return null");
 			return null;

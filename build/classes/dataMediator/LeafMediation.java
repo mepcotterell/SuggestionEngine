@@ -22,8 +22,8 @@ import parser.ParseWSDL;
 import parser.JdomParser;
 import parser.SawsdlParser;
 import util.IODG;
-import util.OpWsdl;
-import util.OpWsdlPathScore_type;
+import util.WebServiceOpr;
+import util.WebServiceOprScore_type;
 
 import org.semanticweb.owlapi.model.*;
 
@@ -610,48 +610,48 @@ return bottomElemXpathMap;
 	/**given workflow operation, and candidate operation
 	 * compare the output of the last operation in the workflow with the input of the candidate operation
 	 * return a map[node&scoreOfinput, node&scoreOfoutput]
-	 * to reuse the OpWsdlPathScore_type, node is presented as a list(path) with one node
+	 * to reuse the WebServiceOprScore_type, node is presented as a list(path) with one node
 	 * @param workflowOPs
 	 * @param candidateOP
 	 * @param owlFileName
 	 * @return
 	 */
-	public Map<OpWsdlPathScore_type, OpWsdlPathScore_type> dm(List<OpWsdl> workflowOPs, OpWsdl candidateOP, String owlURI){
+	public Map<WebServiceOprScore_type, WebServiceOprScore_type> dm(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlURI){
 		if(workflowOPs == null || candidateOP == null){
 			System.out.println("LeafMediation.dm: warning: given empty workflow or candidiate operation");
 			return null;
 		}
 		
-		OpWsdl lastOp = workflowOPs.get(workflowOPs.size()-1);
+		WebServiceOpr lastOp = workflowOPs.get(workflowOPs.size()-1);
 //		List<Element>  lastopNodeList= this.getOpOutBottomEleNodeList(lastOp.getWsdlName(), lastOp.getOpName());
 //		List<Element> candidateNodeList = this.getOpInBottomEleNodeList(candidateOP.getWsdlName(), candidateOP.getOpName());
 		
 		LeafDmParser ldp = new LeafDmParser();
-		List<Element>  lastopNodeList= ldp.getOutBottomElemList(lastOp.getWsdlName(), lastOp.getOpName());
-		List<Element> candidateNodeList = ldp.getInBottomElemList(candidateOP.getWsdlName(), candidateOP.getOpName());
+		List<Element>  lastopNodeList= ldp.getOutBottomElemList(lastOp.getWsDescriptionDoc(), lastOp.getOperationName());
+		List<Element> candidateNodeList = ldp.getInBottomElemList(candidateOP.getWsDescriptionDoc(), candidateOP.getOperationName());
 		if (lastopNodeList==null ||lastopNodeList.isEmpty() ||candidateNodeList==null|| candidateNodeList.isEmpty()){
 			System.out.println("LeafMediation.dm: warning: given operation has no input or output");
 			return null;
 		}
 		
-		Map<OpWsdlPathScore_type, OpWsdlPathScore_type> inMatchMap = new HashMap<OpWsdlPathScore_type, OpWsdlPathScore_type>();
+		Map<WebServiceOprScore_type, WebServiceOprScore_type> inMatchMap = new HashMap<WebServiceOprScore_type, WebServiceOprScore_type>();
 		PathRank pk = new PathRank();		
 		for (Element inNode: candidateNodeList){			
-			List<OpWsdlPathScore_type> outList = new ArrayList<OpWsdlPathScore_type>();
+			List<WebServiceOprScore_type> outList = new ArrayList<WebServiceOprScore_type>();
 			for(Element outNode:lastopNodeList){
 				double s = pk.compare2node(outNode, inNode, owlURI, NodeType.LEAF_NODE);
-				//a singlton path with only one node, to reuse the OpWsdlPathScore_type
+				//a singlton path with only one node, to reuse the WebServiceOprScore_type
 				List<Element> nodePath = new ArrayList<Element>();
 				nodePath.add(outNode);
-				OpWsdlPathScore_type outNodeScore = new OpWsdlPathScore_type(lastOp.getWsdlName(), lastOp.getOpName(),nodePath, false);
+				WebServiceOprScore_type outNodeScore = new WebServiceOprScore_type(lastOp.getWsDescriptionDoc(), lastOp.getOperationName(),nodePath, false);
 				outNodeScore.setScore(s);
 				outList.add(outNodeScore);
 			}
-			OpWsdlPathScore_type match = Collections.max(outList);
-			//a singlton path with only one node, to reuse the OpWsdlPathScore_type
+			WebServiceOprScore_type match = Collections.max(outList);
+			//a singlton path with only one node, to reuse the WebServiceOprScore_type
 			List<Element> inNodePath = new ArrayList<Element>();
 			inNodePath.add(inNode);
-			OpWsdlPathScore_type inNodeScore = new OpWsdlPathScore_type(candidateOP.getWsdlName(), candidateOP.getOpName(),inNodePath, true);
+			WebServiceOprScore_type inNodeScore = new WebServiceOprScore_type(candidateOP.getWsDescriptionDoc(), candidateOP.getOperationName(),inNodePath, true);
 			inNodeScore.setScore(match.getScore());
 			inMatchMap.put(inNodeScore, match);
 		}

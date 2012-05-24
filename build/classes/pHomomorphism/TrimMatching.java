@@ -25,7 +25,6 @@ public class TrimMatching
     public static HGoodMinus trimPosibleMatches(Integer G1node, Integer G2node, H1adjacency H1adj, Boolean[][] H2, HGoodMinus H) 
     {
         HGoodMinus Hnew = new HGoodMinus();
-        //Deep copy
         Hnew.setGood(H.getGood());
         Hnew.setMinus(H.getMinus());
         
@@ -33,8 +32,8 @@ public class TrimMatching
         Set<Integer> H_values = H.getGood().keySet();
         ArrayList<Integer> H1Post = H1adj.getPost().get(G1node);
         
-        ArrayList<Integer> HnH1Prev = Util.intersection(H1Prev,H_values); 
-        ArrayList<Integer> HnH1Post = Util.intersection(H1Post,H_values); 
+        ArrayList<Integer> HnH1Prev = util.intersection(H1Prev,H_values); 
+        ArrayList<Integer> HnH1Post = util.intersection(H1Post,H_values); 
   
         for (Integer i : HnH1Prev) 
         {
@@ -100,11 +99,11 @@ public class TrimMatching
         HGoodMinus H = new HGoodMinus(mat, threshHold);
         Boolean[][] H2 = TransitiveClosure.closure(G2);
         
-        Util.printH("Before Trim",H);        
+        util.printH("Before Trim",H);        
         
         H = trimPosibleMatches(G1node, G2node, H1adj, H2, H);
         
-        Util.printH("After Trim",H);
+        util.printH("After Trim",H);
         
     }//main
 

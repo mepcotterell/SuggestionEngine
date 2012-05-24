@@ -136,8 +136,7 @@ public class HGoodMinus {
         };
         
         HGoodMinus H =  new HGoodMinus(mat, 0.4);
-        Util.printH(H);
-        System.out.println("Size = " + H.getSize());
+        util.printH(H);
      
     }//main
 

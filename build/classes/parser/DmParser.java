@@ -1,15 +1,11 @@
 package parser;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import java.util.*;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 import org.jdom.xpath.XPath;
-import util.OpWsdl;
 
 /**
  * @author Rui Wang
@@ -493,153 +489,44 @@ public class DmParser {
             }
         }
 
-        List<List<Element>> updatedPathsList = new ArrayList<List<Element>>();
-        
+        //Code for removing the Message and Part elements from the Paths
+        List<List<Element>> updatedPathsList = new ArrayList<List<Element>>();        
         for (List<Element> path : pathsList) {
-            
             List<Element> toRemove = new ArrayList<Element>();
-            
             for (Element e : path) {
-                
                 boolean isMessage = e.getName().equalsIgnoreCase("message");
                 boolean isPart    = e.getName().equalsIgnoreCase("part");
-                
                 if (isMessage || isPart ) {
                     toRemove.add(e);
                 } // if
-                
             } // for
-            
             path.removeAll(toRemove);
-            
             updatedPathsList.add(path);
-            
-        } // for
+        }// for
+        
+        //This is a Temporary patch as on some occassions the above code is replicating paths e.g.
+        // a-b-c-d; a-c-d; a-d
+        //The ollowing code should fix it
+        //TODO: Temp FIX, though Works just fine now
+        int i = 0;
+        List<List<Element>> filteredPathsList = new ArrayList<List<Element>>();        
+        Map<Element,Integer> map = new HashMap<Element, Integer>();
+        for (List<Element> path : updatedPathsList)
+        {
+            Integer prev = map.put(path.get(0), i++);
+            if(prev == null)
+            {
+                filteredPathsList.add(path);
+            }
+        }
+        //Patch ends
         
         //return pathsList;
-        
-        return updatedPathsList;
-
+        return filteredPathsList;
     }
 
-    /**
-     * constructor
-     */
-    public DmParser() {
-    }
-
-    /**
-     * for test
-     * 
-     * @param args
-     */
     public static void main(String[] args) {
-//		List testL = new ArrayList();
-//		List testList = new ArrayList();
-//		testL.addAll(testList);
-//		System.out.println("pass" +testL);
 
-        SawsdlParser sp = new SawsdlParser();
-//		Element inElem = sp.getInMsElem("wsdl/WSWUBlast.wsdl", "runWUBlast");
-//		Element inElem = sp.getInMsElem("wsdl/picr.wsdl", "getUPIForAccession");
-//		Element inElem = sp.getInMsElem("wsdl/CompanyInfo.wsdl", "getInfo");
-//		Element inElem = sp.getInMsElem("wsdl/WSDbfetch.wsdl", "fetchBatch");
-//		Element inElem = sp.getInMsElem("wsdl/stockquote.wsdl", "GetQuote");
-//		Element inElem = sp.getInMsElem("wsdl/NewGeneByLocation.wsdl", "invoke");
-////////////////////////////////////////////////////////////////////////////
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "blastp");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "blastp");
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "blastn");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "blastn");
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "getOutput");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "getOutput");
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "getXML");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "getXML");
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "runWUBlast");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "runWUBlast");
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "checkStatus");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "checkStatus");
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "poll");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "poll");
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "getResults");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "getResults");
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "getIds");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "getIds");
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "getMatrices");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "getMatrices");
-//		Element inElem = sp.getInMsElem("wsdl/1/WSWUBlast.wsdl", "getPrograms");
-//		Element inElem = sp.getOutMsElem("wsdl/1/WSWUBlast.wsdl", "getPrograms");
+    }// Main Ends
 
-        List<OpWsdl> candidateOp = new ArrayList<OpWsdl>();
-        candidateOp.add(new OpWsdl("blastp", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("blastn", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getOutput", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getXML", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("runWUBlast", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("checkStatus", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("checkStatus", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("poll", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getResults", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getMatrices", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getPrograms", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getDatabases", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getSort", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getStats", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getXmlFormats", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getSensitivity", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("getFilters", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("polljob", "wsdl/1/WSWUBlast.wsdl"));
-        candidateOp.add(new OpWsdl("doWUBlast", "wsdl/1/WSWUBlast.wsdl"));
-        //19	
-        candidateOp.add(new OpWsdl("fetchBatch", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("fetchData", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getDatabaseInfo", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getDatabaseInfoList", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getDbFormats", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getFormatInfo", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getFormatStyles", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getStyleInfo", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getSupportedDBs", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getSupportedFormats", "wsdl/1/WSDbfetchDoclit.wsdl"));
-        candidateOp.add(new OpWsdl("getSupportedStyles", "wsdl/1/WSDbfetchDoclit.wsdl"));
-//19+11=30		
-        candidateOp.add(new OpWsdl("getParameters", "wsdl/1/clustalw2.wsdl"));
-        candidateOp.add(new OpWsdl("getParameterDetails", "wsdl/1/clustalw2.wsdl"));
-        candidateOp.add(new OpWsdl("run", "wsdl/1/clustalw2.wsdl"));
-        candidateOp.add(new OpWsdl("getStatus", "wsdl/1/clustalw2.wsdl"));
-        candidateOp.add(new OpWsdl("getResultTypes", "wsdl/1/clustalw2.wsdl"));
-        candidateOp.add(new OpWsdl("getResult", "wsdl/1/clustalw2.wsdl"));
-//30+6=36
-        candidateOp.add(new OpWsdl("array2string", "wsdl/1/WSConverter.wsdl"));
-        candidateOp.add(new OpWsdl("base64toString", "wsdl/1/WSConverter.wsdl"));
-//36+2=38
-        candidateOp.add(new OpWsdl("getParameters", "wsdl/1/tcoffee.wsdl"));
-        candidateOp.add(new OpWsdl("getParameterDetails", "wsdl/1/tcoffee.wsdl"));
-        candidateOp.add(new OpWsdl("run", "wsdl/1/tcoffee.wsdl"));
-        candidateOp.add(new OpWsdl("getStatus", "wsdl/1/tcoffee.wsdl"));
-        candidateOp.add(new OpWsdl("getResultTypes", "wsdl/1/tcoffee.wsdl"));
-        candidateOp.add(new OpWsdl("getResult", "wsdl/1/tcoffee.wsdl"));
-//38+6=44		
-        candidateOp.add(new OpWsdl("getParameters", "wsdl/1/ncbiblast.wsdl"));
-        candidateOp.add(new OpWsdl("getParameterDetails", "wsdl/1/ncbiblast.wsdl"));
-        candidateOp.add(new OpWsdl("run", "wsdl/1/ncbiblast.wsdl"));
-        candidateOp.add(new OpWsdl("getStatus", "wsdl/1/ncbiblast.wsdl"));
-        candidateOp.add(new OpWsdl("getResultTypes", "wsdl/1/ncbiblast.wsdl"));
-        candidateOp.add(new OpWsdl("getResult", "wsdl/1/ncbiblast.wsdl"));
-//44+6=50		
-
-
-//		Element inElem = sp.getInMsElem(candidateOp.get(38).getWsdlName(), candidateOp.get(43).getOpName());
-        Element inElem = sp.getOutMsElem(candidateOp.get(35).getWsdlName(), candidateOp.get(35).getOpName());
-//		System.out.println(inElem.getName());
-        DmParser pr = new DmParser();
-        List<List<Element>> pList = pr.getPathsList(inElem);
-        for (List<Element> p : pList) {
-            for (Element ele : p) {
-                System.out.println(ele.getAttributeValue("name"));
-
-            }
-            System.out.println("========================================");
-        }
-    }
-}
+}//DmParser Ends

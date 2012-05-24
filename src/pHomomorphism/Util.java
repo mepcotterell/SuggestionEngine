@@ -3,13 +3,14 @@ package pHomomorphism;
 import java.util.ArrayList;
 import java.util.Set;
 import static java.lang.System.out;
+import java.util.List;
 
 /**
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). The class provides
  * A class that has random useful functions mostly used for debugging
  */
-public class util {
+public class Util {
 
     /**
      * Returns the intersection of two lists passed to it.
@@ -83,6 +84,14 @@ public class util {
             out.println(i.g1node + "-->" + i.g2node);
         }
     }//printMatches
+    
+    static void printMatches(List<Match> mapping) {
+         
+        out.println("Matches : ");
+        for (Match i : mapping) {
+            out.println(i.g1node + "-->" + i.g2node);
+        }
+    }
 
     public static void main(String[] args) {
         //Test code
@@ -102,4 +111,5 @@ public class util {
     }//main
 
 
-}//util
+
+}
