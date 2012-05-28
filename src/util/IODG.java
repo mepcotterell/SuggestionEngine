@@ -1,10 +1,7 @@
-/**
- * 
- */
+
 package util;
 
 import java.util.List;
-
 import org.jdom.Element;
 
 /**

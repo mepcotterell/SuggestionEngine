@@ -11,7 +11,7 @@ import java.util.List;
 public interface PHomomorphism {
     
      public double calculatepHomSimScore
-             (Boolean[][] G1, Boolean[][] G2, double[][] mappingScores, double threshHold, int[] w);
+             (Boolean[][] G1, Boolean[][] G2, double[][] mappingScores, double threshHold, double[] w);
      
      public List<Match> getMapping();
 

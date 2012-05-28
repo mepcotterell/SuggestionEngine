@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package dataMediator;
 
 import util.NodeType;
@@ -170,10 +168,13 @@ public class TreeHomeomorphism {
      * @return
      */
     public List<IODG> dm(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlURI) {
+        
         SawsdlParser sp = new SawsdlParser();
         Element inElem = sp.getInMsElem(candidateOP.getWsDescriptionDoc(), candidateOP.getOperationName());
+        
         MsIODGparser mp = new MsIODGparser();
         List<IODG> postorderInNodes = new ArrayList<IODG>();
+        
         postorderInNodes.addAll(mp.getMsPostorderNodeList(inElem, candidateOP));
         Element globalInElem = sp.getInMsElem(workflowOPs.get(0).getWsDescriptionDoc(), workflowOPs.get(0).getOperationName());
         List<IODG> postorderOutNodes = new ArrayList<IODG>();
@@ -185,7 +186,6 @@ public class TreeHomeomorphism {
         }
         List<IODG> result = this.findHomeo(postorderOutNodes, postorderInNodes, owlURI);
         return result;
-
     }
 
     /**constructor

@@ -2,12 +2,7 @@
 package pHomomorphism;
 
 
-
-
 import static java.lang.System.out;
-import pHomomorphism.PHomMaxCardinality;
-import pHomomorphism.PHomMaxSimilarity;
-import pHomomorphism.PHomomorphism;
 
 /**
  *

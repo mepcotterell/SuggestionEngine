@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package parser;
 
 import java.util.ArrayList;
@@ -66,10 +64,10 @@ public class MsIODGparser {
 	
 	
 	/**a parser to generate a list of directed rooted graph (mostly tree) for a given complexType
-	 * if the complexType has no subelement, return null
-	 *case 1: has decendent <element)
-	 *case 2: array attribute wsdl:arrayType= has element (wublast service)<xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="tns:data[]"/>
-	 *case 3: empty sequence, no <element) at all-------return null
+	 * if the complexType has no subelement, return null.
+	 * case 1: has descendent <element>
+	 * case 2: array attribute wsdl:arrayType= has element (wublast service)<xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="tns:data[]"/>
+	 * case 3: empty sequence, no <element> at all-------return null
 	 * @param complextypeElem
 	 * @param opWsdl
 	 * @return
@@ -347,7 +345,7 @@ public class MsIODGparser {
 			messageNode.setChildren(partIODGlist);
 			messageNode.setLevel(1+Collections.max(levelList));
 		}
-		
+		 
 		return messageNode;
 	}
 	
@@ -362,6 +360,7 @@ public class MsIODGparser {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+            
 
 
 	}

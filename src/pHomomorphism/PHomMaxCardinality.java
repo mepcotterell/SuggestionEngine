@@ -22,7 +22,7 @@ public class PHomMaxCardinality implements PHomomorphism {
     }//getMapping
     
     @Override
-    public double calculatepHomSimScore(Boolean[][] G1, Boolean[][] G2, double[][] mappingScores, double threshHold, int[] w) {
+    public double calculatepHomSimScore(Boolean[][] G1, Boolean[][] G2, double[][] mappingScores, double threshHold, double[] w) {
         
         MaxCardinality maxCard = new MaxCardinality();
         maxCard.calcMaxCardMapping(G1, G2, mappingScores, threshHold);
@@ -63,7 +63,7 @@ public class PHomMaxCardinality implements PHomomorphism {
         };
 
         double threshHold = 0.4;
-        int[] w = new int[10];
+        double[] w = new double[10];
         PHomomorphism p = new PHomMaxCardinality();
         
         out.println(p.calculatepHomSimScore(G1, G2, mat, threshHold, w));

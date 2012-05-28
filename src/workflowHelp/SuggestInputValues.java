@@ -43,7 +43,7 @@ public class SuggestInputValues
         try{
             List<Element> schemaList = schemaParser.getSchemaElemList(WSDLURL);
             for(Element e : schemaList)
-                paramElement = schemaParser.getElementElemOfSchema(paramName, e);
+                paramElement = schemaParser.getElementFromSchema(paramName, e);
             org.jdom.Attribute attribute = paramElement.getAttribute("modelReference",sawsdlNS);
 
             if(attribute!=null)

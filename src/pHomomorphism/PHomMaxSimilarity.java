@@ -19,7 +19,7 @@ public class PHomMaxSimilarity implements PHomomorphism {
             
 
     @Override
-    public double calculatepHomSimScore(Boolean[][] G1, Boolean[][] G2, double[][] mappingScores, double threshHold, int[] w) {
+    public double calculatepHomSimScore(Boolean[][] G1, Boolean[][] G2, double[][] mappingScores, double threshHold, double[] w) {
         
         return 0;
     }

@@ -1,10 +1,14 @@
 
 package suggest.calculator;
 
+import dataMediator.PHomomorphismSim;
 import dataMediator.PathRank;
+import dataMediator.TreeHomeomorphism;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import pHomomorphism.PHomMaxCardinality;
+import pHomomorphism.PHomomorphism;
 import util.WebServiceOpr;
 import util.WebServiceOprScore_type;
 
@@ -45,7 +49,7 @@ public class DmScore {
     {
         double dmScore = 0;
         boolean allUnknown = true;
-        //Map<ipPathsOFcandidateOP,matchedopPathsofWorkflowOP>
+        //Map<ipPathsOFcandidateOP,matchedopPathsofWorkflowOP>PathRank
         Map<WebServiceOprScore_type, WebServiceOprScore_type> dmOneopResult = PathRank.dataMediation(workflowOPs, candidateOP, owlURI);
 
         if (dmOneopResult != null) {
@@ -92,6 +96,30 @@ public class DmScore {
 
     } // calculatePathDmScore
 
+    /** Calculates the DataMediation score for a candidate operation, using the pHomomorphism.
+     * 
+     * @param workflowOPs List of operations Currently in the Workflow
+     * @param candidateOP The Candidate operation for which Data mediation sub-score has to be calculated
+     * @param owlFileName The location of the Ontology file (Can be Relative location
+     * in the system or a URI of the web)
+     * @return score of data mediation for the candidate operation (how input of candidate operation will be fed)
+     */
+    public double calculatepHomDmScore(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlURI) 
+    {
+        double dmScore = 0;
+        boolean allUnknown = true;
+        
+        PHomomorphismSim phom = new PHomomorphismSim();
+
+       
+        double rawScore = phom.dataMediation(workflowOPs, candidateOP, owlURI);
+        dmScore = rawScore;
+        
+        //reweighting if necessary
+        
+        return dmScore;
+
+    } // calculatepHomDmScore
 
 //    /**leaf-based data mediation score for a candidate operation
 //     * @param workflowOPs  operations in current workflow, topologic order
@@ -119,7 +147,7 @@ public class DmScore {
 //        return dmScore;
 //        
 //    } // calculateLeafDmScore
-
+//
 //    /**structure-based data mediation score for the candidate operation
 //     * apply subtree homeomorphism to data mediation
 //     * @param workflowOPs
@@ -129,11 +157,11 @@ public class DmScore {
 //     */
 //    public double calculateHomeoDmScore(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlFileName) 
 //    {
-//        double dmScore = 0;
+//        double dmScore;
 //        TreeHomeomorphism homeo = new TreeHomeomorphism();
 //        List<IODG> homeoResult = homeo.dm(workflowOPs, candidateOP, owlFileName);
 //        dmScore = homeoResult.get(homeoResult.size() - 1).getScore();
-//        homeoDmResult = homeoResult;
+//        //homeoDmResult = homeoResult;
 //        return dmScore;
 //    } // calculateHomeoDmScore
 

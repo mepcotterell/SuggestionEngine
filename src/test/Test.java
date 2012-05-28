@@ -59,7 +59,7 @@ public class Test {
 //        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", wublast));
         candidateOpsOBI.add(new WebServiceOpr("getResult", wublast));
 //        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
-        candidateOpsOBI.add(new WebServiceOpr("getStatus", wublast));
+   //     candidateOpsOBI.add(new WebServiceOpr("getStatus", wublast));
 
                 
 //        candidateOpsOBI.add(new WebServiceOpr("getParameters", ncbiblast));
@@ -119,7 +119,7 @@ public class Test {
         List<WebServiceOpr> workflowOpsOBI = new ArrayList<WebServiceOpr>();
         //workflowOpsOBI.add(new WebServiceOpr("filterByEval", filerSeq));
         workflowOpsOBI.add(new WebServiceOpr("run", wublast));
-        workflowOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
+        //workflowOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
         
         System.out.println();
         System.out.println("--------------------------------------------------");

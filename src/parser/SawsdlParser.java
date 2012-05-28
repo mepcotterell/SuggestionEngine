@@ -86,28 +86,6 @@ public class SawsdlParser {
         }
         return outMsElem;
     }
-    public Element getOutMsElem1(String fileName, String opName) {
-        Element opElem = this.getOpNameElemMap(fileName).get(opName);
-        if (opElem == null) {
-            return null;
-        }
-        Element outElem = opElem.getChild("output", wsdlNS);
-
-        String outMsName = outElem.getAttributeValue("message");
-        if (outMsName.contains(":")) {
-            outMsName = outMsName.split(":")[1];
-        }
-        List<Element> msElemList = opElem.getDocument().getRootElement().getChildren("message", wsdlNS);
-        Element outMsElem = null;
-        for (Element msElem : msElemList) {
-            if (msElem.getAttributeValue("name").equals(outMsName)) {
-                outMsElem = msElem;
-                break;
-            }
-        }
-        return outMsElem;
-    }
-
     
     /**
      * given sawsdl/wsdl file name and operation name, return input message element
@@ -122,14 +100,11 @@ public class SawsdlParser {
         if (inMsName.contains(":")) {
             inMsName = inMsName.split(":")[1];
         }
-        //System.out.println(inMsName);
         List<Element> msElemList = opElem.getDocument().getRootElement().getChildren("message", wsdlNS);
-//		System.out.println(msElemList);
         Element inMsElem = null;
         for (Element msElem : msElemList) {
             if (msElem.getAttributeValue("name").equals(inMsName)) {
                 inMsElem = msElem;
-//				System.out.println(inMsElem);
                 break;
             }
         }
@@ -190,7 +165,7 @@ public class SawsdlParser {
      * @param fileName
      * @return
      */
-    private Element getRootElem(String fileName) {
+    public Element getRootElem(String fileName) {
 //        String filePath = Thread.currentThread().getContextClassLoader().getResource(fileName).toString();
 //      System.out.println("fileUrl: " + fileUrl);
 

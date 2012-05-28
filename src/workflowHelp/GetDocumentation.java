@@ -43,7 +43,7 @@ public class GetDocumentation
                 for(Element e : schemaList)
                 {
                     nameSpace = e.getNamespace();
-                    paramElement = schemaParser.getElementElemOfSchema(paramName, e);
+                    paramElement = schemaParser.getElementFromSchema(paramName, e);
                 }
 
                 // Retriving the Documentation From WSDL if Available
