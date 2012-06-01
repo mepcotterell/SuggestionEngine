@@ -54,4 +54,28 @@ public class DebuggingUtils
             System.out.println();
 
     }
+    
+        /**
+     * The method calculates generalized mean for a given array of (n) values and an Exponent Value(m).
+     * mean = ((1/n)SUM(Xi))^(1/m)
+     * m = 0 Geometric mean,
+     * m = 1 Arithmetic mean,
+     * m = 3 Quadratic Mean (Root mean Square)
+     * 
+     * @param values for which mean has to be calculated
+     * @param exponent
+     * @return the mean
+     */
+    public static double generalizedMean(double[] values, double exponent )
+    {
+        double mean = 0.0;
+
+        for (int i = 0; i < values.length; i++)
+            mean += Math.pow(values[i], exponent);
+
+        mean = mean / (double) values.length;
+        mean = Math.pow(mean, 1.0 / exponent);
+
+        return mean;
+    }//generalizedMean
 }

@@ -3,6 +3,8 @@ package pHomomorphism;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,23 +29,33 @@ public class HGoodMinus {
         good  = new HashMap<Integer, ArrayList<Integer>>();
         minus = new HashMap<Integer, ArrayList<Integer>>();
 
-        // mappingScores.length will give the height (Vertical)
-        // mappingScores[0].length will give the length (Horizontal)
-        for(int y=0; y < mappingScores.length; y++)
-        {
-            ArrayList<Integer> tempGood = new ArrayList<Integer>();
-            ArrayList<Integer> tempMinus = new ArrayList<Integer>();
-            
-            for (int x=0; x < mappingScores[0].length; x++)
+        try{
+            // mappingScores.length will give the height (Vertical)
+            // mappingScores[0].length will give the length (Horizontal)
+            for(int y=0; y < mappingScores.length; y++)
             {
-                if(mappingScores[y][x] > threshHold)
-                    tempGood.add(x);
-            }//Inner for
-            
-            good.put(y, tempGood);
-            minus.put(y, tempMinus);
-        }//Outer For
-        
+                ArrayList<Integer> tempGood = new ArrayList<Integer>();
+                ArrayList<Integer> tempMinus = new ArrayList<Integer>();
+
+                for (int x=0; x < mappingScores[0].length; x++)
+                {
+                    if(mappingScores[y][x] > threshHold)
+                        tempGood.add(x);
+                }//Inner for
+
+                good.put(y, tempGood);
+                minus.put(y, tempMinus);
+            }//Outer For
+        }//try
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.WARNING, "mappingScores Matrix has Missing Values, Mapping Might not be correct..!!{0}", e);
+        }//catch
+        catch(Exception e)
+        {
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.WARNING, "Unexpected Error Occurred, Mapping Might not be correct..!!{0}", e);
+        }//catch
+
     }//HGoodMinus constructor
 
     public HGoodMinus() {

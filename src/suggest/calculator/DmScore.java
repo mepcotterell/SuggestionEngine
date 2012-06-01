@@ -107,16 +107,9 @@ public class DmScore {
     public double calculatepHomDmScore(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlURI) 
     {
         double dmScore = 0;
-        boolean allUnknown = true;
         
         PHomomorphismSim phom = new PHomomorphismSim();
-
-       
-        double rawScore = phom.dataMediation(workflowOPs, candidateOP, owlURI);
-        dmScore = rawScore;
-        
-        //reweighting if necessary
-        
+        dmScore = phom.dataMediation(workflowOPs, candidateOP, owlURI);
         return dmScore;
 
     } // calculatepHomDmScore

@@ -49,6 +49,30 @@ public class Util {
     }//intersection
 
     /**
+     * The method calculates generalized mean for a given array of (n) values and an Exponent Value(m).
+     * mean = ((1/n)SUM(Xi))^(1/m)
+     * m = 0 Geometric mean,
+     * m = 1 Arithmetic mean,
+     * m = 3 Quadratic Mean (Root mean Square)
+     * 
+     * @param values for which mean has to be calculated
+     * @param exponent
+     * @return the mean
+     */
+    public static double generalizedMean(double[] values, double exponent )
+    {
+        double mean = 0.0;
+
+        for (int i = 0; i < values.length; i++)
+            mean += Math.pow(values[i], exponent);
+
+        mean = mean / (double) values.length;
+        mean = Math.pow(mean, 1.0 / exponent);
+
+        return mean;
+    }//generalizedMean
+    
+    /**
      * Prints the H list of candidate Matches
      * @param H 
      */
@@ -85,14 +109,27 @@ public class Util {
         }
     }//printMatches
     
-    static void printMatches(List<Match> mapping) {
+    public static void printMatches(List<Match> mapping) {
          
         out.println("Matches : ");
         for (Match i : mapping) {
             out.println(i.g1node + "-->" + i.g2node);
         }
     }
-
+    
+    public static void printGraph(Boolean[][] Graph)
+    {
+        for (int i = 0; i < Graph.length; i++) 
+        {
+            for (int j = 0; j < Graph.length; j++)
+            {
+                int t = (Graph[i][j] == true)? 1 : 0;
+                out.print("  " + t);
+            }//inner for
+            out.println();
+        }//outer for
+    }
+    
     public static void main(String[] args) {
         //Test code
         ArrayList<Integer> List1 = new ArrayList<Integer>();
@@ -107,6 +144,14 @@ public class Util {
         List2.add(4);
 
         out.println(intersection(List1, List2));
+        
+                Boolean[][] G1 = new Boolean[][] {
+            {false, true , true , false},
+            {false, false, false, false},
+            {false, false, false, false},    };
+                
+                out.println(G1.length + "--"+ G1[0].length);
+        
 
     }//main
 

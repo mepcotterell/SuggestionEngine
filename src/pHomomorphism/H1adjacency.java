@@ -4,6 +4,8 @@ package pHomomorphism;
 import java.util.ArrayList;
 import java.util.HashMap;
 import static java.lang.System.out;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,26 +26,37 @@ public class H1adjacency {
     public H1adjacency(Boolean[][] G1) {
         // mappingScores.length will give the height (Vertical)
         // mappingScores[0].length will give the length (Horizontal)
-        for(int y=0; y < G1.length; y++)
-        {
-            ArrayList<Integer> tempPost = new ArrayList<Integer>();
-            for (int x=0; x < G1.length; x++)
+        try{
+            for(int y=0; y < G1.length; y++)
             {
-                if(G1[y][x]) tempPost.add(x);
-            }//Inner for
-            post.put(y, tempPost);
-        }//Outer For
-        
-        for(int y=0; y < G1.length; y++)
-        {
-            ArrayList<Integer> tempPrev = new ArrayList<Integer>();
-            for (int x=0; x < G1.length; x++)
+                ArrayList<Integer> tempPost = new ArrayList<Integer>();
+                for (int x=0; x < G1.length; x++)
+                {
+                    if(G1[y][x]) tempPost.add(x);
+                }//Inner for
+                post.put(y, tempPost);
+            }//Outer For
+
+            for(int y=0; y < G1.length; y++)
             {
-                if(G1[x][y]) tempPrev.add(x);
-            }//Inner for
-            
-            prev.put(y, tempPrev);
-        }//Outer For
+                ArrayList<Integer> tempPrev = new ArrayList<Integer>();
+                for (int x=0; x < G1.length; x++)
+                {
+                    if(G1[x][y]) tempPrev.add(x);
+                }//Inner for
+
+                prev.put(y, tempPrev);
+            }//Outer For        
+        }//try
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.WARNING, "Adjacency Matrix for Graph1 has Missing Values, Mapping Might not be correct..!!{0}", e);
+        }//catch
+        catch(Exception e)
+        {
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.WARNING, "Unexpected Error Occurred, Mapping Might not be correct..!!{0}", e);
+        }//catch
+
     }//H1adjacency
 
     /**

@@ -3,8 +3,12 @@ package parser;
 
 import static java.lang.System.out;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import pHomomorphism.PHomomorphism;
+import pHomomorphism.Util;
 import util.WebServiceOpr;
 
 /**
@@ -16,16 +20,16 @@ public class IOasGraph {
         
     private static Namespace xsdNS = Namespace.getNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
     private static Namespace wsdlNS = Namespace.getNamespace("wsdl", "http://schemas.xmlsoap.org/wsdl/");
-    private List<Element> GraphElementList = new ArrayList<Element>(); 
+    private Map<Integer,Element> GraphElementMap = new HashMap<Integer, Element>(); 
     private HashMap<Integer, ArrayList<Integer>> adjList = new HashMap<Integer, ArrayList<Integer>>();
 
     /**
      * Returns the List of Elements in the Input / output graph
      * @return AdjacencyList
      */    
-    public List<Element> getGraphElementList()
+    public  Map<Integer,Element> getGraphElementMap()
     {
-        return GraphElementList;
+        return GraphElementMap;
     }//getGraphElementList
     
     /**
@@ -59,8 +63,10 @@ public class IOasGraph {
             
             if (MsgEle == null)
             {
-                out.println("Msg Element not found for " + ioType + " of operation " 
-                        + op.getOperationName() + " in the WSDL " + op.getWsDescriptionDoc());
+               String log = "Msg Element not found for " + ioType + " of operation " 
+                        + op.getOperationName() + " in the WSDL " + op.getWsDescriptionDoc();
+                Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE, log);
+                out.println();
                 return null;
             }
      
@@ -80,8 +86,9 @@ public class IOasGraph {
                     
                     if(rootElem == null)
                     {
-                        out.println("Root Element not found for " + ioType + " of operation " 
-                        + op.getOperationName() + " in the WSDL " + op.getWsDescriptionDoc());
+                        String log = "Root Element not found for " + ioType + " of operation " 
+                                   + op.getOperationName() + " in the WSDL " + op.getWsDescriptionDoc();
+                        Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE, log);
                         return null;
                     }
                     
@@ -98,8 +105,8 @@ public class IOasGraph {
                     {
                         ArrayList<Integer> temp = new ArrayList<Integer>();
                         Element e = EleQ.poll();
-                        GraphElementList.add(e);
                         adjList.put(++x, new ArrayList<Integer>());
+                        GraphElementMap.put(x, e);                        
                         
                         out.print(e.getAttributeValue("name")+ x + "-> ");
                         
@@ -140,8 +147,8 @@ public class IOasGraph {
                 }//if
                 else
                 {
-                    out.println("Case Not Handled : There are more than one parts to the message");
                     //There are more than one parts to the message
+                    Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE,"Case Not Handled : There are more than one parts to the message");
                     for (Element part:partList)
                     {
                     
@@ -159,9 +166,18 @@ public class IOasGraph {
     {
         //Test Code
         WebServiceOpr op = new WebServiceOpr("getResult", "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl");
-        Boolean[][] adjMat = new IOasGraph().asGraph(op, "output");
+        Boolean[][] adjMat = new IOasGraph().asGraph(op, "input");
         //pHomomorphism.Util.printMatches(null);
         
+        
+        double[] mean = {0.3, 0.3, 0.3, 1};
+        double m = 3.0;
+        double sum = Util.generalizedMean(mean, m);
+        
+        out.println(sum);
+        
     }//main
+    
+
   
 }//IOasGraph

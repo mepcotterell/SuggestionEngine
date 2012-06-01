@@ -93,12 +93,12 @@ public class ForwardSuggest {
             DmScore ds = new DmScore();
 
             //path-based data mediation
-            dmScore = ds.calculatePathDmScore(workflowOPs, candidateOP, owlFileName);
-            dmResults.put(candidateOP, ds.getDmResults());
+//            dmScore = ds.calculatePathDmScore(workflowOPs, candidateOP, owlFileName);
+//            dmResults.put(candidateOP, ds.getDmResults());
             
             //p-Homomorphism based DM
             dmScore = ds.calculatepHomDmScore(workflowOPs, candidateOP, owlFileName);
-            dmResults.put(candidateOP, ds.getDmResults());
+//            dmResults.put(candidateOP, ds.getDmResults());
 
     
             //structure-based data mediation(subtree homeomorphism)
@@ -210,25 +210,25 @@ public class ForwardSuggest {
 
             //----------------------------------------------------------------
             // Finding the matched path
-            Map<WebServiceOprScore_type, WebServiceOprScore_type> matchedPaths = dmResults.get(op);
-            Set<WebServiceOprScore_type> ipPaths = matchedPaths.keySet();
-                    
-            MatchedIOPaths mpsIn = new MatchedIOPaths();
-
-            for (WebServiceOprScore_type a : ipPaths) {
-                
-                mpsIn.setMatchedWsOpr(a.getOperationName());
-                mpsIn.setMatchedoprWsDoc(a.getWsDescriptionDoc());
-                mpsIn.setWsoOpr(matchedPaths.get(a).getOperationName());
-                mpsIn.setWsDoc(matchedPaths.get(a).getWsDescriptionDoc());
-                mpsIn.addMatchedPaths(
-                        a.getPath().get(0).getAttributeValue("name"), 
-                        matchedPaths.get(a).getPath().get(0).getAttributeValue("name"), 
-                        a.getScore()
-                        );
-            }
-            mpsIn.sort();
-            opScore.setMatchedPathsIp(mpsIn);
+//            Map<WebServiceOprScore_type, WebServiceOprScore_type> matchedPaths = dmResults.get(op);
+//            Set<WebServiceOprScore_type> ipPaths = matchedPaths.keySet();
+//                    
+//            MatchedIOPaths mpsIn = new MatchedIOPaths();
+//
+//            for (WebServiceOprScore_type a : ipPaths) {
+//                
+//                mpsIn.setMatchedWsOpr(a.getOperationName());
+//                mpsIn.setMatchedoprWsDoc(a.getWsDescriptionDoc());
+//                mpsIn.setWsoOpr(matchedPaths.get(a).getOperationName());
+//                mpsIn.setWsDoc(matchedPaths.get(a).getWsDescriptionDoc());
+//                mpsIn.addMatchedPaths(
+//                        a.getPath().get(0).getAttributeValue("name"), 
+//                        matchedPaths.get(a).getPath().get(0).getAttributeValue("name"), 
+//                        a.getScore()
+//                        );
+//            }
+//            mpsIn.sort();
+//            opScore.setMatchedPathsIp(mpsIn);
 
             suggestionList.add(opScore);
 

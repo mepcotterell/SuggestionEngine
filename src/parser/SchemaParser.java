@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Namespace;
+import org.jdom.*;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
@@ -17,7 +14,7 @@ import org.jdom.xpath.XPath;
  * @author Alok Dhamanaskar
  * @see LICENSE (MIT style license file).
  * 
- * Parser for Parsing the Schema part of a WSDL file.
+ * Parser for Parsing XML Schema (XSD)
  *
  */
 public class SchemaParser {
@@ -144,7 +141,7 @@ public class SchemaParser {
         Element complextypeElem = null;
 
         for (Element schema : schemaList) {
-            if (complextypePrefix == null || complextypePrefix == "") {
+            if (complextypePrefix == null || complextypePrefix.equals("")) {
                 complextypeElem = this.getComplextypeOfSchema(complextypePrefix, complextypeName, schema);
 
             } else {
@@ -236,6 +233,29 @@ public class SchemaParser {
 
         return schemaElemList;
     }//getSchemaElemList
+    
+    /**
+     * 
+     *
+     * @param Element
+     * @return
+     */
+    public double isRequired(Element e) 
+    {
+        Element child = e;
+        Element parent = e.getParentElement();
+        while(parent != null)
+        {
+            //if parent is optional
+            //return optional
+            //else
+            {
+                parent = parent.getParentElement();
+            }
+        }//while
+        //return child.isrequired
+        return 0.0;
+    }//isRequired
 
     /**
      * Given WSDL root element, retrieve all the schema Elements
@@ -320,6 +340,7 @@ public class SchemaParser {
                     else 
                     {
                         Element next = this.getElementFromSchema(e.getAttributeValue("type"), e);
+                        if(next!=null)
                         return this.getNextLevelElements(next);
                     }
                 }

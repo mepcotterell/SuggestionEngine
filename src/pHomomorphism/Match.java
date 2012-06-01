@@ -5,7 +5,7 @@ package pHomomorphism;
  *
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
- * Class to represent a candidate match
+ * Class to represent a candidate match between two Graphs
  */
 public class Match {
 

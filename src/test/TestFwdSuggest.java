@@ -118,8 +118,9 @@ public class TestFwdSuggest {
         candidateOpsOBI.add(new WebServiceOpr("run", fasta));    
         
         List<WebServiceOpr> workflowOpsOBI = new ArrayList<WebServiceOpr>();
-        //workflowOpsOBI.add(new WebServiceOpr("filterByEval", filerSeq));
-        workflowOpsOBI.add(new WebServiceOpr("run", wublast));
+        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
+        workflowOpsOBI.add(new WebServiceOpr("filterByEval", filerSeq));
+        workflowOpsOBI.add(new WebServiceOpr("run", clustalW));
         
         System.out.println();
         System.out.println("--------------------------------------------------");
@@ -137,13 +138,13 @@ public class TestFwdSuggest {
 
             System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
             System.out.println();
-            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPaths();
-            //System.out.println(mps + "\n");
-            for(MatchedIOPaths.PathMatches mp : mps)
-            {
-                System.out.print("\t" + mp.getOpName() + "-->" + mp.getIpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
-            }
-            System.out.println("\n");
+//            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPaths();
+//            //System.out.println(mps + "\n");
+//            for(MatchedIOPaths.PathMatches mp : mps)
+//            {
+//                System.out.print("\t" + mp.getOpName() + "-->" + mp.getIpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
+//            }
+//            System.out.println("\n");
         }
         //------------------------------------------------------------
         

@@ -1,6 +1,8 @@
 
 package pHomomorphism;
 import static java.lang.System.out;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,23 +19,36 @@ public class TransitiveClosure {
      * @param Matrix
      * @return 
      */
-    public static Boolean[][] closure(Boolean[][] Matrix) {
+    public static Boolean[][] closure(Boolean[][] Matrix) 
+    {
         
         int len = Matrix.length ;
         Boolean[][] adj = new Boolean[len][len];
-        
-        //Copy matrix into adj : deep copy
-        for (int i = 0; i < len; i++) 
-            System.arraycopy(Matrix[i], 0, adj[i], 0, len);
+        try{
+            //Copy matrix into adj : deep copy
+            for (int i = 0; i < len; i++) 
+                System.arraycopy(Matrix[i], 0, adj[i], 0, len);
 
-        for (int k = 0; k < len; k++) {
-            for (int i = 0; i < len; i++) {
-                for (int j = 0; j < len; j++) {
-                    adj[i][j] = (adj[i][j] || (adj[i][k] && adj[k][j]));
-                }//innermost for
-            }//inner for
-        }//outer for
-        return adj;
+            for (int k = 0; k < len; k++) {
+                for (int i = 0; i < len; i++) {
+                    for (int j = 0; j < len; j++) {
+                        adj[i][j] = (adj[i][j] || (adj[i][k] && adj[k][j]));
+                    }//innermost for
+                }//inner for
+            }//outer for            
+        }//try
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.WARNING, "Adjacency Matrix for Graph2 has Missing Values, Mapping Might not be correct..!!{0}", e);
+        }//catch
+        catch(Exception e)
+        {
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.WARNING, "Unexpected Error Occurred, Mapping Might not be correct..!!{0}", e);
+        }//catch
+        finally{
+            return adj;
+        }//Finally
+
     }//closure
     
     /**
