@@ -141,13 +141,13 @@ public class Test {
 
             System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
             System.out.println();
-            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPaths();
-            //System.out.println(mps + "\n");
-            for(MatchedIOPaths.PathMatches mp : mps)
-            {
-                System.out.print("\t" + mp.getIpName() + "-->" + mp.getOpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
-            }
-            System.out.println("\n");
+//            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPaths();
+//            //System.out.println(mps + "\n");
+//            for(MatchedIOPaths.PathMatches mp : mps)
+//            {
+//                System.out.print("\t" + mp.getIpName() + "-->" + mp.getOpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
+//            }
+//            System.out.println("\n");
         }
         
 

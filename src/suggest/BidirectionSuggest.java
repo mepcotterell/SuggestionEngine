@@ -1,7 +1,7 @@
 package suggest;
 
 import java.util.*;
-import parser.OntologyManager;
+import ontologyManager.OntologyManager;
 import util.MatchedIOPaths;
 import util.WebServiceOpr;
 import util.WebServiceOprScore;

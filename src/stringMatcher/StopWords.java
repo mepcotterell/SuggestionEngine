@@ -1,13 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package stringMatcher;
 
-/**
- *
- * @author alok
- */
 public class StopWords {
     
     static String[] stopWords = {

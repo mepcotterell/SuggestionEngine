@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package stringMatcher;
 
@@ -12,6 +8,7 @@ import java.util.TreeSet;
  * This algorithm is based on Dice Algorithm
  * Reference: http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Dice's_coefficient
  * @author Akshay Choche
+ * @see LICENSE (MIT style license file).
  * @version 1.0
  */
 public class CompareDefination {

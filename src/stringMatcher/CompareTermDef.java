@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package stringMatcher;
 
@@ -11,6 +7,7 @@ import java.util.StringTokenizer;
  * This class is used to compare a Definition with a Term and return a score
  * @author Akshay Choche
  * @version 1.0
+ * @see LICENSE (MIT style license file).
  */
 public class CompareTermDef {
 

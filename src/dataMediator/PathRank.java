@@ -2,12 +2,12 @@
 package dataMediator;
 
 import java.util.*;
-import ontology.similarity.ConceptSimilarity;
+import ontologySimilarity.ConceptSimilarity;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.semanticweb.owlapi.model.OWLClass;
 import parser.DmParser;
-import parser.OntologyManager;
+import ontologyManager.OntologyManager;
 import parser.SawsdlParser;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
 import util.*;

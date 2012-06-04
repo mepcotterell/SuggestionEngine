@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
  *
  * @author Akshay Choche
  * @version 1.0
+ * @see LICENSE (MIT style license file).
  */
 public class RemoveStopWords
 {
@@ -36,7 +37,7 @@ public class RemoveStopWords
 
     public static void main(String[] args)
     {
-        System.out.println("Program [The BLAST program to be used for the Sequence Similarity Search.]exp -" + ": " + RemoveStopWords.removeStop("Program [The BLAST program to be used for the Sequence Similarity Search.] exp -"));
+        System.out.println("Program [ The BLAST program to be used for the Sequence Similarity Search.]exp -" + ": " + RemoveStopWords.removeStop("Program [ The BLAST program to be used for the Sequence Similarity Search.] exp -"));
         System.out.println("The status of the job (FINISHED, ERROR, RUNNING, NOT_FOUND or FAILURE)" + ": " + RemoveStopWords.removeStop("The status of the job (FINISHED, ERROR, RUNNING, NOT_FOUND or FAILURE)"));
     }//main
 }//RemoveStopWords

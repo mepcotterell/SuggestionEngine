@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package stringMatcher;
 
 /**
@@ -10,6 +5,7 @@ package stringMatcher;
  * References: http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance
  * @author Akshay Choche
  * @version 1.0
+ * @see LICENSE (MIT style license file).
  */
 public class CompareTerm {
     

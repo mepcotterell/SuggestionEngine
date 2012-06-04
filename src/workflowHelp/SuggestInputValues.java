@@ -8,7 +8,7 @@ import org.jdom.Namespace;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
-import parser.OntologyManager;
+import ontologyManager.OntologyManager;
 import parser.SchemaParser;
 
 /**

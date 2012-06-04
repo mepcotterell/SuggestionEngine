@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.jdom.Element;
 
-import ontology.similarity.Hungarian;
+import ontologySimilarity.Hungarian;
 import parser.MsIODGparser;
 import parser.SawsdlParser;
 

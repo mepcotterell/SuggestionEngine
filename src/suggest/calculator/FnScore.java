@@ -2,9 +2,9 @@ package suggest.calculator;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ontology.similarity.ConceptSimilarity;
+import ontologySimilarity.ConceptSimilarity;
 import org.semanticweb.owlapi.model.OWLClass;
-import parser.OntologyManager;
+import ontologyManager.OntologyManager;
 import parser.SawsdlParser;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
 import util.WebServiceOpr;

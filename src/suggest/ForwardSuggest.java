@@ -1,7 +1,7 @@
 package suggest;
 
 import java.util.*;
-import parser.OntologyManager;
+import ontologyManager.OntologyManager;
 import suggest.calculator.DmScore;
 import suggest.calculator.FnScore;
 import suggest.calculator.PeScore;
