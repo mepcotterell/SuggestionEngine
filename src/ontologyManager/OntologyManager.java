@@ -43,6 +43,11 @@ public class OntologyManager {
      */
     private OWLOntology ontology;
     
+    public  Map<String, OWLOntology> getOntologyInstances()
+    {
+        return ontologyInstances;
+    }
+    
     public static OntologyManager getInstance(String owlURI) {
         
         OntologyManager manager = null;
@@ -340,14 +345,23 @@ public class OntologyManager {
     } // getDirectSuperExpression
 
     /**
-     * Return true if cls1 has cls2 as a super class.
+     * Returns if OWLClass2 is a super class of OWLClass1
      * @param cls1
      * @param cls2
      * @return 
      */
-    public boolean hasSuperClass(OWLClass cls1, OWLClass cls2) {
-        return (getSuperClasses(cls1).contains(cls2));
-    }
+    public boolean hasSuperClass(OWLClass cls1, OWLClass cls2) 
+    {
+        
+        ArrayList<Set<OWLClass>> class1SuprClList = getSuperClasses(cls1);
+        Set<OWLClass> class1SuprClSet = new HashSet<OWLClass>();
+
+        for(Set<OWLClass> ss : class1SuprClList)
+            for(OWLClass c : ss)
+                class1SuprClSet.add(c);
+                
+        return (class1SuprClSet.contains(cls2));
+    }//hasSuperClass
 
     /***********************************************************************************
      * Get the super classes of the class cls in hierarchy.
@@ -361,16 +375,20 @@ public class OntologyManager {
         if (cls == null) {
             return outCeptSuperClz;
         }
-        if (SuperClaz.containsKey(cls.getIRI())) {
+        if (SuperClaz.containsKey(cls.getIRI())) 
+        {
             return SuperClaz.get(cls.getIRI());
-        } else {
+        } 
+        else 
+        {
             // get every super class of outConceptClass
             Set<OWLClass> temp = getDirectSuperClasses(cls);
-            while (temp.size() != 0) {
+            while (!temp.isEmpty()) 
+            {
                 Set<OWLClass> nextLevel = new HashSet<OWLClass>();
                 for (OWLClass owlCls : temp) {
                     Set<OWLClass> temp1 = getDirectSuperClasses(owlCls);
-                    if (temp1.size() != 0) {
+                    if (!temp1.isEmpty()) {
                         Iterator<OWLClass> iterator = temp1.iterator();
                         while (iterator.hasNext()) {
                             nextLevel.add(iterator.next());
@@ -1005,10 +1023,10 @@ public class OntologyManager {
             Set<OWLPropertyRange> owl_desc = prop.getRanges(ont.next());
             for (OWLPropertyRange desc : owl_desc) {
                 
-//                if (!desc.isAnonymous()) {
-//                    owl_class.add(desc.asOWLClass());
-//                }
-                
+                for(OWLClass c : desc.getClassesInSignature())
+                {
+                    owl_class.add(c);
+                }
                 for (OWLDataProperty dprop : desc.getDataPropertiesInSignature()) {
                     owl_class.add(dprop.asOWLClass());
                 }
@@ -1021,6 +1039,7 @@ public class OntologyManager {
         }
         return owl_class;
     } // getRanges
+
 
     /**
      * Returns the local class name
@@ -1046,48 +1065,53 @@ public class OntologyManager {
      * @param cls
      * @return String: label
      */
-    public String getClassLabel(OWLClass cls) {
-        String rval = "";
-        if (cls == null) {
-            return rval;
-        }
+    public String getClassLabel(OWLClass cls) 
+    {
+        String classLabel = "";
+        if (cls == null) return classLabel;
         
         OWLDataFactory df = manager.getOWLDataFactory();
-        
         OWLAnnotationProperty label =  df.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_LABEL.getIRI());
         
-        for (OWLAnnotation annotation : cls.getAnnotations(ontology, label)) {
-            if (annotation.getValue() instanceof OWLLiteral) {
-                OWLLiteral val = (OWLLiteral) annotation.getValue();
-                rval = val.getLiteral();
-            }
-        }
+        //Itrate over all the ontologies loaded, as the class can be present in an 
+        //imported Ontology that has different Name Space
+        for (OWLOntology o : OntologyManager.ontologyInstances.values())
+            for (OWLAnnotation annotation : cls.getAnnotations(o, label)) 
+            {
+                if (annotation.getValue() instanceof OWLLiteral) 
+                {
+                    OWLLiteral val = (OWLLiteral) annotation.getValue();
+                    classLabel = val.getLiteral();
+                    if(classLabel != null || !classLabel.equals("")) break;
+                }//if
+            }//for
         
-        return rval;
+        return classLabel;
+    
     } // getClassLabel
 
-    public String getPropertyLabel(OWLProperty p) {
-       
-        String rval = "";
-        
-        if (p == null) {
-            return rval;
-        }
-        
+    public String getPropertyLabel(OWLProperty p) 
+    {
+
+        String propLabel = "";        
+        if (p == null) return propLabel;
+
         OWLDataFactory df = manager.getOWLDataFactory();
-        
-        OWLAnnotationProperty label =  df.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_LABEL.getIRI());
+        IRI labelIRI = OWLRDFVocabulary.RDFS_LABEL.getIRI();
+        OWLAnnotationProperty label =  df.getOWLAnnotationProperty(labelIRI);
         
         for (OWLOntology o : OntologyManager.ontologyInstances.values()) {
             for (OWLAnnotation annotation : p.getAnnotations(o, label)) {
                 if (annotation.getValue() instanceof OWLLiteral) {
                     OWLLiteral val = (OWLLiteral) annotation.getValue();
-                    rval = val.getLiteral();
+                    propLabel = val.getLiteral();
                 }
             }
-        }
+        }//for
         
-        return rval;
+        if (propLabel == null || propLabel.equals("")) propLabel = p.getIRI().toString();
+        
+        return propLabel;
     } // getPropertyLabel
     
     /**
@@ -1122,7 +1146,7 @@ public class OntologyManager {
      * @param OWLClass
      * @return 
      */
-    public String getClassDefinition(OWLClass cls) {
+    public String getDefinition(OWLClass cls) {
 
         String definition = "";
         String annoProp;
@@ -1152,8 +1176,50 @@ public class OntologyManager {
             }
         }
         return definition;
-    } // getClassDefinition
+    } // getDefinition
 
+        /**
+     * Returns the value of the annotation Property 'Definition' for the Given OWL Property
+     * @param OWLClass
+     * @return 
+     */
+    public String getDefinition(OWLProperty p) {
+
+        String definition = "";
+        String annoProp;
+
+        //Reading Annotation Property from the Properties file
+        Properties prop = new Properties();
+        try{
+            prop.load(getClass().getResourceAsStream("ontologySimilarity.properties"));
+            annoProp = prop.getProperty("definition");
+        }//try
+        catch(Exception e)
+        {
+            System.out.println("Could not load Properties file : "+e);
+            annoProp = "http://purl.obolibrary.org/obo/IAO_0000115";
+        }//catch
+        if (annoProp == null || annoProp.equals(""))
+            annoProp = "http://purl.obolibrary.org/obo/IAO_0000115";
+        //----------------------------------------------------------------------
+        
+        OWLDataFactory df = manager.getOWLDataFactory();
+        OWLAnnotationProperty label = df.getOWLAnnotationProperty(IRI.create(annoProp));
+
+        for (OWLOntology o : OntologyManager.ontologyInstances.values()) 
+            for (OWLAnnotation annotation : p.getAnnotations(o, label)) 
+            {
+                if (annotation.getValue() instanceof OWLLiteral) 
+                {
+                    OWLLiteral val = (OWLLiteral) annotation.getValue();
+                    definition = val.getLiteral();
+                }
+            }
+        if (definition == null) definition = "";
+        
+        return definition;
+    } // getDefinition
+    
     /**
      * Returns the value of the annotation Property 'Usage' for the Given OWL class
      * 
@@ -1190,7 +1256,7 @@ public class OntologyManager {
             }
         }
         return rval;
-    } // getClassDefinition
+    } // getDefinition
     
         
     /**
@@ -1228,7 +1294,7 @@ public class OntologyManager {
             }
         }
         return classDescription;
-    } // getClassDefinition
+    } // getDefinition
     
     /***********************************************************************************
      * Main method for testing.

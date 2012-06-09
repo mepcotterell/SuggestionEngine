@@ -85,7 +85,7 @@ public class GetDocumentation
                                     paramIRI = attribute.getValue();
                                     OntologyManager parser = OntologyManager.getInstance(owlURI);
                                     OWLClass conceptClass = parser.getConceptClass(paramIRI);
-                                    String OntoDef = parser.getClassDefinition(conceptClass);
+                                    String OntoDef = parser.getDefinition(conceptClass);
                                     String usage = parser.getClassUsage(conceptClass);
                                     String description = parser.getClassDescription(conceptClass);
 

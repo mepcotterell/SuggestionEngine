@@ -94,14 +94,16 @@ public class OntologySimilarityImpl implements OntologySimilarity {
         String class1 = "http://purl.obolibrary.org/obo/OBIws_0000100";
         String class2 = "http://purl.obolibrary.org/obo/OBIws_0000034 ";
         String owlURI = "http://obi-webservice.googlecode.com/svn/trunk/ontology/view/webService.owl";
-        
-        double score = OntSim.getConceptSimScore(class2, class1, owlURI);
-        out.println("Score = "+ score);
+        double score;
+        //score = OntSim.getConceptSimScore(class2, class1, owlURI);
+        //out.println("Score = "+ score);
 
+
+        
         OntologyManager parser = OntologyManager.getInstance(owlURI);
         
         OWLClass OWLclass1 = parser.getConceptClass(class1);
-        //score = OntSim.getConceptSimScore(OWLclass1, null, owlURI);
+//        score = OntSim.getConceptSimScore(OWLclass1, null, owlURI);
         //out.println("Score = "+ score);    
     
     }//main

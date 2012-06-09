@@ -7,6 +7,7 @@ import ontologyManager.OntologyManager;
 import stringMatcher.*;
 import org.semanticweb.owlapi.model.*;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.*;
+import static java.lang.System.out;
 
 /**
  * @author Rui Wang, Michael Cotterell, Alok Dhamanaskar 
@@ -16,7 +17,11 @@ import uk.ac.shef.wit.simmetrics.similaritymetrics.*;
  */
 public class ConceptSimilarity {
     
-    private final static Logger log = Logger.getLogger(OntologySimilarityImpl.class.getName());
+    //Logger For this class
+    private static final  Logger log = Logger.getLogger(OntologySimilarityImpl.class.getName());
+    //To disply Steps in Calculation of Sub-scores set debug to Level.INFO else set to Level.FINE
+    static final Level debug = Level.INFO;
+
 
     /** 
      * Computes the syntactic similarity between two concepts in the ontology, considers labels, classNames and definitions.
@@ -47,8 +52,8 @@ public class ConceptSimilarity {
             classNameWt = 0.8;
         }//if
         
-        String class1Definition = parser.getClassDefinition(owlClass1);
-        String class2Definition = parser.getClassDefinition(owlClass2);
+        String class1Definition = parser.getDefinition(owlClass1);
+        String class2Definition = parser.getDefinition(owlClass2);
         
         //Qgrams Similarity For the Labels and Names
         double scoreName = mc.getSimilarity(className1, className2);
@@ -58,7 +63,8 @@ public class ConceptSimilarity {
         double scoreTerm = (classNameWt * scoreName) + (labelWt * scoreLabel);
 
         double score = (scoreDef * 0.7) + (scoreTerm * 0.3);
-        
+        log.log(debug, "Syntactic Similarity Score : " + score);
+
         return score;
         
     }// synSim
@@ -74,39 +80,45 @@ public class ConceptSimilarity {
     {
         double weightSyn  = 0.2;
         double weightProp = 0.4; 
-        double weightCvrg = 0.4;
-            
+        double weightCvrg = 0.4;       
+    
         // syntactic similarity
         double synScore = ConceptSimilarity.synSim(owlClass1, owlClass2, owlURI);
-        
+        out.println("synScore = " + synScore );
+
         // property similarity
         double propScore = PropertySimilarity.getPropertySimScore(owlClass1, owlClass2, owlURI);
+        out.println("propScore = " + propScore );
 
         // coverage similarity
         double cvrgScore = CoverageSimilarity.getCvrgSimScore(owlClass1, owlClass2, owlURI);
-        
+        out.println("cvrgScore = " + cvrgScore );
+
         // weighted sum
         double score = (weightSyn * synScore) + (weightProp * propScore) + (weightCvrg * cvrgScore);
         
         return score;
         
-    } // getConceptSimScore
+    }// getConceptSimScore
     
 
     public static void main(String[] args) 
     {
         //Test Code
-        String class1 = "http://purl.obolibrary.org/obo/OBIws_0000100";
-        String class2 = "http://purl.obolibrary.org/obo/OBIws_0000034";
-        String owlURI = "http://obi-webservice.googlecode.com/svn/trunk/ontology/view/webService.owl";        
+        String class1 = "http://purl.obolibrary.org/obo/OBIws_0000043";
+        String class2 = "http://purl.obolibrary.org/obo/OBIws_0000084";
+        String owlURI = "http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";
         OntologyManager parser = OntologyManager.getInstance(owlURI);
         
         OWLClass cls1 = parser.getConceptClass(class1);
         OWLClass cls2 = parser.getConceptClass(class2);
+
+        out.println("Finding Concept similarity between\nClass 1 - " + parser.getClassLabel(cls1) +" : "+class1
+                +"\nClass 2 - "+ parser.getClassLabel(cls2)+" : "+class2);
         
         double score = ConceptSimilarity.getConceptSimScore(cls1, cls2, owlURI);
         
-        System.out.println("overall concept similarity score = " + score);
+        out.println("Overall Concept Similarity score = " + score);
         
     } // main
 }//ConceptSimilarity

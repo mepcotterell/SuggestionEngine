@@ -78,4 +78,11 @@ public class DebuggingUtils
 
         return mean;
     }//generalizedMean
+    
+    public static void main(String[] args)
+    {
+        System.out.println("mean = " + generalizedMean(new double[]{0.3,0.3,1}, 3));
+    
+    }//main
+    
 }

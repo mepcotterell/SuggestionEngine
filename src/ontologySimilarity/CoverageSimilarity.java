@@ -1,18 +1,19 @@
 package ontologySimilarity;
 
 import ontologyManager.OntologyManager;
-import java.util.ArrayList;
 import java.util.HashSet;
-
 import java.util.Set;
 import org.semanticweb.owlapi.model.*;
+import static java.lang.System.out;
 
 /**
  * 
- * @author Micael Cotterell
+ * @author Michael Cotterell
+ * @author Alok Dhamanaskar
+ * 
  * @see LICENSE (MIT style license file). 
  * 
- * The class has methods required to calculate Coverage Similarity sub-score
+ * The class has methods required to calculate Coverage Similarity sub-score.
  */
 
 public class CoverageSimilarity {
@@ -21,7 +22,8 @@ public class CoverageSimilarity {
     public static final double LAMDA_2 = 0.50;
     public static final double LAMDA_3 = 0.75;
 
-    /** Returns the length of the path between two concepts in the ontology.
+    /** 
+     * Returns the length of the path between two concepts in the ontology.
      * @param Cst The first class
      * @param Ccs The second class
      * @param owlURI The String URI to the OWL ontology
@@ -73,7 +75,8 @@ public class CoverageSimilarity {
     } // getConceptPathLength
     
     /**
-     * Returns the Coverage Similarity sub-score depending upon the relative position of two terms in the Ontology
+     * Returns the Coverage Similarity sub-score depending upon the relative position of the 
+     * two terms in the Ontology.
      * @param owlClass1
      * @param owlClass2
      * @param owlURI
@@ -83,39 +86,50 @@ public class CoverageSimilarity {
     {
 
         OntologyManager parser = OntologyManager.getInstance(owlURI);
+        int x = getConceptPathLength(owlClass1, owlClass2, owlURI);
+        double value;
 
-        OWLClass PofCcs = new ArrayList<OWLClass>(parser.getSuperClasses(owlClass2).get(0)).get(0);
-               
-        int x = 0;
-        double value = 0.0;
 
-        // Case 1: The two classes are equivalent
-        if (parser.getEquivalentClasses(owlClass1).contains(owlClass2)) {
-
+        if (parser.getEquivalentClasses(owlClass1).contains(owlClass2)) 
+        {
+           // Case 1: The two classes are equivalent
             value = 1.0;
-
-        // Case 2: This class is an ancestor of that class.
-        } else if (parser.getSuperClasses(owlClass2).contains(owlClass1)) {
-
-            x = getConceptPathLength(owlClass1, owlClass2, owlURI);
+        }
+        else if (parser.hasSuperClass(owlClass2, owlClass1)) 
+        {
+            // Case 2: This class is an ancestor of that class.
             value = Math.pow(Math.E, -LAMDA_1 * x);
-        
-        // Case 3: That class is an ancestor of this class.
-        } else if (parser.getSuperClasses(owlClass1).contains(owlClass2)) {
-        
-            x = getConceptPathLength(owlClass1, owlClass2, owlURI);
+        }
+        else if (parser.hasSuperClass(owlClass1, owlClass2)) 
+        {
+            // Case 3: That class is an ancestor of this class.
+            value = Math.pow(Math.E, -LAMDA_1 * x);
+        } 
+        else 
+        {
+            //Case 4: Everything else
             value = Math.pow(Math.E, -LAMDA_2 * x);
-        
-        // Case 4: Everything else
-        } else {
-
-            x = getConceptPathLength(owlClass1, owlClass2, owlURI);
-            value = Math.pow(Math.E, -LAMDA_3 * x);
-            
-        } // if
+        }// else
         
         return value;
         
     } // getCvrgSimScore
+    
+    public static void main(String[] args)
+    {
+        //Test code
+        String class1 = "http://purl.obolibrary.org/obo/OBIws_0000040";
+        String class2 = "http://purl.obolibrary.org/obo/OBIws_0000036";
+        String owlURI = "http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";
+        OntologyManager parser = OntologyManager.getInstance(owlURI);
+        
+        OWLClass cls1 = parser.getConceptClass(class1);
+        OWLClass cls2 = parser.getConceptClass(class2);
+        
+        out.println("CoverageSimilarity score between "
+                + parser.getClassLabel(cls1) + " and " +parser.getClassLabel(cls2) + " = "
+                + CoverageSimilarity.getCvrgSimScore(cls1, cls2, owlURI));
+    
+    }//main
 
 } // CoverageSimilarity

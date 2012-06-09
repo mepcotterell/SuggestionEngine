@@ -1,80 +1,35 @@
 package ontologySimilarity;
 
-import ontologyManager.Restriction;
 import ontologyManager.OntologyManager;
 import static ontologySimilarity.Hungarian.hungarian;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.*;
 
 import org.semanticweb.owlapi.model.*;
+import stringMatcher.CompareDefination;
 
 /**
- * 
- * @author Rui Wang, Michael Cotterell, Alok Dhamanaskar
+ * @author Alok Dhamanaskar
+ * @author Rui Wang, Michael Cotterell
  * The class has methods required to calculate Property similarity between two concepts in the Ontology
  * 
  */
 public class PropertySimilarity {
 
-    /** Returns the ratio of common concepts in between the ranges of the ST and
-     *  CS properties.
-     * 
+    private final static Logger log = Logger.getLogger(OntologySimilarityImpl.class.getName());
+    static final Level debug = ConceptSimilarity.debug;
+
+    /** 
+     * Returns the cardinality similarity between two properties.
      * @param Pst
      * @param Pcs
      * @return
      */
-    private static double propSynSim (OWLProperty Pst, OWLProperty Pcs, String owlURI) 
-    {
-        double common = 0.0;
-
-        OntologyManager parser = OntologyManager.getInstance(owlURI);
-
-        Set<OWLClass> PstRangeSet = parser.getRanges(Pst);
-        Set<OWLClass> PcsRangeSet = parser.getRanges(Pcs);
-
-        Set<OWLProperty> PstRangePropSet = new HashSet<OWLProperty>();
-        Set<OWLProperty> PcsRangePropSet = new HashSet<OWLProperty>();
-
-        for (OWLClass cls : PstRangeSet) {
-            Set<OWLProperty> propList = parser.getProperties(cls);
-            PstRangePropSet.addAll(propList);
-        } // for
-
-        for (OWLClass cls : PcsRangeSet) {
-            Set<OWLProperty> propList = parser.getProperties(cls);
-            PcsRangePropSet.addAll(propList);
-        } // for
-
-        for (OWLProperty PstRangeProp : PstRangePropSet) {
-            for (OWLProperty PcsRangeProp : PcsRangePropSet) {
-                if (parser.getLocalPropertyName(PstRangeProp).equalsIgnoreCase(parser.getLocalPropertyName(PcsRangeProp))) {
-                    common++;
-                } // if
-            } // for
-        } // for
-
-        double propST = PstRangePropSet.size();
-
-        if (propST == 0) {
-            return 1;
-        } // if
-
-        double score = common / propST;
-
-        return score;
-
-    } // propSynSim
-
-    /** Returns the cardinality similarity between two properties.
-     * @param Pst
-     * @param Pcs
-     * @return
-     */
-    private static double cardinalitySim (OWLProperty Pst, OWLProperty Pcs, String owlURI)
+    static double cardinalitySim (OWLProperty Pst, OWLProperty Pcs, String owlURI)
     {
         OntologyManager parser = OntologyManager.getInstance(owlURI);
 
@@ -103,257 +58,155 @@ public class PropertySimilarity {
         
     } // cardinalitySim
 
-    /** 
-     * Returns the range similarity between two properties.
-     * @param Pst
-     * @param Pcs
-     * @param Cst
-     * @param Ccs
+       
+    /** Return the matching score between two properties.
+     * @param prop1
+     * @param prop2
+     * @param class1
+     * @param class2
      * @return
      */
-    private static double rangeSim (OWLProperty Pst, OWLProperty Pcs, OWLClass Cst, OWLClass Ccs, String owlURI)
+    private static double propMatch(OWLProperty prop1, OWLProperty prop2, OWLClass class1, OWLClass class2, String owlURI) 
+    {
+        double cardSim;
+        double rangeSim;
+        double synSim;
+        double propMatchScore;
+        OntologyManager parser = OntologyManager.getInstance(owlURI);
+        
+        //Calculating SynSim 
+        //Will be 1, if its the same Property, but that doesnt Mean propertyMatch = 1
+        synSim = synSim(prop1, prop2, owlURI);
+        rangeSim = PropertyRangeSimilarity.rangeSim(prop1, prop2, class1,class2, owlURI);
+
+        propMatchScore = (0.5 * rangeSim) + (0.5 * synSim);
+
+        //I think the only place considering cardinality would make sence is 
+        //when comparing P1 - P2 s.t. both have restrictions on them
+        cardSim = cardinalitySim(prop1, prop2, owlURI);
+        
+        log.log(debug,"Matching properties \nProp 1 : " + parser.getPropertyLabel(prop1) + 
+                "\nProp2 : " +parser.getPropertyLabel(prop2) + " - Matched with : " + propMatchScore);
+
+        return propMatchScore;
+
+    } // propMatch
+
+    /** 
+     * Returns the property similarity between two OWL classes.
+     * @param OWLclass1
+     * @param OWLclass2
+     * @return Property Similarity sub score
+     */
+    public static double getPropertySimScore(OWLClass class1, OWLClass class2, String owlURI) 
     {
         OntologyManager parser = OntologyManager.getInstance(owlURI);
+        log.log(debug, "Calculating Property Similarity");
 
-        Set<OWLClass>    PstRangeSet            = new HashSet<OWLClass>();
-        Set<OWLClass>    PstRestrictionClassSet = new HashSet<OWLClass>();
-        Set<Restriction> CstRestrictions        = Restriction.getRestrictions(Cst, owlURI);
+        //Getting properties of class 1
+        Set<OWLProperty> class1PropSet = parser.getProperties(class1); 
+        List<OWLProperty> class1PropList = new ArrayList<OWLProperty>(class1PropSet);
+        int class1propSize = class1PropSet.size();
+ 
+        //------------------------------------------------------------------------------
+        String tempLog = "";
+        for (OWLProperty p : class1PropList )
+            if(parser.getPropertyLabel(p)==null || parser.getPropertyLabel(p).equals(""))
+                tempLog += p.toString() + "\n";
+            else
+            tempLog+=parser.getPropertyLabel(p) + "\n";
+        log.log(debug, "Properties of class 1\n" + tempLog);
+        //------------------------------------------------------------------------------        
         
-        for (Restriction r : CstRestrictions) {
-            if (r.getClassTypeName().equalsIgnoreCase("ObjectAllValuesFrom")) {
-                PstRestrictionClassSet.addAll(r.getCls());
-            }
-        }
+        //Getting properties of class 2        
+        Set<OWLProperty> class2PropSet = parser.getProperties(class2);
+        List<OWLProperty> class2PropList = new ArrayList<OWLProperty>(class2PropSet);
+        int class2PropSize = class2PropSet.size();
         
-        if (PstRestrictionClassSet.isEmpty()) {
-            PstRangeSet = parser.getRanges(Pst);
-        } else {
-            PstRangeSet = PstRestrictionClassSet;
-        }
-        
-        Set<OWLClass>    PcsRangeSet            = new HashSet<OWLClass>();
-        Set<OWLClass>    PcsRestrictionClassSet = new HashSet<OWLClass>();
-        Set<Restriction> CcsRestrictions        = Restriction.getRestrictions(Ccs, owlURI);
-        
-        for (Restriction r : CcsRestrictions) {
-            if (r.getClassTypeName().equalsIgnoreCase("ObjectAllValuesFrom")) {
-                PstRestrictionClassSet.addAll(r.getCls());
-            }
-        }
-        
-        if (PcsRestrictionClassSet.isEmpty()) {
-            PcsRangeSet = parser.getRanges(Pcs);
-        } else {
-            PcsRangeSet = PcsRestrictionClassSet;
-        }
-
-        Double valueToReturn = new Double(0);
-        
-        if (PstRangeSet == null || PcsRangeSet == null) {
-            return 0;
-        } else if (PstRangeSet.isEmpty() || PcsRangeSet.isEmpty()) {
-            return 0;
-        } else if (Pst.isOWLDataProperty() && Pcs.isOWLDataProperty()) {
-
-            double sum = 0.0;
-            double n = PstRangeSet.size() * PcsRangeSet.size();
-
-            for (OWLClass PstRangeCls : PstRangeSet) {
-                for (OWLClass PcsRangeCls : PcsRangeSet) {
-
-                    String left = parser.getLocalClassName(PstRangeCls);
-                    String right = parser.getLocalClassName(PcsRangeCls);
-
-                    if (left.equalsIgnoreCase("decimal")) {
-                        sum += 1;
-                    } else if (right.equalsIgnoreCase("long") && left.equalsIgnoreCase("decimal")) {
-                        sum += .75;
-                    } else if (right.equalsIgnoreCase("long") && left.equalsIgnoreCase("int")) {
-                        sum += 1;
-                    } else if (right.equalsIgnoreCase("int") && left.equalsIgnoreCase("string")) {
-                        sum += 1;
-                    } else if (right.equalsIgnoreCase("int") && left.equalsIgnoreCase("long")) {
-                        sum += .66;
-                    } else if (right.equalsIgnoreCase("int") && (left.equalsIgnoreCase("decimal") || left.equalsIgnoreCase("float") || left.equalsIgnoreCase("double"))) {
-                        sum += .33;
-                    } else if (right.equalsIgnoreCase("string")) {
-                        sum += .5;
-                    } else {
-                        sum += 0;
-                    } // if
-
-                } // for
+        //------------------------------------------------------------------------------        
+        tempLog = "";
+        for (OWLProperty p : class2PropList )
+            if(parser.getPropertyLabel(p)==null || parser.getPropertyLabel(p).equals(""))
+                tempLog += p.toString() + "\n";
+            else
+            tempLog+=parser.getPropertyLabel(p) + "\n";
+        log.log(debug, "Properties of class 2\n" + tempLog);   
+        //------------------------------------------------------------------------------        
                 
+        if (class1propSize == 0 || class2PropSize == 0)
+            return 0;
+
+        double size = (class1propSize < class2PropSize)? class1propSize : class2PropSize; 
+        
+        double[][] matrix;
+        
+        if (class1propSize > class2PropSize) 
+        {
+            matrix = new double[class2PropSize][class1propSize];
+            for (int i = 0; i < class2PropList.size(); i++) 
+            {
+                OWLProperty p1 = class2PropList.get(i);
+                for (int j = 0; j < class1PropList.size(); j++) 
+                {
+                    OWLProperty p2 = class1PropList.get(j);
+                    double value = propMatch(p1, p2, class1, class2, owlURI);
+                    matrix[i][j] = value;
+                }//inner for
+            }//outer for
+        }//if
+        else 
+        {
+            matrix = new double[class1propSize][class2PropSize];
+            for (int i = 0; i < class1PropList.size(); i++) 
+            {
+                OWLProperty p1 = class1PropList.get(i);
+                for (int j = 0; j < class2PropList.size(); j++) 
+                {
+                    OWLProperty p2 = class2PropList.get(j);
+                    double value = propMatch(p1, p2, class1, class2, owlURI);
+                    matrix[i][j] = value;
+                } // for
             } // for
+        }//else
 
-            double average = sum / n;
-
-            valueToReturn = average;
-
-        } else if (Pst.isOWLObjectProperty() && Pcs.isOWLObjectProperty()) {
-            
-            double w12 = 0.5;
-            double w13 = 0.5;
-            
-            double val = (w12 * synSim(Pst, Pcs, owlURI) + w13 * propSynSim(Pst, Pcs, owlURI)) / (w12 + w13);
-            
-            valueToReturn = val;
-            
-        } else {
-            
-            valueToReturn = synSim(Pcs, Pst, owlURI);
-            
-        } // if
+        return hungarian(matrix) / size;
         
-        return valueToReturn;
-        
-    } // rangeSim
+    }// getPropertySimScore
 
-    /** Compare the syntactic similarity between two two properties.
-     * @param Pst
-     * @param Pcs
-     * @return
+      
+    /** 
+     * Calculates and returns a score denoting the syntactic similarity between two properties.
+     * @param property1
+     * @param property2
+     * @return Syntactic similarity Score
      */
-    private static double synSim(OWLProperty Pst, OWLProperty Pcs, String owlURI) 
+     static double synSim(OWLProperty prop1, OWLProperty prop2, String owlURI) 
     {
+        if (prop1.getIRI().equals(prop2.getIRI()))
+            return 1.00;
         OntologyManager parser = OntologyManager.getInstance(owlURI);
         
         QGramsDistance mc = new QGramsDistance();
 
-        String PstLabel = parser.getPropertyLabel(Pst);
-        String PcsLabel = parser.getPropertyLabel(Pcs);
+        String prop1Label = parser.getPropertyLabel(prop1);
+        String prop2Label = parser.getPropertyLabel(prop2);
         
-        // TODO: Need to compare definitions.
+        String prop1Def = parser.getDefinition(prop1);
+        String prop2Def = parser.getDefinition(prop2);
         
-        double scoreLabel = mc.getSimilarity(PstLabel, PcsLabel);
+        double scoreDef = CompareDefination.getSimilarity(prop1Def, prop2Def);       
+        double scoreLabel = mc.getSimilarity(prop1Label, prop2Label);
         
-        return scoreLabel;
-        
-    } // synSim
-    
-    private static double restrictionMatch(OWLClass Cst, OWLClass Ccs, String owlURI) 
-    {
-        OntologyManager parser = OntologyManager.getInstance(owlURI);
-        
-        Set<Restriction> cstRestrictions = Restriction.getRestrictions(Cst, owlURI);
-        Set<Restriction> ccsRestrictions = Restriction.getRestrictions(Ccs, owlURI);
-        
-        for (Restriction cstRestriction: cstRestrictions) {
-            for (Restriction ccsRestriction: ccsRestrictions) {            
-                
-                double synSim = PropertySimilarity.synSim(cstRestriction.getProp(), ccsRestriction.getProp(), owlURI);
-                
-                // cstRestriction.getClassTypeName();
-                
-            } // for
-        } // for
-        
-        return 0.0;
-        
-    } // restrictionMath
-    
-    /** Return the matching score between two properties.
-     * @param Pst
-     * @param Pcs
-     * @param Cst
-     * @param Ccs
-     * @return
-     */
-    private static double propMatch(OWLProperty Pst, OWLProperty Pcs, OWLClass Cst, OWLClass Ccs, String owlURI) 
-    {
-        OntologyManager parser = OntologyManager.getInstance(owlURI);
-        
-        double c = 1;
-
-        if (!(parser.isInverseFunctional(Pcs) && parser.isInverseFunctional(Pst))) {
-            c = 0.8;
-        } // if
-        
-        if (Pst.getIRI().toString().compareTo(Pcs.getIRI().toString()) == 0) {
-            c = 1.0;
-        } // if
-
-        double rangSim = rangeSim(Pst, Pcs, Cst, Ccs, owlURI);
-        double synSim = synSim(Pst, Pcs, owlURI);
-        
-        // @TODO should we only check cardinality when considering restrictions?
-        double cardSim = cardinalitySim(Pst, Pcs, owlURI);
-        
-        double val = 0.0;
-        
-        if (rangSim == 0) {
-            val = synSim;
-        } else {
-            val = (0.5 * rangSim) + (0.5 * synSim);
-        } // if
-        
-        return c * val;
-
-    } // propMatch
-
-    /** Returns the property similarity between two classes.
-     * @param Cst
-     * @param Ccs
-     * @return
-     * 
-     */
-    public static double getPropertySimScore(OWLClass Cst, OWLClass Ccs, String owlURI) 
-    {
-        OntologyManager parser = OntologyManager.getInstance(owlURI);
-
-        double score = 0.0;
-
-        Set<OWLProperty> CstPropSet = parser.getProperties(Cst); 
-        List<OWLProperty> CstPropList = new ArrayList<OWLProperty>(CstPropSet);
-        int CstPropSize = CstPropSet.size();
-
-        Set<OWLProperty> CcsPropSet = parser.getProperties(Ccs);
-        List<OWLProperty> CcsPropList = new ArrayList<OWLProperty>(CcsPropSet);
-        int CcsPropSize = CcsPropSet.size();
-                
-        if (CstPropSize == 0 || CcsPropSize == 0) {
-            return 0;
+        if (prop1Def.equals("") && prop2Def.equals(""))
+        {
+            //Both the properties do not have a definition
+            return scoreLabel;
         }
-
-        double size = CstPropSize;
-
-        if (CstPropSize > CcsPropSize) {
-            size = CcsPropSize;
+        else
+        {
+            return (0.3 * scoreLabel) + (0.7 * scoreDef);
         }
         
-        double[][] matrix = new double[CstPropSize][CcsPropSize];
-        if (size != 0) {
-            if (CstPropSize > CcsPropSize) {
-                matrix = new double[CcsPropSize][CstPropSize];
-                for (int i = 0; i < CcsPropList.size(); i++) {
-                    //List<Double> inScore = new ArrayList<Double>();
-                    OWLProperty p1 = CcsPropList.get(i);
-                    for (int j = 0; j < CstPropList.size(); j++) {
-                        OWLProperty p2 = CstPropList.get(j);
-                        double value = propMatch(p1, p2, Cst, Ccs, owlURI);
-                        matrix[i][j] = value;
-                    } // for
-                } // for
-            } else {
-                matrix = new double[CstPropSize][CcsPropSize];
-                for (int i = 0; i < CstPropList.size(); i++) {
-                    List<Double> inScore = new ArrayList<Double>();
-                    OWLProperty p1 = CstPropList.get(i);
-                    for (int j = 0; j < CcsPropList.size(); j++) {
-                        OWLProperty p2 = CcsPropList.get(j);
-                        double value = propMatch(p1, p2, Cst, Ccs, owlURI);
-                        matrix[i][j] = value;
-                    } // for
-                } // for
-            } // if
-
-            score = hungarian(matrix) / size;
-            matrix = null;
-
-        } // if
-        
-        return score;
-        
-    } // getPropertySimScore
-
+    }//synSim
+    
 } // PropertySimilarity
