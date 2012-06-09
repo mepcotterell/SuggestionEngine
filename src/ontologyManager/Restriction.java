@@ -13,7 +13,6 @@ import org.semanticweb.owlapi.model.*;
 
 /***************************************************************************************
  * @author Yung Long Lee
- * @author Alok Dhamanaskar
  * @see LICENSE (MIT style license file). 
  * 
  * This class is used to get the OWLClassRestriction, OWLproperty, OWLClass which are

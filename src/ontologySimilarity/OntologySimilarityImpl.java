@@ -16,6 +16,8 @@ import org.semanticweb.owlapi.model.OWLClass;
 public class OntologySimilarityImpl implements OntologySimilarity {
 
     private final static Logger log = Logger.getLogger(OntologySimilarityImpl.class.getName());
+    //To disply Steps in Calculation of Sub-scores set debug to Level.INFO else set to Level.FINE
+    static final Level debug = Level.FINE;
         
     /**
      * Method that, given 2 OWL classes from the same Ontology computes a similarity score
@@ -91,21 +93,60 @@ public class OntologySimilarityImpl implements OntologySimilarity {
         //Test code
         
         OntologySimilarity OntSim= new OntologySimilarityImpl();
-        String class1 = "http://purl.obolibrary.org/obo/OBIws_0000100";
-        String class2 = "http://purl.obolibrary.org/obo/OBIws_0000034 ";
-        String owlURI = "http://obi-webservice.googlecode.com/svn/trunk/ontology/view/webService.owl";
-        double score;
-        //score = OntSim.getConceptSimScore(class2, class1, owlURI);
-        //out.println("Score = "+ score);
-
-
-        
+        //Test Code
+        String class1 = "http://purl.obolibrary.org/obo/OBIws_0000043";
+        String class2 = "http://purl.obolibrary.org/obo/OBIws_0000084";
+        String owlURI = "http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";
         OntologyManager parser = OntologyManager.getInstance(owlURI);
         
-        OWLClass OWLclass1 = parser.getConceptClass(class1);
-//        score = OntSim.getConceptSimScore(OWLclass1, null, owlURI);
-        //out.println("Score = "+ score);    
-    
+        OWLClass cls1 = parser.getConceptClass(class1);
+        OWLClass cls2 = parser.getConceptClass(class2);
+
+        out.println("Finding Concept similarity between\nClass 1 - " + parser.getClassLabel(cls1) +" : "+class1
+                +"\nClass 2 - "+ parser.getClassLabel(cls2)+" : "+class2);
+        
+        double score = OntSim.getConceptSimScore(class1, class2, owlURI);
+        out.println("Overall Concept Similarity score = " + score);
+
+        out.println("\n-----------------------------------------------------------\n");
+        
+        class1 = "http://purl.obolibrary.org/obo/OBIws_0000078";
+        class2 = "http://purl.obolibrary.org/obo/OBI_0000973";
+        cls1 = parser.getConceptClass(class1);
+        cls2 = parser.getConceptClass(class2);
+
+        out.println("Finding Concept similarity between\nClass 1 - " + parser.getClassLabel(cls1) +" : "+class1
+                +"\nClass 2 - "+ parser.getClassLabel(cls2)+" : "+class2);
+        
+        score = OntSim.getConceptSimScore(cls1, cls2, owlURI);
+        out.println("Overall Concept Similarity score = " + score);
+
+        out.println("\n-----------------------------------------------------------\n");
+        
+        class1 = "http://purl.obolibrary.org/obo/OBIws_0000078";
+        class2 = "http://purl.obolibrary.org/obo/OBIws_0000097";
+        cls1 = parser.getConceptClass(class1);
+        cls2 = parser.getConceptClass(class2);
+
+        out.println("Finding Concept similarity between\nClass 1 - " + parser.getClassLabel(cls1) +" : "+class1
+                +"\nClass 2 - "+ parser.getClassLabel(cls2)+" : "+class2);
+        
+        score = OntSim.getConceptSimScore(cls1, cls2, owlURI);
+        out.println("Overall Concept Similarity score = " + score);
+        
+        out.println("\n-----------------------------------------------------------\n");
+        
+        class1 = "http://purl.obolibrary.org/obo/OBIws_0000081";
+        class2 = "http://purl.obolibrary.org/obo/OBIws_0000084";
+        cls1 = parser.getConceptClass(class1);
+        cls2 = parser.getConceptClass(class2);
+
+        out.println("Finding Concept similarity between\nClass 1 - " + parser.getClassLabel(cls1) +" : "+class1
+                +"\nClass 2 - "+ parser.getClassLabel(cls2)+" : "+class2);
+        
+        score = OntSim.getConceptSimScore(cls1, cls2, owlURI);
+        out.println("Overall Concept Similarity score = " + score);
+        
     }//main
 
 

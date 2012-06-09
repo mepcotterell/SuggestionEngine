@@ -13,8 +13,8 @@ import org.semanticweb.owlapi.model.*;
 import stringMatcher.CompareDefination;
 
 /**
- * @author Alok Dhamanaskar
- * @author Rui Wang, Michael Cotterell
+ * 
+ * @author Rui Wang, Michael Cotterell, Alok Dhamanaskar
  * The class has methods required to calculate Property similarity between two concepts in the Ontology
  * 
  */
