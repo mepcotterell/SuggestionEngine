@@ -2,6 +2,8 @@
 package dataMediator;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ontologySimilarity.ConceptSimilarity;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -19,6 +21,10 @@ import util.*;
  * Calculates DmScore and Matched Paths by implementing the PathBased DaataMediation Algorithm
  */
 public class PathRank {
+    
+    private final static Logger log = Logger.getLogger(PathRank.class.getName());
+    //To disply Steps in Calculation of Sub-scores set debug to Level.INFO else set to Level.FINE
+    static final Level debug = Level.SEVERE;
 
     private static Namespace xsdNS = Namespace.getNamespace("http://www.w3.org/2001/XMLSchema");
     private static Namespace wsdlNS = Namespace.getNamespace("wsdl", "http://schemas.xmlsoap.org/wsdl/");
@@ -39,7 +45,6 @@ public class PathRank {
         
         SawsdlParser sp = new SawsdlParser();
         DmParser dmp = new DmParser();
-        //TODO : For Rest Support, Parsers for REST WS will have to be called here
         
         //The MatchedPath Map that would be returned
         Map<WebServiceOprScore_type, WebServiceOprScore_type> matchPathMap 
@@ -129,7 +134,16 @@ public class PathRank {
                     outPathScore = outPathScore + nodeWeights[i] * compare2node(outPath.get(i), inPath.get(i), owlURI, NodeType.NON_LEAF_NODE);
             } // for ends
             
-            path.setScore(outPathScore);
+            if (Double.isNaN(outPathScore)) 
+            {
+                log.log(debug, "The path score for some path Was NAN, substituted with 0.00 Please investigate");
+                path.setScore(0.00);
+            }
+            else
+            {
+                path.setScore(outPathScore);
+            }
+                
             
         } // for ends
         

@@ -42,6 +42,12 @@ public class CompareDefination {
         intersection = new TreeSet(nx);
         intersection.retainAll(ny);
         totcombigrams = intersection.size();
-        return (2*totcombigrams) / (nx.size()+ny.size());
+        
+        double sim = (2*totcombigrams) / (nx.size()+ny.size());
+        
+        if (Double.isNaN(sim)) 
+            return 0.00;
+        else
+            return sim;
     }//getSimilarity
 }

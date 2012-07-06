@@ -81,6 +81,9 @@ public class ConceptSimilarity {
         double weightSyn  = 0.3;
         double weightProp = 0.4; 
         double weightCvrg = 0.3;       
+        
+        if (owlClass1.getIRI() == owlClass2.getIRI())
+            return 1.0;
     
         // syntactic similarity
         double synScore = ConceptSimilarity.synSim(owlClass1, owlClass2, owlURI);

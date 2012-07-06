@@ -15,7 +15,7 @@ import util.WebServiceOprScore;
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
  * 
- * 
+ * Class for Evaluation of SSE for Forward Suggestion 
  */
 
 public class FSuggPathBasedWoFn {
@@ -40,6 +40,12 @@ public class FSuggPathBasedWoFn {
     public static String iprscan     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/iprscan.sawsdl";
     public static String phobius     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/phobius.sawsdl";
     
+    public static String wsProtDist  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipProtDist.wsdl"; 
+    public static String wsConsense  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipConsense.wsdl"; 
+    public static String wsProtPars  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipProtPars.wsdl"; 
+    public static String wsNeighbor  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipNeighbor.wsdl";
+    //public static String clustlPhylogeny  = "http://www.ebi.ac.uk/Tools/services/soap/clustalw2_phylogeny?wsdl";
+            
     public static String ontology = "http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";   
     
     public static void main (String[] args) {
@@ -54,20 +60,31 @@ public class FSuggPathBasedWoFn {
         Results results = new Results();
         
         // Specify a desired functionality or operation name
-        String desiredOps = "";//retrieve sequences";
-        //String desiredOps = "http://purl.obolibrary.org/obo/obi.owl#Class_40";
+        String desiredOps = "";
         
         List<WebServiceOpr> candidateOpsOBI = new ArrayList<WebServiceOpr>();
 
         candidateOpsOBI.add(new WebServiceOpr("filterByEvalScore", filerSeq));
         candidateOpsOBI.add(new WebServiceOpr("filterByEvalScoreCSV", filerSeq));
         
-       
         candidateOpsOBI.add(new WebServiceOpr("decode", wsconverter));
         candidateOpsOBI.add(new WebServiceOpr("encode", wsconverter));   
         candidateOpsOBI.add(new WebServiceOpr("csvtoArray", wsconverter));   
         candidateOpsOBI.add(new WebServiceOpr("arraytoCSV", wsconverter));   
+               
+        candidateOpsOBI.add(new WebServiceOpr("getStyleInfo", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getFormatStyles", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("fetchData", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getSupportedFormats", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getDatabaseInfo", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("fetchBatch", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getSupportedDBs", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getFormatInfo", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getSupportedStyles", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getDatabaseInfoList", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getDbFormats", wsdbfetch));
 
+        //----------------------------------------------------------------------
         
         candidateOpsOBI.add(new WebServiceOpr("getParameters", wublast));
         candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", wublast));
@@ -88,19 +105,16 @@ public class FSuggPathBasedWoFn {
         candidateOpsOBI.add(new WebServiceOpr("getResultTypes", psiblast));
         candidateOpsOBI.add(new WebServiceOpr("getStatus", psiblast));
         candidateOpsOBI.add(new WebServiceOpr("run", psiblast));
+              
+        candidateOpsOBI.add(new WebServiceOpr("getParameters", fasta));
+        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", fasta));
+        candidateOpsOBI.add(new WebServiceOpr("getResult", fasta));
+        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", fasta));
+        candidateOpsOBI.add(new WebServiceOpr("getStatus", fasta));
+        candidateOpsOBI.add(new WebServiceOpr("run", fasta));    
 
-        candidateOpsOBI.add(new WebServiceOpr("getStyleInfo", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getFormatStyles", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("fetchData", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getSupportedFormats", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getDatabaseInfo", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("fetchBatch", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getSupportedDBs", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getFormatInfo", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getSupportedStyles", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getDatabaseInfoList", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getDbFormats", wsdbfetch));
-
+        //----------------------------------------------------------------------
+        
         candidateOpsOBI.add(new WebServiceOpr("getParameters", clustalW));
         candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", clustalW));
         candidateOpsOBI.add(new WebServiceOpr("getResult", clustalW));
@@ -116,19 +130,21 @@ public class FSuggPathBasedWoFn {
         candidateOpsOBI.add(new WebServiceOpr("run", tcoffee));        
         
         candidateOpsOBI.add(new WebServiceOpr("getParameters", muscle));
-       candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", muscle));
+        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", muscle));
         candidateOpsOBI.add(new WebServiceOpr("getResult", muscle));
         candidateOpsOBI.add(new WebServiceOpr("getResultTypes", muscle));
         candidateOpsOBI.add(new WebServiceOpr("getStatus", muscle));
         candidateOpsOBI.add(new WebServiceOpr("run", muscle));        
-        
-        candidateOpsOBI.add(new WebServiceOpr("getParameters", fasta));
-        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", fasta));
-        candidateOpsOBI.add(new WebServiceOpr("getResult", fasta));
-        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", fasta));
-        candidateOpsOBI.add(new WebServiceOpr("getStatus", fasta));
-        candidateOpsOBI.add(new WebServiceOpr("run", fasta));    
+                
+        candidateOpsOBI.add(new WebServiceOpr("getParameters", clustalo));
+        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", clustalo));
+        candidateOpsOBI.add(new WebServiceOpr("getResult", clustalo));
+        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", clustalo));
+        candidateOpsOBI.add(new WebServiceOpr("getStatus", clustalo));
+        candidateOpsOBI.add(new WebServiceOpr("run", clustalo)); 
 
+        //----------------------------------------------------------------------
+        
         candidateOpsOBI.add(new WebServiceOpr("fetchResult", signalp));
         candidateOpsOBI.add(new WebServiceOpr("pollQueue", signalp));
         candidateOpsOBI.add(new WebServiceOpr("runService", signalp));  
@@ -145,68 +161,64 @@ public class FSuggPathBasedWoFn {
         candidateOpsOBI.add(new WebServiceOpr("getResult", phobius));
         candidateOpsOBI.add(new WebServiceOpr("getResultTypes", phobius));
         candidateOpsOBI.add(new WebServiceOpr("getStatus", phobius));
-        candidateOpsOBI.add(new WebServiceOpr("run", phobius));        
+        candidateOpsOBI.add(new WebServiceOpr("run", phobius));       
         
-        candidateOpsOBI.add(new WebServiceOpr("getParameters", clustalo));
-        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", clustalo));
-        candidateOpsOBI.add(new WebServiceOpr("getResult", clustalo));
-        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", clustalo));
-        candidateOpsOBI.add(new WebServiceOpr("getStatus", clustalo));
-        candidateOpsOBI.add(new WebServiceOpr("run", clustalo)); 
+        //----------------------------------------------------------------------
+
+        candidateOpsOBI.add(new WebServiceOpr("retrieveNeighborResult", wsNeighbor));
+        candidateOpsOBI.add(new WebServiceOpr("runNeighbor", wsNeighbor));
+        candidateOpsOBI.add(new WebServiceOpr("getStatus", wsNeighbor));
+        candidateOpsOBI.add(new WebServiceOpr("runNeighborDefaultParam", wsNeighbor));
         
+        candidateOpsOBI.add(new WebServiceOpr("consenseNonRootedTrees", wsConsense));
+        candidateOpsOBI.add(new WebServiceOpr("consenseRootedTrees", wsConsense));
+        candidateOpsOBI.add(new WebServiceOpr("getStatus", wsConsense));
+        candidateOpsOBI.add(new WebServiceOpr("retrieveConsenseResult", wsConsense));       
+        
+        candidateOpsOBI.add(new WebServiceOpr("protdist", wsProtDist));
+        candidateOpsOBI.add(new WebServiceOpr("protdistDefaultParameters", wsProtDist));
+        candidateOpsOBI.add(new WebServiceOpr("getStatus", wsProtDist));
+        candidateOpsOBI.add(new WebServiceOpr("retrieveProtDistResult", wsProtDist));       
+
+        candidateOpsOBI.add(new WebServiceOpr("getStatus", wsProtPars));
+        candidateOpsOBI.add(new WebServiceOpr("runProtPars", wsProtPars));
+        candidateOpsOBI.add(new WebServiceOpr("retrieveProtParsResult", wsProtPars));
+        
+        //----------------------------------------------------------------------        
         
         List<WebServiceOpr> workflowOpsOBI = new ArrayList<WebServiceOpr>();
-        workflowOpsOBI.add(new WebServiceOpr("run", clustalW));
         
-        System.out.println();
-        System.out.println("--------------------------------------------------");
-        System.out.println("TEST - OBI");
-        System.out.println("Case 1: There is only one operation on the workflow Blast.run\n------------------------------------\n");
-        //desiredOps = "multiple sequence alignment";//http://purl.obolibrary.org/obo/OBIws_0000063
+        //workflowOpsOBI.add(new WebServiceOpr("run", wublast));
+          
+        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
+
         ForwardSuggest sugg2 = new ForwardSuggest();
-        
+        candidateOpsOBI.removeAll(workflowOpsOBI);
         List<WebServiceOprScore> suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
-                    System.out.println("\n");
-        for (WebServiceOprScore suggestion: suggestOpList2) {
+
+        System.out.println("\n");
+        System.out.println("--------------------------------------------------");
+        System.out.println("Suggestion for Step 2: WUBlast.run -> ??");
+        System.out.println("--------------------------------------------------");
+        
+                
+        for (WebServiceOprScore suggestion: suggestOpList2)
+        {
             results.test1.put(suggestion.getOperationName(), suggestion);
             String[] ww = suggestion.getWsDescriptionDoc().split("/");
             String wsName = ww[ww.length -1].replace("sawsdl", "");
 
             System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
             System.out.println();
-//            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPaths();
-//            //System.out.println(mps + "\n");
-//            for(MatchedIOPaths.PathMatches mp : mps)
-//            {
-//                System.out.print("\t" + mp.getOpName() + "-->" + mp.getIpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
-//            }
-//            System.out.println("\n");
-        }
-        //------------------------------------------------------------
-        
-//        workflowOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
-//        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
-//                    System.out.println("\n");
-//        for (WebServiceOprScore suggestion: suggestOpList2) {
-//            results.test1.put(suggestion.getOperationName(), suggestion);
-//            String[] ww = suggestion.getWsDescriptionDoc().split("/");
-//            String wsName = ww[ww.length -1].replace("sawsdl", "");
-//
-//            System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
-//            System.out.println();
-//            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPathsIp();
-//            //System.out.println(mps + "\n");
-//            for(MatchedIOPaths.PathMatches mp : mps)
-//            {
-//                System.out.print("\t" + mp.getIpName() + "-->" + mp.getOpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
-//            }
-//            System.out.println("\n");
-//        }
-//        //----------------------------------------------------------------------
+        }//for
+
 //        
 //        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
 //        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
-//                    System.out.println("\n");
+//        System.out.println("\n");
+//        System.out.println("--------------------------------------------------");
+//        System.out.println("Suggestion for Step 3: WUBlast.run -> WUBlast.getResult -> ??");
+//        System.out.println("--------------------------------------------------");
 //        for (WebServiceOprScore suggestion: suggestOpList2) {
 //            results.test1.put(suggestion.getOperationName(), suggestion);
 //            String[] ww = suggestion.getWsDescriptionDoc().split("/");
@@ -214,15 +226,59 @@ public class FSuggPathBasedWoFn {
 //
 //            System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
 //            System.out.println();
-//            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPathsIp();
-//            //System.out.println(mps + "\n");
-//            for(MatchedIOPaths.PathMatches mp : mps)
-//            {
-//                System.out.print("\t" + mp.getIpName() + "-->" + mp.getOpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
-//            }
-//            System.out.println("\n");
-//        }
-    
+//        }//for
+//        
+//        
+//        workflowOpsOBI.add(new WebServiceOpr("filterByEvalScore", filerSeq));
+//        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+//        System.out.println("\n");
+//        System.out.println("--------------------------------------------------");
+//        System.out.println("Suggestion for Step 4: WUBlast.run -> WUBlast.getResult -> FilterSequences -> ?");
+//        System.out.println("--------------------------------------------------");
+//        for (WebServiceOprScore suggestion: suggestOpList2) {
+//            results.test1.put(suggestion.getOperationName(), suggestion);
+//            String[] ww = suggestion.getWsDescriptionDoc().split("/");
+//            String wsName = ww[ww.length -1].replace("sawsdl", "");
+//
+//            System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
+//            System.out.println();
+//        }//for
+//        
+//                
+//        workflowOpsOBI.add(new WebServiceOpr("run", clustalW));
+//        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+//        System.out.println("\n");
+//        System.out.println("--------------------------------------------------");
+//        System.out.println("Suggestion for Step 5: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
+//        System.out.println("clustalW.run -> ??");
+//        System.out.println("--------------------------------------------------");
+//        for (WebServiceOprScore suggestion: suggestOpList2) {
+//            results.test1.put(suggestion.getOperationName(), suggestion);
+//            String[] ww = suggestion.getWsDescriptionDoc().split("/");
+//            String wsName = ww[ww.length -1].replace("sawsdl", "");
+//
+//            System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
+//            System.out.println();
+//        }//for
+//
+//                
+//        workflowOpsOBI.add(new WebServiceOpr("getResult", clustalW));
+//        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+//        System.out.println("\n");
+//        System.out.println("--------------------------------------------------");
+//        System.out.println("Suggestion for Step 6: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
+//        System.out.println("clustalW.run -> clustalW.getResult -> ??");
+//        System.out.println("--------------------------------------------------");
+//        for (WebServiceOprScore suggestion: suggestOpList2) {
+//            results.test1.put(suggestion.getOperationName(), suggestion);
+//            String[] ww = suggestion.getWsDescriptionDoc().split("/");
+//            String wsName = ww[ww.length -1].replace("sawsdl", "");
+//
+//            System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
+//            System.out.println();
+//        }//for
+        
+        
         
     }// Main ends
     

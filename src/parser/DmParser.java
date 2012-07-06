@@ -513,6 +513,9 @@ public class DmParser {
         Map<Element,Integer> map = new HashMap<Element, Integer>();
         for (List<Element> path : updatedPathsList)
         {
+            if (path.isEmpty())
+                continue;
+                
             Integer prev = map.put(path.get(0), i++);
             if(prev == null)
             {
