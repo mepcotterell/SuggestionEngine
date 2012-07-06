@@ -1,5 +1,5 @@
 
-package test;
+package test.Evaluation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,9 +14,11 @@ import util.WebServiceOprScore;
  *
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
+ * 
+ * 
  */
 
-public class TestFwdSuggest {
+public class FSuggPathBasedWoFn {
 
     public static List<List<Double>> pvals = new ArrayList<List<Double>>();
     

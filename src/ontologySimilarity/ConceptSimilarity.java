@@ -84,15 +84,12 @@ public class ConceptSimilarity {
     
         // syntactic similarity
         double synScore = ConceptSimilarity.synSim(owlClass1, owlClass2, owlURI);
-        out.println("synScore = " + synScore );
 
         // property similarity
         double propScore = PropertySimilarity.getPropertySimScore(owlClass1, owlClass2, owlURI);
-        out.println("propScore = " + propScore );
 
         // coverage similarity
         double cvrgScore = CoverageSimilarity.getCvrgSimScore(owlClass1, owlClass2, owlURI);
-        out.println("cvrgScore = " + cvrgScore );
 
         // weighted sum
         double score = (weightSyn * synScore) + (weightProp * propScore) + (weightCvrg * cvrgScore);

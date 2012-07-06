@@ -1152,17 +1152,17 @@ public class OntologyManager {
         String annoProp;
 
         //Reading Annotation Property from the Properties file
-        Properties prop = new Properties();
-        try{
-            prop.load(getClass().getResourceAsStream("ontologySimilarity.properties"));
-            annoProp = prop.getProperty("definition");
-        }//try
-        catch(Exception e)
-        {
-            System.out.println("Could not load Properties file : "+e);
-            annoProp = "http://purl.obolibrary.org/obo/IAO_0000115";
-        }//catch
-        if (annoProp == null || annoProp.equals(""))
+//        Properties prop = new Properties();
+//        try{
+//            prop.load(getClass().getResourceAsStream("ontologySimilarity.properties"));
+//            annoProp = prop.getProperty("definition");
+//        }//try
+//        catch(Exception e)
+//        {
+//            //System.out.println("Could not load Properties file : "+e);
+//            annoProp = "http://purl.obolibrary.org/obo/IAO_0000115";
+//        }//catch
+//        if (annoProp == null || annoProp.equals(""))
             annoProp = "http://purl.obolibrary.org/obo/IAO_0000115";
         //----------------------------------------------------------------------
         
@@ -1189,17 +1189,17 @@ public class OntologyManager {
         String annoProp;
 
         //Reading Annotation Property from the Properties file
-        Properties prop = new Properties();
-        try{
-            prop.load(getClass().getResourceAsStream("ontologySimilarity.properties"));
-            annoProp = prop.getProperty("definition");
-        }//try
-        catch(Exception e)
-        {
-            System.out.println("Could not load Properties file : "+e);
-            annoProp = "http://purl.obolibrary.org/obo/IAO_0000115";
-        }//catch
-        if (annoProp == null || annoProp.equals(""))
+//        Properties prop = new Properties();
+//        try{
+//            prop.load(getClass().getResourceAsStream("ontologySimilarity.properties"));
+//            annoProp = prop.getProperty("definition");
+//        }//try
+//        catch(Exception e)
+//        {
+//            //System.out.println("Could not load Properties file : "+e);
+//            annoProp = "http://purl.obolibrary.org/obo/IAO_0000115";
+//        }//catch
+//        if (annoProp == null || annoProp.equals(""))
             annoProp = "http://purl.obolibrary.org/obo/IAO_0000115";
         //----------------------------------------------------------------------
         
@@ -1239,7 +1239,7 @@ public class OntologyManager {
         }//try
         catch(Exception e)
         {
-            System.out.println("Could not load Properties file : "+e);
+            //System.out.println("Could not load Properties file : "+e);
             annoProp = "http://purl.obolibrary.org/obo/IAO_0000112";
         }//catch
         if (annoProp == null || annoProp.equals(""))

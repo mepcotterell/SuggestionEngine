@@ -93,12 +93,12 @@ public class ForwardSuggest {
             DmScore ds = new DmScore();
 
             //path-based data mediation
-//            dmScore = ds.calculatePathDmScore(workflowOPs, candidateOP, owlFileName);
-//            dmResults.put(candidateOP, ds.getDmResults());
+            dmScore = ds.calculatePathDmScore(workflowOPs, candidateOP, owlFileName);
+            dmResults.put(candidateOP, ds.getDmResults());
             
             //p-Homomorphism based DM
-            dmScore = ds.calculatepHomDmScore(workflowOPs, candidateOP, owlFileName);
-//            dmResults.put(candidateOP, ds.getDmResults());
+            //dmScore = ds.calculatepHomDmScore(workflowOPs, candidateOP, owlFileName);
+            //dmResults.put(candidateOP, ds.getDmResults());
 
     
             //structure-based data mediation(subtree homeomorphism)
