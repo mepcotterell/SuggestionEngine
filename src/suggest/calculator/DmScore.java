@@ -45,12 +45,12 @@ public class DmScore {
      * in the system or a URI of the web)
      * @return score of data mediation for the candidate operation (how input of candidate operation will be fed)
      */
-    public double calculatePathDmScore(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlURI) 
+    public double calculatePathDmScore(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlURI, List <String> globalIps) 
     {
         double dmScore = 0;
         boolean allUnknown = true;
         //Map<ipPathsOFcandidateOP,matchedopPathsofWorkflowOP>PathRank
-        Map<WebServiceOprScore_type, WebServiceOprScore_type> dmOneopResult = PathRank.dataMediation(workflowOPs, candidateOP, owlURI);
+        Map<WebServiceOprScore_type, WebServiceOprScore_type> dmOneopResult = PathRank.dataMediation(workflowOPs, candidateOP, owlURI,globalIps);
 
         if (dmOneopResult != null) {
             dmResults = dmOneopResult;

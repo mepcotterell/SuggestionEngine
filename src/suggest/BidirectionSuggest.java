@@ -99,11 +99,11 @@ public class BidirectionSuggest {
             //Uses the data-mediation from ForwardSuggest, hence the first workflow op becomes candidate op
             //and the current candidateOp becomes workflowOp so that everyhing else renains same
             //getDmScore(workflowOPs, op, owlURI);
-            dmScoreBck = fwdSugg1.getDmScore(workflowForward, workflowSuffixOPs.get(0), owlURI);
+            dmScoreBck = fwdSugg1.getDmScore(workflowForward, workflowSuffixOPs.get(0), owlURI, new ArrayList<String>());
             suffixDmResults = fwdSugg1.getDmResults();
             
             ForwardSuggest fwdSugg2 = new ForwardSuggest();
-            dmScoreFwd = fwdSugg2.getDmScore(workflowPrefixOPs, op, owlURI);
+            dmScoreFwd = fwdSugg2.getDmScore(workflowPrefixOPs, op, owlURI, new ArrayList<String>());
             prefixDmResults = fwdSugg2.getDmResults();
             
             dmScore = (dmScoreBck + dmScoreFwd) / 2;

@@ -32,9 +32,9 @@ public class TestPathBasedDataMediation {
         //workflowOps.add(new WebServiceOpr("getResultTypes", wublast));
         
         DmScore dm = new DmScore();
-        Double Score = dm.calculatePathDmScore(workflowOps, candidateop, ontology);
+        //Double Score = dm.calculatePathDmScore(workflowOps, candidateop, ontology);
         
-        System.out.println("\n\nDMScore = " + Score + "\n\n");
+        //System.out.println("\n\nDMScore = " + Score + "\n\n");
         
         Map<WebServiceOprScore_type, WebServiceOprScore_type> matchedPaths= dm.getDmResults();
         

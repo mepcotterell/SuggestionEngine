@@ -41,7 +41,7 @@ public class PathRank {
      * @return a map [InputPathsOfCandidateOperation,MatchedPathofWorkflowOps]
      */
     public static Map<WebServiceOprScore_type, WebServiceOprScore_type> dataMediation
-                    (List<WebServiceOpr> workflowOPs, WebServiceOpr nextOP, String owlURI) {
+                    (List<WebServiceOpr> workflowOPs, WebServiceOpr nextOP, String owlURI, List<String> globalIps) {
         
         SawsdlParser sp = new SawsdlParser();
         DmParser dmp = new DmParser();
@@ -95,7 +95,26 @@ public class PathRank {
         // find matched path for each path of the input of nextOP
         for (WebServiceOprScore_type inPathScore : nextOpInPathScoreList) {
             WebServiceOprScore_type matchedPath = findMatchPath(workflowOutPathScoreList, inPathScore, owlURI);
-            inPathScore.setScore(matchedPath.getScore());
+            double scoreWop = matchedPath.getScore();
+            double scoreGlobal = 0.0;
+            
+            if (scoreWop < 0.5 && (globalIps != null || !globalIps.isEmpty()))
+            {
+                if(!inPathScore.getPath().isEmpty())
+                {
+                    Element leaf = inPathScore.getPath().get(0);
+                    scoreGlobal = GlobalInputs.globalInputMatchScore(leaf, globalIps, owlURI);
+                    int pathLength = inPathScore.getPath().size();
+                    GeometricSeries gs = new GeometricSeries();
+                    double[] nodeWeights = gs.getWeights(pathLength);
+                    scoreGlobal = scoreGlobal * nodeWeights[0];
+                }
+            }//if
+            
+            if (scoreGlobal > scoreWop) 
+                scoreWop =  scoreGlobal;
+            
+            inPathScore.setScore(scoreWop);
             matchPathMap.put(inPathScore, matchedPath);
         } // for
         

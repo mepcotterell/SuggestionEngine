@@ -96,7 +96,7 @@ public class BackwardSuggest {
             //Uses the data-mediation from ForwardSuggest, hence the first workflow op becomes candidate op
             //and the current candidateOp becomes workflowOp so that everyhing else renains same
             //getDmScore(workflowOPs, op, owlURI);
-            dmScore = fwdSugg.getDmScore(workflowForward, workflowOPs.get(0), owlURI);
+            dmScore = fwdSugg.getDmScore(workflowForward, workflowOPs.get(0), owlURI, new ArrayList<String>());
             dmResults = fwdSugg.getDmResults();
             
             if (preferOp != null) {

@@ -85,7 +85,7 @@ public class ForwardSuggest {
      * in the system or a URI of the web)
      * @return DataMediation Sub-score
      */
-    double getDmScore(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlFileName) {
+    double getDmScore(List<WebServiceOpr> workflowOPs, WebServiceOpr candidateOP, String owlFileName, List <String> globalIps) {
         
         double dmScore = 0;
  
@@ -93,7 +93,7 @@ public class ForwardSuggest {
             DmScore ds = new DmScore();
 
             //path-based data mediation
-            dmScore = ds.calculatePathDmScore(workflowOPs, candidateOP, owlFileName);
+            dmScore = ds.calculatePathDmScore(workflowOPs, candidateOP, owlFileName, globalIps);
             dmResults.put(candidateOP, ds.getDmResults());
                
             //structure-based data mediation(subtree homeomorphism)
@@ -169,8 +169,17 @@ public class ForwardSuggest {
      * @return Returns list of OpWSDLScore that basically stores all the Subscores, for details see <code>util.WebServiceOprScore</code>
      */
     public List<WebServiceOprScore> suggestNextService(List<WebServiceOpr> workflowOPs,
-            List<WebServiceOpr> candidateOPs, String preferOp, String owlURI, String initState) {
+            List<WebServiceOpr> candidateOPs, String preferOp, String owlURI, String initState) 
+    {
+        return suggestNextServiceGlobalIps(workflowOPs, candidateOPs, preferOp, owlURI, initState, new ArrayList<String>());
         
+    }//suggestNextService
+
+    
+        public List<WebServiceOprScore> suggestNextServiceGlobalIps(List<WebServiceOpr> workflowOPs,
+            List<WebServiceOpr> candidateOPs, String preferOp, String owlURI, String initState, List <String> globalIps) {
+        
+        //code for  {CandidateOps} - {workflowOps}
         List<WebServiceOpr> FilteredcandidateOPs = new ArrayList<WebServiceOpr>(candidateOPs);
         for (WebServiceOpr c : candidateOPs)
             for (WebServiceOpr w : workflowOPs)
@@ -180,6 +189,7 @@ public class ForwardSuggest {
                     FilteredcandidateOPs.remove(c);
                 }
             }//for
+        //-------------------------------------------------------
 
         if (preferOp != null) {
             if (preferOp.length() == 0) {
@@ -218,7 +228,7 @@ public class ForwardSuggest {
             // final score
             double score = 0;
 
-            dmScore = this.getDmScore(workflowOPs, op, owlURI);
+            dmScore = this.getDmScore(workflowOPs, op, owlURI, globalIps);
             
             if (preferOp != null) {
                 fnScore = this.getFnScore(preferOp, op, owlURI);
@@ -267,6 +277,7 @@ public class ForwardSuggest {
         return suggestionList;
     }
 
+        
         
     /**
      * The operation returns a list of Suggested Operations for the NEXT step in the Workflow, 

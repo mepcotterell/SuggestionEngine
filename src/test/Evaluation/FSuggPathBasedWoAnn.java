@@ -19,33 +19,33 @@ import util.WebServiceOprScore;
  * Class for Evaluation of SSE for Forward Suggestion 
  */
 
-public class FSuggPathBasedWoFn {
+public class FSuggPathBasedWoAnn {
 
     public static List<List<Double>> pvals = new ArrayList<List<Double>>();
     
-    public static String wublast     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl";
-    public static String ncbiblast   = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/ncbiblast.sawsdl";
-    public static String psiblast    = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/psiblast.sawsdl";    
-    public static String fasta       = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/fasta.sawsdl";
+    public static String wublast     = "http://www.ebi.ac.uk/Tools/services/soap/wublast?wsdl";
+    public static String ncbiblast   = "http://www.ebi.ac.uk/Tools/services/soap/ncbiblast?wsdl";
+    public static String psiblast    = "http://www.ebi.ac.uk/Tools/services/soap/psiblast?wsdl";    
+    public static String fasta       = "http://www.ebi.ac.uk/Tools/services/soap/fasta?wsdl";
 
-    public static String clustalW    = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2.sawsdl";
-    public static String tcoffee     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/tcoffee.sawsdl";
-    public static String clustalo    = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalo.sawsdl"; 
-    public static String muscle      = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/muscle.sawsdl";    
+    public static String clustalW    = "http://www.ebi.ac.uk/Tools/services/soap/clustalw2?wsdl";
+    public static String tcoffee     = "http://www.ebi.ac.uk/Tools/services/soap/tcoffee?wsdl";
+    public static String clustalo    = "http://www.ebi.ac.uk/Tools/services/soap/clustalo?wsdl"; 
+    public static String muscle      = "http://www.ebi.ac.uk/Tools/services/soap/muscle?wsdl";    
     
-    public static String wsdbfetch   = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/WSDbfetch.sawsdl";
-    public static String wsconverter = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/WSConverter.sawsdl";
-    public static String filerSeq    = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/FilterSequencesWS.sawsdl";
+    public static String wsdbfetch   = "http://www.ebi.ac.uk/ws/services/WSDbfetchDoclit?wsdl";
+    public static String wsconverter = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/converters.wsdl";
+    public static String filerSeq    = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/filterSequences.wsdl";
   
-    public static String signalp     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/signalp.sawsdl";
-    public static String iprscan     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/iprscan.sawsdl";
-    public static String phobius     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/phobius.sawsdl";
+    public static String signalp     = "http://www.cbs.dtu.dk/ws/SignalP/SignalP_3_1_ws0.wsdl";
+    public static String iprscan     = "http://www.ebi.ac.uk/Tools/services/soap/iprscan?wsdl";
+    public static String phobius     = "http://www.ebi.ac.uk/Tools/services/soap/phobius?wsdl";
     
-    public static String wsProtDist  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipProtDist.sawsdl"; 
-    public static String wsConsense  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipConsense.sawsdl"; 
-    public static String wsProtPars  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipProtPars.sawsdl"; 
-    public static String wsNeighbor  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipNeighbor.sawsdl";
-    public static String clustlPhylogeny  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2_phylogeny.sawsdl";
+    public static String wsProtDist  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipProtDist.wsdl"; 
+    public static String wsConsense  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipConsense.wsdl"; 
+    public static String wsProtPars  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipProtPars.wsdl"; 
+    public static String wsNeighbor  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipNeighbor.wsdl";
+    public static String clustlPhylogeny  = "http://www.ebi.ac.uk/Tools/services/soap/clustalw2_phylogeny?wsdl";
             
     public static String ontology = "/home/alok/Desktop/obiws.owl";//"http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";   
     

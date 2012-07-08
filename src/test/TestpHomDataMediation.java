@@ -36,7 +36,7 @@ public class TestpHomDataMediation {
         Double Score = dm.calculatepHomDmScore(workflowOps, candidateop, ontology);
         System.out.println("\n\nDMScore = " + Score + "\n\n");
         
-        Score = dm.calculatePathDmScore(workflowOps, candidateop, ontology);
+        //Score = dm.calculatePathDmScore(workflowOps, candidateop, ontology);
         System.out.println("\n\nDMScore = " + Score + "\n\n");
         
     }// main ends
