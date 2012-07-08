@@ -112,7 +112,7 @@ public class FnScore
         FnScore fn =  new FnScore();
         System.out.println("FnScore =  "+fn.calculateFnScore(desiredFn, opr, OWLURI));
 
-        desiredFn = "http://purl.obolibrary.org/obo/OBI_0200081e";
+        desiredFn = "http://purl.obolibrary.org/obo/OBI_0200081";
         System.out.println("\n\nFnScore =  "+fn.calculateFnScore(desiredFn, opr, OWLURI));
         
         opr = new WebServiceOpr("getFormatStyles", "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/WSDbfetch.sawsdl");

@@ -71,7 +71,7 @@ public class ForwardSuggest {
             fnScore = fs.calculateFnScore(preferOp, op, owlFileName);
         }
         return fnScore;
-    }
+    }//getFnScore
 
     /**
      * Calculate and returns DataMediation sub-score for "A" candidate operation considering ALL the 
@@ -170,6 +170,16 @@ public class ForwardSuggest {
      */
     public List<WebServiceOprScore> suggestNextService(List<WebServiceOpr> workflowOPs,
             List<WebServiceOpr> candidateOPs, String preferOp, String owlURI, String initState) {
+        
+        List<WebServiceOpr> FilteredcandidateOPs = new ArrayList<WebServiceOpr>(candidateOPs);
+        for (WebServiceOpr c : candidateOPs)
+            for (WebServiceOpr w : workflowOPs)
+            {
+                if (w.getOperationName().equalsIgnoreCase(c.getOperationName()) && w.getWsDescriptionDoc().equalsIgnoreCase(c.getWsDescriptionDoc())) 
+                {
+                    FilteredcandidateOPs.remove(c);
+                }
+            }//for
 
         if (preferOp != null) {
             if (preferOp.length() == 0) {
@@ -198,7 +208,7 @@ public class ForwardSuggest {
         List<WebServiceOprScore> suggestionList = new ArrayList<WebServiceOprScore>();
 
         // For each of the Candidate Operations
-        for (WebServiceOpr op : candidateOPs) {
+        for (WebServiceOpr op : FilteredcandidateOPs) {
             // datamediation score
             double dmScore = 0;
             // functionality score

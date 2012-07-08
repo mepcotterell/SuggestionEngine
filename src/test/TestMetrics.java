@@ -1,12 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package test;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import util.WebServiceOprScore;
+import static java.lang.System.out;
 
 /**
  * This class provides methods for displaying different metrics on a list of 
@@ -19,8 +17,9 @@ public class TestMetrics {
         String[] ww = suggestion.getWsDescriptionDoc().split("/");
         String wsName = ww[ww.length -1].replace("sawsdl", "");
        	DecimalFormat twoDForm = new DecimalFormat("#.##");
-        
-        System.out.println(wsName +suggestion.getOperationName() + "--" + twoDForm.format(suggestion.getScore()) );
+       
+        out.println(wsName +suggestion.getOperationName() + "--Total=" + twoDForm.format(suggestion.getScore()) +
+                "\tDm=" + twoDForm.format(suggestion.getDmScore()) + "\tFn=" + twoDForm.format(suggestion.getFnScore()) );
     } // printOp
     
     public static void printMetrics (List<WebServiceOprScore> list) {
@@ -50,38 +49,38 @@ public class TestMetrics {
         double upLimit = (0.5 * xStd) * stddev;
         
         
-        System.out.println();
-        System.out.println("METRICS");
-        System.out.println("---------------------------------------------------");
-        System.out.println("Mean     = " + mean);
-        System.out.println("Min      = " + min);
-        System.out.println("Max      = " + max);
-        System.out.println("Variance = " + variance);
-        System.out.println("Std.Dev. = " + stddev);
-        System.out.println("---------------------------------------------------");
-        System.out.println("H        = (" + ( max - upLimit) + ", " + max + "]");
-        System.out.println("M        = [" + (mean) + ", " + ( max - upLimit) + "]");
-        System.out.println("L        = [" + min + ", " + (mean) + ")");
-        System.out.println("---------------------------------------------------");
-        System.out.println();
-        System.out.println("GROUPS");
-        System.out.println("---------------------------------------------------");
+        out.println();
+        out.println("METRICS");
+        out.println("---------------------------------------------------");
+        out.println("Mean     = " + mean);
+        out.println("Min      = " + min);
+        out.println("Max      = " + max);
+        out.println("Variance = " + variance);
+        out.println("Std.Dev. = " + stddev);
+        out.println("---------------------------------------------------");
+        out.println("H        = (" + ( max - upLimit) + ", " + max + "]");
+        out.println("M        = [" + (mean) + ", " + ( max - upLimit) + "]");
+        out.println("L        = [" + min + ", " + (mean) + ")");
+        out.println("---------------------------------------------------");
+        out.println();
+        out.println("GROUPS");
+        out.println("---------------------------------------------------");
         
         
 
         for (WebServiceOprScore suggestion: list) {
             if (suggestion.getScore() > max - upLimit) printOp (suggestion);
         } // for
-        System.out.println("---------------------------------------------------");
+        out.println("---------------------------------------------------");
         for (WebServiceOprScore suggestion: list) {
             if (suggestion.getScore() >= mean && suggestion.getScore() <= max - upLimit) printOp (suggestion);
         } // for
-        System.out.println("---------------------------------------------------");
+        out.println("---------------------------------------------------");
         for (WebServiceOprScore suggestion: list) {
             if (suggestion.getScore() < mean) printOp (suggestion);
         } // for
-        System.out.println("---------------------------------------------------");
-        System.out.println();
+        out.println("---------------------------------------------------");
+        out.println();
         
     } // printMetrics
     
