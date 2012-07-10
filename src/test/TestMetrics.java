@@ -10,6 +10,7 @@ import static java.lang.System.out;
  * This class provides methods for displaying different metrics on a list of 
  * WebServiceOprScore
  * @author Michael Cotterell
+ * @author Alok Dhamanaskar
  */
 public class TestMetrics {
     
@@ -18,8 +19,10 @@ public class TestMetrics {
         String wsName = ww[ww.length -1].replace("sawsdl", "");
        	DecimalFormat twoDForm = new DecimalFormat("#.##");
        
-        out.println(wsName +suggestion.getOperationName() + "--Total=" + twoDForm.format(suggestion.getScore()) +
-                "\tDm=" + twoDForm.format(suggestion.getDmScore()) + "\tFn=" + twoDForm.format(suggestion.getFnScore()) );
+//        out.println(wsName +suggestion.getOperationName() + "--Total=" + twoDForm.format(suggestion.getScore()) +
+//                "\tDm=" + twoDForm.format(suggestion.getDmScore()) + "\tFn=" + twoDForm.format(suggestion.getFnScore()) );
+
+        out.println(wsName +suggestion.getOperationName() + "-" + twoDForm.format(suggestion.getScore()) );
     } // printOp
     
     public static void printMetrics (List<WebServiceOprScore> list) {
@@ -46,7 +49,7 @@ public class TestMetrics {
         double variance = sum / (double) list.size();
         double stddev   = Math.sqrt(variance);
         double xStd = (max- mean)/stddev;
-        double upLimit = (0.5 * xStd) * stddev;
+        double upLimit = (0.55 * xStd) * stddev;
         
         
         out.println();

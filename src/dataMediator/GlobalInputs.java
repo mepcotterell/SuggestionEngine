@@ -83,7 +83,7 @@ public class GlobalInputs {
         }//else
         
         //Penalize Score from Global Inputs
-        return maxMatchScore * 0.8;
+        return maxMatchScore * 0.7;
     }//globalInputMatchScore
     
     

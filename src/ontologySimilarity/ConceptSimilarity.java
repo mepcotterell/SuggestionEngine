@@ -78,9 +78,9 @@ public class ConceptSimilarity {
      */
     public static double getConceptSimScore(OWLClass owlClass1, OWLClass owlClass2, String owlURI) 
     {
-        double weightSyn  = 0.4;
-        double weightProp = 0.2; 
-        double weightCvrg = 0.4;       
+        double weightSyn  = 0.35;
+        double weightProp = 0.25; 
+        double weightCvrg = 0.3;       
         
         if (owlClass1.getIRI() == owlClass2.getIRI())
             return 1.0;

@@ -62,40 +62,40 @@ public class PHomomorphismSim {
             
             //Weighting nodes of Graph 1                 
             //Scheme 1 : Weight of the Parent Node = Generalized mean of Weights of its Child Nodes
-//            for (Integer i = adjList.size()-1; i >= 0; i--)
-//            {
-//                if(adjList.get(i).isEmpty())
-//                {
-//                    Element e = GraphElementMap.get(i);
-//                    w[i] = isRequired(e);
-//                }
-//                else
-//                {
-//                    double[] dub = new double[adjList.get(i).size()];
-//                    int dubI = 0;
-//                    for(Integer c : adjList.get(i))
-//                    {
-//                        dub[dubI++] = w[c];
-//                    }
-//                    w[i] = DebuggingUtils.generalizedMean(dub, 3);
-//                }
-//            }//for
+            for (Integer i = adjList.size()-1; i >= 0; i--)
+            {
+                if(adjList.get(i).isEmpty())
+                {
+                    Element e = GraphElementMap.get(i);
+                    w[i] = isRequired(e);
+                }
+                else
+                {
+                    double[] dub = new double[adjList.get(i).size()];
+                    int dubI = 0;
+                    for(Integer c : adjList.get(i))
+                    {
+                        dub[dubI++] = w[c];
+                    }
+                    w[i] = DebuggingUtils.generalizedMean(dub, 2);
+                }
+            }//for
             
             //Scheme 2
-            w[0] = 1;
-            for(Integer i : adjList.keySet())
-            {
-                if(!adjList.get(i).isEmpty())
-                {
-                    for (Integer ii : adjList.get(i))
-                    {
-                        Element e = GraphElementMap.get(ii);
-                        w[ii] = w[i] * isRequired(e);
-                    
-                    }//inner for
-                }//if
-            
-            }//outer for
+//            w[0] = 1;
+//            for(Integer i : adjList.keySet())
+//            {
+//                if(!adjList.get(i).isEmpty())
+//                {
+//                    for (Integer ii : adjList.get(i))
+//                    {
+//                        Element e = GraphElementMap.get(ii);
+//                        w[ii] = w[i] * isRequired(e);
+//                    
+//                    }//inner for
+//                }//if
+//            
+//            }//outer for
             
             IOasGraph output = new IOasGraph();
             G2Mat = output.asGraph(workflowOp, "output");

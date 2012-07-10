@@ -66,7 +66,6 @@ public class IOasGraph {
                String log = "Msg Element not found for " + ioType + " of operation " 
                         + op.getOperationName() + " in the WSDL " + op.getWsDescriptionDoc();
                 Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE, log);
-                out.println();
                 return null;
             }
      
@@ -108,13 +107,14 @@ public class IOasGraph {
                         adjList.put(++x, new ArrayList<Integer>());
                         GraphElementMap.put(x, e);                        
                         
-                        out.print(e.getAttributeValue("name")+ x + "-> ");
+//                        out.print(e.getAttributeValue("name")+ x + "-> ");
                         
                         List<Element> children = sp1.getNextLevelElements(e);
                         if (children.isEmpty() || children == null)
                         {
 
                         }
+                        
                         else
                         {
                             for (Iterator<Element> it = children.iterator(); it.hasNext();) 
@@ -123,11 +123,12 @@ public class IOasGraph {
                                 EleQ.add(xx);
                                 
                                 temp.add(++y);
-                                out.print(y +", ");
+//                                out.print(y +", ");
                             }
                         }//else
                         
-                        out.println();
+                        
+//                        out.println();
                         adjList.put(x, temp);
                         
                     }//while
@@ -165,16 +166,16 @@ public class IOasGraph {
     public static void main (String[] args)
     {
         //Test Code
-        WebServiceOpr op = new WebServiceOpr("getResult", "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl");
+        WebServiceOpr op = new WebServiceOpr("protdistDefaultParameters", "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipProtDist.sawsdl");
         Boolean[][] adjMat = new IOasGraph().asGraph(op, "input");
         //pHomomorphism.Util.printMatches(null);
         
         
-        double[] mean = {0.3, 0.3, 0.3, 1};
-        double m = 3.0;
-        double sum = Util.generalizedMean(mean, m);
-        
-        out.println(sum);
+//        double[] mean = {0.3, 0.3, 0.3, 1};
+//        double m = 3.0;
+//        double sum = Util.generalizedMean(mean, m);
+//        
+//        out.println(sum);
         
     }//main
     

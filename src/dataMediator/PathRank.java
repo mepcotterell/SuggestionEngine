@@ -50,7 +50,7 @@ public class PathRank {
         Map<WebServiceOprScore_type, WebServiceOprScore_type> matchPathMap 
                 = new HashMap<WebServiceOprScore_type, WebServiceOprScore_type>();
 
-         //Get Paths for Input of next Operation--------------------------------
+        //Get Paths for Input of next Operation--------------------------------
 
         // get all paths of the input of the nextOP, as a List of list of elements
         List<List<Element>> nextOpInPaths 
@@ -111,12 +111,17 @@ public class PathRank {
                 }
             }//if
             
+            
             if (scoreGlobal > scoreWop) 
                 scoreWop =  scoreGlobal;
             
             inPathScore.setScore(scoreWop);
             matchPathMap.put(inPathScore, matchedPath);
         } // for
+        
+        
+        
+        
         
         return matchPathMap;
         

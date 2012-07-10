@@ -138,9 +138,9 @@ public class FSuggPathBasedWoFn {
 
         //----------------------------------------------------------------------
         
-//        candidateOpsOBI.add(new WebServiceOpr("fetchResult", signalp));
-//        candidateOpsOBI.add(new WebServiceOpr("pollQueue", signalp));
-//        candidateOpsOBI.add(new WebServiceOpr("runService", signalp));  
+        candidateOpsOBI.add(new WebServiceOpr("fetchResult", signalp));
+        candidateOpsOBI.add(new WebServiceOpr("pollQueue", signalp));
+        candidateOpsOBI.add(new WebServiceOpr("runService", signalp));  
         
         candidateOpsOBI.add(new WebServiceOpr("getParameters", iprscan));
         candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", iprscan));
@@ -266,19 +266,7 @@ public class FSuggPathBasedWoFn {
         System.out.println("--------------------------------------------------");
         System.out.println("Suggestion for Step 9: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
         System.out.println("clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> retrieveProtDistResult -> "
-                + "retrieveProtDistResult -> wsPhylipNeighbor.runNeighborDefaultParam -> ");
-        System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
-
-        
-                
-        workflowOpsOBI.add(new WebServiceOpr("retrieveNeighborResult", wsNeighbor));
-        suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
-        System.out.println("\n");
-        System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Step 10: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
-        System.out.println("clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> retrieveProtDistResult -> "
-                + "retrieveProtDistResult -> wsPhylipNeighbor.runNeighborDefaultParam -> ");
+                + " wsPhylipNeighbor.runNeighborDefaultParam -> ");
         System.out.println("--------------------------------------------------");
         TestMetrics.printMetrics(suggestOpList2);
 

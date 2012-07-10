@@ -52,21 +52,46 @@ public class SchemaParser {
         }
 
         String xsdPrefix = xsdNS.getPrefix();
-        if (elementPrefix.equals("") || rootElem.getNamespace(elementPrefix).getURI().equals(schemaElem.getAttributeValue("targetNamespace"))) 
+        if (elementPrefix.equals("") || rootElem.getNamespace(elementPrefix).getURI().equals(schemaElem.getAttributeValue("targetNamespace")) || rootElem.getNamespace(elementPrefix).getURI().equals(schemaElem.getAttributeValue("tns")) ) 
         {
             try {
-                Element tempElem = (Element) (XPath.selectSingleNode(schemaElem, "//"
+                String q = "//"
                         + xsdPrefix
                         + ":schema/descendant::"
                         + xsdPrefix
                         + ":*[@name=\""
                         + elementName
-                        + "\"]"));
+                        + "\"]";
+                Element tempElem = (Element) (XPath.selectSingleNode(schemaElem, q));
                 elementElem = tempElem;
             } catch (JDOMException e) {
                 e.printStackTrace();
             }
         }//if
+
+                    
+            if (elementElem == null) {
+                String q = "//"
+                        + xsdPrefix
+                        + ":schema/descendant::"
+                        + xsdPrefix
+                        + ":complexType[@name=\""
+                        + elementName
+                        + "\"]";
+                try 
+                {
+                    Element tempElem = (Element) (XPath.selectSingleNode(schemaElem, q));
+                    elementElem = tempElem;
+                }//try
+                catch (JDOMException e) 
+                {
+                    e.printStackTrace();
+                }//catch
+
+
+            }
+            
+
 
         return elementElem;
     }//getElementFromSchema

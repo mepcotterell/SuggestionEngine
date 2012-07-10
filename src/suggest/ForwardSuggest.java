@@ -308,6 +308,19 @@ public class ForwardSuggest {
         if (workflowOPs == null || candidateOPs == null) {
             return null;
         }
+                
+        //code for  {CandidateOps} - {workflowOps}
+        List<WebServiceOpr> FilteredcandidateOPs = new ArrayList<WebServiceOpr>(candidateOPs);
+        for (WebServiceOpr c : candidateOPs)
+            for (WebServiceOpr w : workflowOPs)
+            {
+                if (w.getOperationName().equalsIgnoreCase(c.getOperationName()) && w.getWsDescriptionDoc().equalsIgnoreCase(c.getWsDescriptionDoc())) 
+                {
+                    FilteredcandidateOPs.remove(c);
+                }
+            }//for
+        //-------------------------------------------------------
+
         
         OntologyManager instance = OntologyManager.getInstance(owlURI);
 

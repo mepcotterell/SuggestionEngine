@@ -117,7 +117,7 @@ public class SawsdlParser {
      */
     public Map<String, Element> getOpNameElemMap(String fileName) {
         Element root = this.getRootElem(fileName);
-        System.out.println(fileName);
+        //System.out.println(fileName);
         List<Element> opElemList = root.getChild("portType", wsdlNS).getChildren("operation", wsdlNS);
         Map<String, Element> opNameElemMap = new HashMap<String, Element>();
         for (Element opElem : opElemList) {
