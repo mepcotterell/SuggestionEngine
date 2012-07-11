@@ -53,7 +53,7 @@ public class BackwardSuggest {
      * @return Returns list of OpWSDLScore that basically stores all the Subscores, for details see <code>util.WebServiceOprScore</code>
      */
     public List<WebServiceOprScore> suggestPrevServices(List<WebServiceOpr> workflowOPs,
-            List<WebServiceOpr> candidateOPs, String preferOp, String owlURI, String initState) {
+            List<WebServiceOpr> candidateOPs, String preferOp, String owlURI, String initState,  List<String> globalInputs ) {
 
         if (preferOp != null) {
             if (preferOp.length() == 0) {
@@ -96,8 +96,9 @@ public class BackwardSuggest {
             //Uses the data-mediation from ForwardSuggest, hence the first workflow op becomes candidate op
             //and the current candidateOp becomes workflowOp so that everyhing else renains same
             //getDmScore(workflowOPs, op, owlURI);
-            dmScore = fwdSugg.getDmScore(workflowForward, workflowOPs.get(0), owlURI, new ArrayList<String>());
+            dmScore = fwdSugg.getDmScore(workflowForward, workflowOPs.get(workflowOPs.size()-1), owlURI, globalInputs);
             dmResults = fwdSugg.getDmResults();
+            
             
             if (preferOp != null) {
 
@@ -115,7 +116,7 @@ public class BackwardSuggest {
 
             //----------------------------------------------------------------
             // Finding the matched path, adjusted accordingly for BackwardSuggest
-            Map<WebServiceOprScore_type, WebServiceOprScore_type> matchedPaths = dmResults.get(workflowOPs.get(0));
+            Map<WebServiceOprScore_type, WebServiceOprScore_type> matchedPaths = dmResults.get( workflowOPs.get(workflowOPs.size()-1));
             Set<WebServiceOprScore_type> ipPaths = matchedPaths.keySet();
                     
             MatchedIOPaths mps = new MatchedIOPaths();
@@ -143,6 +144,76 @@ public class BackwardSuggest {
         return suggestionList;
     }
 
+        
+    public List<WebServiceOprScore> suggestPrevServicespHom
+            (List<WebServiceOpr> workflowOPs, List<WebServiceOpr> candidateOPs, String preferOp, String owlURI, String initState)
+    {
+
+        if (preferOp != null) {
+            if (preferOp.length() == 0) {
+                preferOp = null;
+            }
+        }
+
+        if (workflowOPs == null || candidateOPs == null) {
+            return null;
+        }
+        
+        OntologyManager instance = OntologyManager.getInstance(owlURI);
+
+        //Adjusting weight, if Pre-Conditions and Effect is considered, they have to be re-weighted
+        if (preferOp == null) {
+            weightDm = 1;
+            weightPe = 0;
+            weightFn = 0;
+        } else {
+            weightDm = 0.5;
+            weightFn = 0.5;
+            weightPe = 0;
+        }
+
+        // The list of suggested operations to be sorted and returned
+        List<WebServiceOprScore> suggestionList = new ArrayList<WebServiceOprScore>();
+        
+        ForwardSuggest fwdSugg = new ForwardSuggest();
+                
+        // For each of the Candidate Operations
+        for (WebServiceOpr op : candidateOPs) {
+            double dmScore = 0;
+            double fnScore = 0;
+            double peScore = 0;
+            double score = 0;
+            
+            List<WebServiceOpr> workflowForward = new ArrayList<WebServiceOpr>();
+            workflowForward.add(op);
+
+            //Uses the data-mediation from ForwardSuggest, hence the first workflow op becomes candidate op
+            //and the current candidateOp becomes workflowOp so that everyhing else renains same
+            //getDmScore(workflowOPs, op, owlURI);
+            dmScore = fwdSugg.getDmScorepHom(workflowForward, workflowOPs.get(workflowOPs.size()-1), owlURI);
+            
+            if (preferOp != null) {
+
+                fnScore = fwdSugg.getFnScore(preferOp, op, owlURI);
+            }
+
+            score = this.weightDm * dmScore + this.weightFn * fnScore
+                    + this.weightPe * peScore;
+
+            WebServiceOprScore opScore = new WebServiceOprScore(op.getOperationName(), op.getWsDescriptionDoc(), score);
+            opScore.setDmScore(dmScore);
+            opScore.setFnScore(fnScore);
+            opScore.setPeScore(peScore);
+            opScore.setExtraInfo(op.getExtraInfo());
+
+            suggestionList.add(opScore);
+
+        }// For ends
+        Collections.sort(suggestionList, Collections.reverseOrder());
+
+        return suggestionList;
+    }
+    
     public static void main(String[] args) {
         //Test code
         //For Testing this Use test.TestBkwdSuggest class

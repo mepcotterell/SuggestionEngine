@@ -202,7 +202,7 @@ public class FSuggPathBasedConceptFn {
 
         
         workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
-        desiredOps = "http://purl.obolibrary.org/obo/OBIws_0000147";
+        desiredOps = "http://purl.obolibrary.org/obo/OBIws_0000147"; //exact
         suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");

@@ -254,8 +254,15 @@ public class PathRank {
             //compare leaf's type attribute if exist
             if (outNode.getAttribute("type") != null && inNode.getAttribute("type") != null) {
 
-                String outNodeType = outNode.getAttributeValue("type").split(":")[1];
-                String inNodeType = inNode.getAttributeValue("type").split(":")[1];
+                String outNodeType = outNode.getAttributeValue("type");
+                String inNodeType = inNode.getAttributeValue("type");
+                    
+                if (outNode.getAttributeValue("type").contains(":") && inNode.getAttributeValue("type").contains(":"))
+                {
+                    outNodeType = outNode.getAttributeValue("type").split(":")[1];
+                    inNodeType = inNode.getAttributeValue("type").split(":")[1];
+                }
+                
 
                 if (outNodeType.equalsIgnoreCase(inNodeType)) {
                     scoreTyp = 1;

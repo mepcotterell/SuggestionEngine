@@ -39,7 +39,7 @@ public class PHomomorphismSim {
         
         Boolean[][] G1Mat; //Will store Graph for Input of candidateOP (nextOP)
         Boolean[][] G2Mat; //Will store Graph for Output of last workflowOP
-        double threshHold = 0.6;
+        double threshHold = 0.65;
         double[][] scoringMatrix;
         double[] w = null; // An array to store weights for all the nodes in Graph G1Mat of the input of candidateOP
 
@@ -105,7 +105,25 @@ public class PHomomorphismSim {
             
             for(int i=0; i< G1ElementList.size(); i++)
                 for(int j=0; j< G2ElementList.size(); j++)
-                    scoringMatrix[i][j] = PathRank.compare2node(G1ElementList.get(i), G2ElementList.get(j), owlURI, NodeType.NON_LEAF_NODE);
+                {
+                    boolean leaf = true;
+                    for(int x = 0; x < G1Mat[0].length; x++)
+                    { 
+                        if (G1Mat[i][x] == true)
+                        {
+                            leaf = false;
+                            break;
+                        }                   
+                    }
+                    if (leaf)
+                        scoringMatrix[i][j] = PathRank.compare2node(G1ElementList.get(i), G2ElementList.get(j), owlURI, NodeType.LEAF_NODE);
+                    else
+                        scoringMatrix[i][j] = PathRank.compare2node(G1ElementList.get(i), G2ElementList.get(j), owlURI, NodeType.NON_LEAF_NODE);
+                
+                    //Global Inputs
+                }
+
+
             
             PHomomorphism pHom =  new PHomMaxCardinality();
             dmscore = pHom.calculatepHomSimScore(G1Mat, G2Mat, scoringMatrix, threshHold, w);
@@ -178,7 +196,7 @@ public class PHomomorphismSim {
                 else 
                 {
                     // nillable is not present and if minOccurs is not present
-                    return required;
+                    return optional;
                 } 
             
             }//else

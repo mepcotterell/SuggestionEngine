@@ -7,8 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
-import pHomomorphism.PHomomorphism;
-import pHomomorphism.Util;
+
 import util.WebServiceOpr;
 
 /**
