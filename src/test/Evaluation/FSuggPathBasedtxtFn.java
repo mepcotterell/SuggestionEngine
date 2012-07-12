@@ -2,12 +2,9 @@
 package test.Evaluation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import suggest.ForwardSuggest;
 import test.TestMetrics;
-import util.MatchedIOPaths;
 import util.WebServiceOpr;
 import util.WebServiceOprScore;
 
@@ -191,13 +188,14 @@ public class FSuggPathBasedtxtFn {
         
         workflowOpsOBI.add(new WebServiceOpr("run", wublast));
         ForwardSuggest sugg2 = new ForwardSuggest();
-        List<WebServiceOprScore> suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null,globalInputs);
 
+        desiredOps = "filter sequences";
+        List<WebServiceOprScore> suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null,globalInputs);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
         System.out.println("Suggestion for Step 2: WUBlast.run -> ??");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
+        TestMetrics.printMetrics(suggestOpList2, 0.5);
 
         
         workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
@@ -207,65 +205,62 @@ public class FSuggPathBasedtxtFn {
         System.out.println("--------------------------------------------------");
         System.out.println("Suggestion for Step 3: WUBlast.run -> WUBlast.getResult -> ??");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
+        TestMetrics.printMetrics(suggestOpList2, 0.5);
         
         
         workflowOpsOBI.add(new WebServiceOpr("filterByEvalScoreCSV", filerSeq));
-        desiredOps = "multiple sequence alignment";
+        desiredOps = "align multiple sequences";
         suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
         System.out.println("Suggestion for Step 4: WUBlast.run -> WUBlast.getResult -> FilterSequences -> ?");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
+        TestMetrics.printMetrics(suggestOpList2, 0.5);
                
         workflowOpsOBI.add(new WebServiceOpr("run", clustalW));
-        desiredOps = "";
+        desiredOps = "align multiple sequences";
         suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
         System.out.println("Suggestion for Step 5: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
         System.out.println("clustalW.run -> ??");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
+        TestMetrics.printMetrics(suggestOpList2, 0.5);
 
                 
         workflowOpsOBI.add(new WebServiceOpr("getResult", clustalW));
-        desiredOps = "protein distance matrix";
+        desiredOps = "construct phylogenetic trees";
         suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
         System.out.println("Suggestion for Step 6: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
         System.out.println("clustalW.run -> clustalW.getResult -> ??");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
+        TestMetrics.printMetrics(suggestOpList2, 0.5);
 
                 
         workflowOpsOBI.add(new WebServiceOpr("protdistDefaultParameters", wsProtDist));
-        desiredOps = "";
         suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
         System.out.println("Suggestion for Step 7: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
         System.out.println("clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> ??");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
+        TestMetrics.printMetrics(suggestOpList2, 0.5);
 
 
         
         workflowOpsOBI.add(new WebServiceOpr("retrieveProtDistResult", wsProtDist));
-        desiredOps = "construct neighbor trees";
         suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
         System.out.println("Suggestion for Step 8: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
         System.out.println("clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> retrieveProtDistResult -> ??");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
+        TestMetrics.printMetrics(suggestOpList2, 0.5);
 
                
         workflowOpsOBI.add(new WebServiceOpr("runNeighborDefaultParam", wsNeighbor));
-        desiredOps = "";
         suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
@@ -273,7 +268,7 @@ public class FSuggPathBasedtxtFn {
         System.out.println("clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> retrieveProtDistResult -> "
                 + " wsPhylipNeighbor.runNeighborDefaultParam -> ");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
+        TestMetrics.printMetrics(suggestOpList2, 0.5);
 
         
     }// Main ends

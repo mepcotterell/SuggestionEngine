@@ -25,7 +25,13 @@ public class TestMetrics {
         out.println(wsName +suggestion.getOperationName() + "-" + twoDForm.format(suggestion.getScore()) );
     } // printOp
     
-    public static void printMetrics (List<WebServiceOprScore> list) {
+    public static void printMetrics (List<WebServiceOprScore> list) 
+    {
+        printMetrics(list, 0.55);
+    } // printMetrics
+    
+       
+    public static void printMetrics (List<WebServiceOprScore> list, double factor) {
         
         // Determine the mean, min, and max
         double sum = 0.0;
@@ -49,7 +55,7 @@ public class TestMetrics {
         double variance = sum / (double) list.size();
         double stddev   = Math.sqrt(variance);
         double xStd = (max- mean)/stddev;
-        double upLimit = (0.55 * xStd) * stddev;
+        double upLimit = (factor * xStd) * stddev;
         
         
         out.println();
@@ -87,4 +93,5 @@ public class TestMetrics {
         
     } // printMetrics
     
+   
 } // TestMetrics

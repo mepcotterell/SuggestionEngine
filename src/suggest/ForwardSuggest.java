@@ -209,8 +209,8 @@ public class ForwardSuggest {
             weightPe = 0;
             weightFn = 0;
         } else {
-            weightDm = 0.5;
-            weightFn = 0.5;
+            weightDm = 0.7;
+            weightFn = 0.3;
             weightPe = 0;
         }
 

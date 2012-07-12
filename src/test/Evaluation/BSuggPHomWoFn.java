@@ -1,59 +1,56 @@
 
 package test.Evaluation;
 
+import test.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import suggest.BackwardSuggest;
 import suggest.ForwardSuggest;
-import test.TestMetrics;
 import util.MatchedIOPaths;
 import util.WebServiceOpr;
 import util.WebServiceOprScore;
 
 /**
  *
- * @author Alok Dhamanaskar (alokd@uga.edu)
+ * @author Alok Dhamanaskar
  * @see LICENSE (MIT style license file). 
- * 
- * Class for Evaluation of SSE for Forward Suggestion 
  */
 
-public class FSuggPathBasedWoAnn {
+public class BSuggPHomWoFn {
 
     public static List<List<Double>> pvals = new ArrayList<List<Double>>();
     
-    public static String wublast     = "http://www.ebi.ac.uk/Tools/services/soap/wublast?wsdl";
-    public static String ncbiblast   = "http://www.ebi.ac.uk/Tools/services/soap/ncbiblast?wsdl";
-    public static String psiblast    = "http://www.ebi.ac.uk/Tools/services/soap/psiblast?wsdl";    
-    public static String fasta       = "http://www.ebi.ac.uk/Tools/services/soap/fasta?wsdl";
+    public static String wublast     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl";
+    public static String ncbiblast   = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/ncbiblast.sawsdl";
+    public static String psiblast    = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/psiblast.sawsdl";    
+    public static String fasta       = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/fasta.sawsdl";
 
-    public static String clustalW    = "http://www.ebi.ac.uk/Tools/services/soap/clustalw2?wsdl";
-    public static String tcoffee     = "http://www.ebi.ac.uk/Tools/services/soap/tcoffee?wsdl";
-    public static String clustalo    = "http://www.ebi.ac.uk/Tools/services/soap/clustalo?wsdl"; 
-    public static String muscle      = "http://www.ebi.ac.uk/Tools/services/soap/muscle?wsdl";    
+    public static String clustalW    = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2.sawsdl";
+    public static String tcoffee     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/tcoffee.sawsdl";
+    public static String clustalo    = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalo.sawsdl"; 
+    public static String muscle      = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/muscle.sawsdl";    
     
-    public static String wsdbfetch   = "http://www.ebi.ac.uk/ws/services/WSDbfetchDoclit?wsdl";
-    public static String wsconverter = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/converters.wsdl";
-    public static String filerSeq    = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/filterSequences.wsdl";
+    public static String wsdbfetch   = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/WSDbfetch.sawsdl";
+    public static String wsconverter = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/WSConverter.sawsdl";
+    public static String filerSeq    = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/FilterSequencesWS.sawsdl";
   
-    public static String signalp     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/signalp.wsdl";
-    public static String iprscan     = "http://www.ebi.ac.uk/Tools/services/soap/iprscan?wsdl";
-    public static String phobius     = "http://www.ebi.ac.uk/Tools/services/soap/phobius?wsdl";
+    public static String signalp     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/signalp.sawsdl";
+    public static String iprscan     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/iprscan.sawsdl";
+    public static String phobius     = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/phobius.sawsdl";
     
-    public static String wsProtDist  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipProtDist.wsdl"; 
-    public static String wsConsense  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipConsense.wsdl"; 
-    public static String wsProtPars  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipProtPars.wsdl"; 
-    public static String wsNeighbor  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/webservices/wsPhylipNeighbor.wsdl";
-    public static String clustlPhylogeny  = "http://www.ebi.ac.uk/Tools/services/soap/clustalw2_phylogeny?wsdl";
-            
+    public static String wsProtDist  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipProtDist.sawsdl"; 
+    public static String wsConsense  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipConsense.sawsdl"; 
+    public static String wsProtPars  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipProtPars.sawsdl"; 
+    public static String wsNeighbor  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipNeighbor.sawsdl";
+    public static String clustlPhylogeny  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2_phylogeny.sawsdl";
+    
     public static String ontology = "/home/alok/Desktop/obiws.owl";//"http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";   
     
     public static void main (String[] args) {
         
-        // Specify a desired functionality or operation name
-        String desiredOps = "";
-        
+        String desiredOps = "";       
         List<WebServiceOpr> candidateOpsOBI = new ArrayList<WebServiceOpr>();
 
         candidateOpsOBI.add(new WebServiceOpr("filterByEvalScore", filerSeq));
@@ -184,94 +181,85 @@ public class FSuggPathBasedWoAnn {
         candidateOpsOBI.add(new WebServiceOpr("getStatus", clustlPhylogeny));
         candidateOpsOBI.add(new WebServiceOpr("run", clustlPhylogeny));       
         
-        //----------------------------------------------------------------------    
-        
+        //----------------------------------------------------------------------      
+
         List<String> globalInputs = new ArrayList<String>();
-        globalInputs.add("email address"); //email address
-        
+        globalInputs.add("http://purl.obolibrary.org/obo/OBIws_0000017"); //email address
+
         List<WebServiceOpr> workflowOpsOBI = new ArrayList<WebServiceOpr>();
         
-        workflowOpsOBI.add(new WebServiceOpr("run", wublast));
-        ForwardSuggest sugg2 = new ForwardSuggest();
-        List<WebServiceOprScore> suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null,globalInputs);
-
+            workflowOpsOBI.add(new WebServiceOpr("retrieveNeighborResult", wsNeighbor));
+        BackwardSuggest sugg2 = new BackwardSuggest();
+        desiredOps = "";
+        List<WebServiceOprScore> suggestOpList2 = sugg2.suggestPrevServicespHom(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Step 2: WUBlast.run -> ??");
+        System.out.println("Suggestion for Step 8: ?? -> retrieveNeighborResult");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
-
+        TestMetrics.printMetrics(suggestOpList2, 0.35);
         
-        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
-        
-        suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
+                
+        workflowOpsOBI.add(new WebServiceOpr("runNeighborDefaultParam", wsNeighbor));
+        suggestOpList2 = sugg2.suggestPrevServicespHom(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Step 3: WUBlast.run -> WUBlast.getResult -> ??");
+        System.out.println("Suggestion for Step 7: ?? -> runNeighborDefaultParam -> retrieveNeighborResult");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
+        TestMetrics.printMetrics(suggestOpList2, 0.35);
         
-        
-        workflowOpsOBI.add(new WebServiceOpr("filterByEvalScoreCSV", filerSeq));
-        suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
+                
+        workflowOpsOBI.add(new WebServiceOpr("retrieveProtDistResult", wsProtDist));
+        suggestOpList2 = sugg2.suggestPrevServicespHom(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Step 4: WUBlast.run -> WUBlast.getResult -> FilterSequences -> ?");
+        System.out.println("Suggestion for Step 6: ?? -> retrieveProtDistResult -> runNeighborDefaultParam -> retrieveNeighborResult");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
-               
-        workflowOpsOBI.add(new WebServiceOpr("run", clustalW));
-        suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
+        TestMetrics.printMetrics(suggestOpList2, 0.35);
+        
+        
+        workflowOpsOBI.add(new WebServiceOpr("protdistDefaultParameters", wsProtDist));
+        suggestOpList2 = sugg2.suggestPrevServicespHom(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Step 5: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
-        System.out.println("clustalW.run -> ??");
+        System.out.println("Suggestion for Step 5: ?? -> protdistDefaultParameters -> retrieveProtDistResult -> runNeighborDefaultParam -> retrieveNeighborResult");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
-
+        TestMetrics.printMetrics(suggestOpList2, 0.35);
+        
                 
         workflowOpsOBI.add(new WebServiceOpr("getResult", clustalW));
-        suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
+        suggestOpList2 = sugg2.suggestPrevServicespHom(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Step 6: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
-        System.out.println("clustalW.run -> clustalW.getResult -> ??");
+        System.out.println("Suggestion for Step 4: ?? -> clustalW.getResult -> protdistDefaultParameters -> retrieveProtDistResult -> runNeighborDefaultParam -> retrieveNeighborResult");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
-
-                
-        workflowOpsOBI.add(new WebServiceOpr("protdistDefaultParameters", wsProtDist));
-        suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
-        System.out.println("\n");
-        System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Step 7: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
-        System.out.println("clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> ??");
-        System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
-
-
+        TestMetrics.printMetrics(suggestOpList2, 0.35);
         
-        workflowOpsOBI.add(new WebServiceOpr("retrieveProtDistResult", wsProtDist));
-        suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
+                        
+        workflowOpsOBI.add(new WebServiceOpr("run", clustalW));
+        suggestOpList2 = sugg2.suggestPrevServicespHom(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Step 8: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
-        System.out.println("clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> retrieveProtDistResult -> ??");
+        System.out.println("Suggestion for Step 3: ?? -> clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> retrieveProtDistResult -> runNeighborDefaultParam -> retrieveNeighborResult");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
+        TestMetrics.printMetrics(suggestOpList2, 0.35);
+        
 
+        workflowOpsOBI.add(new WebServiceOpr("filterByEvalScoreCSV", filerSeq));
+        suggestOpList2 = sugg2.suggestPrevServicespHom(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+        System.out.println("\n");
+        System.out.println("--------------------------------------------------");
+        System.out.println("Suggestion for Step 2: ?? -> filterByEvalScoreCSV -> clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> retrieveProtDistResult -> runNeighborDefaultParam -> retrieveNeighborResult");
+        System.out.println("--------------------------------------------------");
+        TestMetrics.printMetrics(suggestOpList2, 0.35);
+        
                
-        workflowOpsOBI.add(new WebServiceOpr("runNeighborDefaultParam", wsNeighbor));
-        suggestOpList2 = sugg2.suggestNextServiceGlobalIps(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null, globalInputs);
+        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
+        suggestOpList2 = sugg2.suggestPrevServicespHom(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
         System.out.println("\n");
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Step 9: WUBlast.run -> WUBlast.getResult -> FilterSequences ->");
-        System.out.println("clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> retrieveProtDistResult -> "
-                + "retrieveProtDistResult -> wsPhylipNeighbor.runNeighborDefaultParam -> ");
+        System.out.println("Suggestion for Step 1: ?? -> wublast.getResult -> clustalW.run -> clustalW.getResult -> protdistDefaultParameters -> retrieveProtDistResult -> runNeighborDefaultParam -> retrieveNeighborResult");
         System.out.println("--------------------------------------------------");
-        TestMetrics.printMetrics(suggestOpList2);
-
-
+        TestMetrics.printMetrics(suggestOpList2, 0.35);
         
     }// Main ends
     
