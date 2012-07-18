@@ -56,7 +56,7 @@ public class GetDocumentation
                 org.jdom.Attribute cardAttrMIN = paramElement.getAttribute("minOccurs");
                 org.jdom.Attribute cardAttrMAX = paramElement.getAttribute("maxOccurs");
                 int flag = 0;
-                String CardinalityInfo = "Cardinality Info : ";
+                String CardinalityInfo = "<b>Cardinality Info:</b> ";
                 if (cardAttrMIN!=null)
                     if(Integer.parseInt(cardAttrMIN.getValue()) != 0 )
                     {
@@ -90,11 +90,11 @@ public class GetDocumentation
                                     String description = parser.getClassDescription(conceptClass);
 
                                     if (!OntoDef.equals(""))
-                                        DocList.add("Definition : " + OntoDef);
+                                        DocList.add("<b>Definition:</b> " + OntoDef);
                                     if (!usage.equals(""))
-                                        DocList.add("Usage : " + usage);
+                                        DocList.add("<b>Usage:</b>" + usage);
                                     if (!description.equals(""))
-                                        DocList.add("Description : " + description);
+                                        DocList.add("<b>Description:</b> " + description);
                                 }// try ends
                             catch(Exception e)
                             {

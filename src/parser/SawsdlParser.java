@@ -94,7 +94,22 @@ public class SawsdlParser {
      */
     public Element getInMsElem(String fileName, String opName) {
         Element opElem = this.getOpNameElemMap(fileName).get(opName);
-        Element inElem = opElem.getChild("input", wsdlNS);
+        Element inElem ;
+        
+    
+        try{
+        
+        if (opElem.getChild("input", wsdlNS) != null)
+            inElem = opElem.getChild("input", wsdlNS);
+        else
+            return null;
+        }
+        catch (Exception e)
+        {
+            inElem = null;
+        
+        }
+        
         String inMsName = inElem.getAttributeValue("message");
         if (inMsName.contains(":")) {
             inMsName = inMsName.split(":")[1];

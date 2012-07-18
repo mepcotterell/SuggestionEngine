@@ -363,8 +363,16 @@ public class ForwardSuggest {
 
         }// For ends
         Collections.sort(suggestionList, Collections.reverseOrder());
-
-        return suggestionList;
+         List<WebServiceOprScore> suggestionList20 = new ArrayList<WebServiceOprScore>();
+         int i = 0;
+        for (WebServiceOprScore s : suggestionList)
+        {
+            i++;
+            suggestionList20.add(s);
+            if (i > 19) break;
+        }
+        
+        return suggestionList20;
     }//suggestNextServicepHom
     
     public static void main(String[] args) {

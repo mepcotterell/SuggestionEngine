@@ -189,7 +189,7 @@ public class BidrSuggPathBasedWoFn {
         
         System.out.println();
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Case 1: wublast.run -> ?? -> filterByEvalScore");
+        System.out.println("Suggestion for Step 2: wublast.run -> ?? -> filterByEvalScore");
         System.out.println("--------------------------------------------------");
         List<WebServiceOprScore> suggestOpList2 = sugg2.suggestServices
                 (workflowPrefixOps, workflowSuffixOps, candidateOpsOBI, desiredOps,  ontology, null);
@@ -202,19 +202,33 @@ public class BidrSuggPathBasedWoFn {
         workflowSuffixOps.add(new WebServiceOpr("run", clustalW));
         System.out.println();
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Case 2: wublast.getResult -> ?? -> clustalw.run");
+        System.out.println("Suggestion for Step 3: wublast.getResult -> ?? -> clustalw.run");
         System.out.println("--------------------------------------------------");
         suggestOpList2 = sugg2.suggestServices
                 (workflowPrefixOps, workflowSuffixOps, candidateOpsOBI, desiredOps,  ontology, null);
         TestMetrics.printMetrics(suggestOpList2,0.05);
        
+        
+        workflowPrefixOps.clear();
+        workflowSuffixOps.clear();
+        workflowPrefixOps.add(new WebServiceOpr("filterByEvalScore", filerSeq));
+        workflowSuffixOps.add(new WebServiceOpr("getResult", clustalW));
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+        System.out.println("Suggestion for Step 4: filterByEvalScore -> ?? -> clustalw.getResults");
+        System.out.println("--------------------------------------------------");
+        suggestOpList2 = sugg2.suggestServices
+                (workflowPrefixOps, workflowSuffixOps, candidateOpsOBI, desiredOps,  ontology, null);
+        TestMetrics.printMetrics(suggestOpList2,0.05);
+        
+        
         workflowPrefixOps.clear();
         workflowSuffixOps.clear();
         workflowPrefixOps.add(new WebServiceOpr("run", clustalW));
         workflowSuffixOps.add(new WebServiceOpr("protdistDefaultParameters", wsProtDist));
         System.out.println();
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Case 3: clustalW.run -> ?? -> protdistDefaultParameters");
+        System.out.println("Suggestion for Step 5: clustalW.run -> ?? -> protdistDefaultParameters");
         System.out.println("--------------------------------------------------");
         suggestOpList2 = sugg2.suggestServices
                 (workflowPrefixOps, workflowSuffixOps, candidateOpsOBI, desiredOps,  ontology, null);
@@ -223,10 +237,10 @@ public class BidrSuggPathBasedWoFn {
         workflowPrefixOps.clear();
         workflowSuffixOps.clear();
         workflowPrefixOps.add(new WebServiceOpr("getResult", clustalW));
-        workflowSuffixOps.add(new WebServiceOpr("runNeighborDefaultParam", wsNeighbor));
+        workflowSuffixOps.add(new WebServiceOpr("retrieveProtDistResult", wsProtDist));
         System.out.println();
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Case 4: clustalW.getResult -> ?? -> runNeighborDefaultParam");
+        System.out.println("Suggestion for Step 6: clustalW.getResult -> ?? -> retrieveProtDistResult");
         System.out.println("--------------------------------------------------");
         suggestOpList2 = sugg2.suggestServices
                 (workflowPrefixOps, workflowSuffixOps, candidateOpsOBI, desiredOps,  ontology, null);
@@ -235,11 +249,23 @@ public class BidrSuggPathBasedWoFn {
                         
         workflowPrefixOps.clear();
         workflowSuffixOps.clear();
-        workflowPrefixOps.add(new WebServiceOpr("retrieveProtDistResult", wsProtDist));
-        workflowSuffixOps.add(new WebServiceOpr("retrieveNeighborResult", wsNeighbor));
+        workflowPrefixOps.add(new WebServiceOpr("protdistDefaultParameters", wsProtDist));
+        workflowSuffixOps.add(new WebServiceOpr("runNeighborDefaultParam", wsNeighbor));
         System.out.println();
         System.out.println("--------------------------------------------------");
-        System.out.println("Suggestion for Case 5: retrieveProtDistResult -> ?? -> retrieveNeighborResult");
+        System.out.println("Suggestion for Step 7: protdistDefaultParameters -> ?? -> runNeighborDefaultParam");
+        System.out.println("--------------------------------------------------");
+        suggestOpList2 = sugg2.suggestServices
+                (workflowPrefixOps, workflowSuffixOps, candidateOpsOBI, desiredOps,  ontology, null);
+        TestMetrics.printMetrics(suggestOpList2,0.05);  
+
+                workflowPrefixOps.clear();
+        workflowSuffixOps.clear();
+        workflowPrefixOps.add(new WebServiceOpr("retrieveProtDistResult", wsProtDist));
+        workflowSuffixOps.add(new WebServiceOpr("runNeighborDefaultParam", wsNeighbor));
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+        System.out.println("Suggestion for Step 8: retrieveProtDistResult -> ?? -> runNeighborDefaultParam");
         System.out.println("--------------------------------------------------");
         suggestOpList2 = sugg2.suggestServices
                 (workflowPrefixOps, workflowSuffixOps, candidateOpsOBI, desiredOps,  ontology, null);

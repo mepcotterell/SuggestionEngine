@@ -39,7 +39,7 @@ public class PHomomorphismSim {
         
         Boolean[][] G1Mat; //Will store Graph for Input of candidateOP (nextOP)
         Boolean[][] G2Mat; //Will store Graph for Output of last workflowOP
-        double threshHold = 0.65;
+        double threshHold = 0.6;
         double[][] scoringMatrix;
         double[] w = null; // An array to store weights for all the nodes in Graph G1Mat of the input of candidateOP
 

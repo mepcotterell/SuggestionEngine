@@ -20,6 +20,7 @@ import parser.SchemaParser;
 public class SuggestInputValues
 {
 
+    
     /**
 * A constructor for suggestInputValues class that given the name of the parameter,
 * URL for the WSDL file and URL for the Ontology file gets the list of possible input
@@ -33,7 +34,8 @@ public class SuggestInputValues
 */
     public static List<String> SuggestParamValues(String WSDLURL, String paramName, String owlURI)
     {
-        List<String> values = new ArrayList<String>();        
+        List<String> values = new ArrayList<String>();  
+        values.add("<b>Possible Input Values:</b>");
         String paramIRI;
         
         Element paramElement= null;

@@ -104,7 +104,7 @@ public class FnScore
 
     public static void main(String[] args)
     {
-        //Test Code, To test it idependently of Other score
+        //Test Code, To test it idependently of Other scores
         String desiredFn = "pairwise sequence alignment";
         String OWLURI = "owl/webService.owl";
         WebServiceOpr opr = new WebServiceOpr("run", "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl");

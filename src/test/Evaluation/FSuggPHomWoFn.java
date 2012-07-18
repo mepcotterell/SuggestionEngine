@@ -47,7 +47,7 @@ public class FSuggPHomWoFn {
     public static String wsNeighbor  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipNeighbor.sawsdl";
     public static String clustlPhylogeny  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2_phylogeny.sawsdl";
             
-    public static String ontology = "/home/alok/Desktop/obiws.owl";//"http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";   
+    public static String ontology = "/home/alok/Desktop/webService.owl";//"http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";   
     
     public static void main (String[] args) {
         

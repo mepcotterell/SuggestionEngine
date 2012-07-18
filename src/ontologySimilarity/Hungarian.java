@@ -61,10 +61,17 @@ public class Hungarian
      */
     private static void initLabels ()
     {
+        try{
         for (x = 0; x < m; x++) {
             for (y = 0; y < n; y++) lx[x] = max (lx[x], cost[x][y]);
             //out.println ("intLabels: lx[" + x + "] = " + lx[x]);
         } // for
+        }
+        catch(Exception e)
+        {
+//            System.out.println("inside initLabels..!!");
+        
+        }
     } // initLabels
 
     /************************************************************************
@@ -147,7 +154,7 @@ public class Hungarian
         fill (prev, NA);                           // initialize prev to NA (for alternating tree)
 
         findRootSetSlack ();
-    
+    try{
         while (true) {                                    // main cycle
             while (! qu.isEmpty ()) {                     // building tree with BFS cycle
                 x = qu.poll ();                           // current x-node from queue
@@ -189,6 +196,14 @@ public class Hungarian
         nMatch++;                                 // increment number of nodes in matching
         reverseEdges ();                          // reverse edges along augmenting path
         if (nMatch < maxMatch) augment ();        // try to find another augmenting path
+                }
+        catch(Exception e)
+        {
+//            System.out.println("inside augment..!!");
+        
+        }
+        
+        
     } // augment
 
     /************************************************************************
@@ -216,8 +231,10 @@ public class Hungarian
         nMatch    = 0;                          // number of nodes in current matching
         maxMatch  = min (n, m);                 // number of matches needed
 
+        try{
+        
         initLabels ();                          // initialize cost labels for the x-nodes
-        augment ();                             // recursively find augmenting paths
+        augment    ();                             // recursively find augmenting paths
 
         //out.println ("------------------------------------");
         double total = 0;                       // cost/weight of the optimal matching
@@ -227,6 +244,15 @@ public class Hungarian
         } // for
         //out.println ("------------------------------------");
         return total;
+        }
+        catch(Exception e)
+        {
+            System.out.println("In Hungarian "  );
+//            System.out.println("m =" + m + "---n=" + n );
+            return 0;
+        
+        }
+        
     } // hungarian
 
     /************************************************************************

@@ -29,6 +29,16 @@ public class TestMetrics {
     {
         printMetrics(list, 0.55);
     } // printMetrics
+
+        
+    public static void printList (List<WebServiceOprScore> list) 
+    {
+        for (WebServiceOprScore suggestion: list) {
+        printOp(suggestion);
+        }
+
+    } // printMetrics
+    
     
        
     public static void printMetrics (List<WebServiceOprScore> list, double factor) {
