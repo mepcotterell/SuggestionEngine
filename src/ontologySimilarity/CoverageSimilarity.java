@@ -8,12 +8,13 @@ import static java.lang.System.out;
 
 /**
  * 
+ * The class has methods required to calculate Coverage Similarity sub-score.
+ * 
  * @author Michael Cotterell
  * @author Alok Dhamanaskar
  * 
  * @see LICENSE (MIT style license file). 
  * 
- * The class has methods required to calculate Coverage Similarity sub-score.
  */
 
 public class CoverageSimilarity {

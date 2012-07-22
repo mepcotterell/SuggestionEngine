@@ -7,10 +7,12 @@ import ontologyManager.Restriction;
 import org.semanticweb.owlapi.model.*;
 
 /**
+ * 
+ * This class supports methods required for calculation of Range similarity sub-subScore.
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
  * 
- * This class supports methods required for calculation of Range similarity sub-subScore
  */
 public class PropertyRangeSimilarity { 
 

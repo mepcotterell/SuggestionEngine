@@ -2,12 +2,13 @@
 package util;
 
 /**
- * @author Rui Wang
- * @author Alok Dhamanaskar
- * @see LICENSE (MIT style license file).
  * 
  * A class that represents scores and sub-scores (DataMediation, Functionality and Preconditons & effects)
  * for a particular Web service operation, along with getters, setters and comparable for the same
+ * 
+ * @author Rui Wang
+ * @author Alok Dhamanaskar
+ * @see LICENSE (MIT style license file).
  *  
  * @param score The score assigned to the candidate Web service operation which is a weighted sum of the Subscores 
  * @param dmScore The data Mediation Score

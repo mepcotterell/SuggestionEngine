@@ -11,6 +11,9 @@ import org.jdom.Namespace;
 import util.WebServiceOpr;
 
 /**
+ * 
+ * The class that supports methods to represent the XML input output as graph (matrix / adjacency list)
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
  * 

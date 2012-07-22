@@ -4,11 +4,11 @@ import java.util.List;
 import org.jdom.Element;
 
 /**
+ * 
+ * A class that represents Input/Output paths, score for that path, Web service and operation it belongs to. 
  * @author Rui Wang
  * @author ALok Dhamanaskar
  * @see LICENSE (MIT style license file).
- * 
- * A class that represents Input/Output paths, score for that path, Web service and operation it belongs to. 
  * 
  */
 public class WebServiceOprScore_type extends WebServiceOprScore implements Comparable<WebServiceOprScore> {

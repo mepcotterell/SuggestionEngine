@@ -6,10 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * 
+ * All the interactions with this package from outside are specified in this interface
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
  * 
- * All the interactions with this package from outside are specified in this interface
+ * 
  */
 
 public interface PHomomorphism {

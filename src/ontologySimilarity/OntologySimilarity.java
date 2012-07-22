@@ -4,9 +4,10 @@ package ontologySimilarity;
 import org.semanticweb.owlapi.model.OWLClass;
 
 /**
- * @author Alok Dhamanaskar
  * Interface that defines methods supported by the Ontology Similarity module
  * 
+ * @author Alok Dhamanaskar
+ * @see    LICENSE (MIT style license file).
  */
 public interface OntologySimilarity {
     

@@ -8,10 +8,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * 
+ * The class creates and stores previous and post adjacency lists for a given DAG
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
- * The class creates and stores previous and post adjacency lists for a given DAG
+ * 
  */
 public class H1adjacency {
     

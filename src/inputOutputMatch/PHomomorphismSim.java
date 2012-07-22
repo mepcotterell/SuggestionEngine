@@ -1,7 +1,6 @@
 
-package dataMediator;
+package inputOutputMatch;
 
-import static java.lang.System.out;
 import java.util.*;
 import org.jdom.Element;
 import pHomomorphism.PHomMaxCardinality;
@@ -13,6 +12,9 @@ import util.NodeType;
 import util.WebServiceOpr;
 
 /**
+ * 
+ * Provides methods for calculation of PHomomorphism Similarity Score
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
  */
@@ -140,6 +142,13 @@ public class PHomomorphismSim {
         PHomomorphismSim phom = new PHomomorphismSim();
     
     }
+    
+    /**
+     * Method to check if a given element is required or not.
+     * 
+     * @param Element
+     * @return 
+     */
     public double isRequired(Element e) {
         
         double required = 1.0;

@@ -10,10 +10,11 @@ import uk.ac.shef.wit.simmetrics.similaritymetrics.*;
 import static java.lang.System.out;
 
 /**
+ * 
+ * Class That either contains / invokes methods required to calculate concept similarity and its sub scores
  * @author Rui Wang, Michael Cotterell, Alok Dhamanaskar 
  * @see LICENSE (MIT style license file). 
  * 
- * Class That either contains / invokes methods required to calculate concept similarity and its sub scores
  */
 public class ConceptSimilarity {
     

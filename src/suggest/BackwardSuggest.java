@@ -5,12 +5,14 @@ import ontologyManager.OntologyManager;
 import util.*;
 
 /**
+ * 
+ * A class that provides method for suggestion of the previous Web service Operation(), 
+ * by calculating sub scores for Data mediation, Functionality and Preconditions & effects score.
+ * 
  * @author Alok DHamanaskar
  * @author Rui Wang
  * @see LICENSE (MIT style license file).
  * 
- * A class that provides method for suggestion of the previous Web service Operation(), 
- * by calculating sub scores for Data mediation, Functionality and Preconditions & effects score
  * 
  */
 public class BackwardSuggest {
@@ -31,7 +33,7 @@ public class BackwardSuggest {
 
 
     /**
-     * Returns the data mediation result for all candidateOPs.
+     * Returns the data matching result for all candidateOPs.
      *
      * @return the dmResults
      */
@@ -42,6 +44,7 @@ public class BackwardSuggest {
     /**
      * The operation returns a list of Suggested Operations for the Previous step in the Workflow, 
      * given the operations that are currently in the Workflow and a list of candidate operations. 
+     * Uses path-based data matching algorithms.
      * 
      * @param workflowOPs List of Web service Operations currently in the Workflow
      * @param candidateOPs List of Candidate operations to suggest the next operation from.
@@ -144,7 +147,21 @@ public class BackwardSuggest {
         return suggestionList;
     }
 
-        
+
+    /**
+     * The operation returns a list of Suggested Operations for the Previous step in the Workflow, 
+     * given the operations that are currently in the Workflow and a list of candidate operations. 
+     * Uses pHomomorphism data matching algorithms.
+     * 
+     * @param workflowOPs List of Web service Operations currently in the Workflow
+     * @param candidateOPs List of Candidate operations to suggest the next operation from.
+     * @param preferOp The desired Functionality entered by the user for the next step, 
+     *                 can be keywords / IRI for concept in the ontology
+     * @param owlURI The location of the Ontology file (Can be Relative location in the system 
+     *               or a URI of the web)
+     * @param initState Utilized for calculating Pre-conditions and effects subScore, currently unused
+     * @return Returns list of OpWSDLScore that basically stores all the Subscores, for details see <code>util.WebServiceOprScore</code>
+     */    
     public List<WebServiceOprScore> suggestPrevServicespHom
             (List<WebServiceOpr> workflowOPs, List<WebServiceOpr> candidateOPs, String preferOp, String owlURI, String initState)
     {
@@ -219,7 +236,7 @@ public class BackwardSuggest {
             if (i > 19) break;
         }
         
-        return suggestionList20;
+        return suggestionList;
     }
     
     public static void main(String[] args) {

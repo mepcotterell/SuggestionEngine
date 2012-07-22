@@ -13,12 +13,14 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
 
 /**
- * @author Yung Long le, 
- * @see LICENSE (MIT style license file).
  * 
  * This class is used to load OWL files or URL's into memory.  Clients of this class
  * must handle the following classes from the OWLAPI: OWLClass, OWLDataProperty and
  * OWLObjectProperty.
+ * 
+ * @author Yung Long le, 
+ * @see LICENSE (MIT style license file).
+ *
  * 
  */
 public class OntologyManager {

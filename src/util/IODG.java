@@ -5,7 +5,8 @@ import java.util.List;
 import org.jdom.Element;
 
 /**
- * @author Rui
+ * @author Rui Wang
+ * @see LICENSE (MIT style license file).
  *
  */
 public class IODG {

@@ -10,11 +10,13 @@ import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
 import util.WebServiceOpr;
 
 /**
+ * 
+ * Class provides methods to calculate FnScore component of Forward/Backward or Bidirectional Suggest
  * @author Rui Wang 
  * @author Alok Dhamanaskar
  * @see LICENSE (MIT style license file).
  * 
- * Class to calculate FnScore component of Forward/Backward or Bidirectional Suggest
+ * 
  */
 public class FnScore
 {

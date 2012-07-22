@@ -6,8 +6,11 @@ import static java.lang.System.out;
 
 /**
  *
+ * The class has methods to calculate max Cardinality Mapping.
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file).
+ * 
  */
 public class MaxCardinality {
 

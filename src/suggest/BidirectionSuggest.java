@@ -8,6 +8,10 @@ import util.WebServiceOprScore;
 import util.WebServiceOprScore_type;
 
 /**
+ * 
+ * A class that provides methods for suggestion of an intermediate Web service Operation(), 
+ * by calculating sub scores for Data matching, Functionality and Preconditions & effects score.
+ * 
  * @author Alok Dhamanaskar
  * @author Rui Wang
  * @see LICENSE (MIT style license file). 
@@ -26,23 +30,28 @@ public class BidirectionSuggest {
     private Map<WebServiceOpr, Map<WebServiceOprScore_type, WebServiceOprScore_type>> suffixDmResults;
 
     /**
-     * @return the prefixDmResults
+     * Returns the prefix data matching result for all candidateOPs.
+     *
+     * @return the dmResults
      */
     public Map<WebServiceOpr, Map<WebServiceOprScore_type, WebServiceOprScore_type>> getPrefixDmResults() {
         return prefixDmResults;
     }
 
     /**
-     * @return the suffixDmResults
+     * Returns the suffix data matching result for all candidateOPs.
+     *
+     * @return the dmResults
      */
     public Map<WebServiceOpr, Map<WebServiceOprScore_type, WebServiceOprScore_type>> getSuffixDmResults() {
         return suffixDmResults;
     }
 
-     /**
+    /**
+     * 
      * The operation returns a list of Suggested Operations for an intermediate step in the Workflow, 
      * given the operations that are currently in the Workflow (a pre fix list and a Suffix list) and 
-     * a list of candidate operations. 
+     * a list of candidate operations. Uses path-based input-output matching algorithm
      *
      * @param workflowPrefixOPs List of prefix Web service Operations currently in the Workflow
      * @param workflowSuffixOPs List of postfix Web service Operations currently in the Workflow
@@ -176,10 +185,11 @@ public class BidirectionSuggest {
         return suggestionList;
     }
     
-         /**
+    /**
+     * 
      * The operation returns a list of Suggested Operations for an intermediate step in the Workflow, 
      * given the operations that are currently in the Workflow (a pre fix list and a Suffix list) and 
-     * a list of candidate operations. 
+     * a list of candidate operations. Uses p-homomorphism input-output matching algorithm
      *
      * @param workflowPrefixOPs List of prefix Web service Operations currently in the Workflow
      * @param workflowSuffixOPs List of postfix Web service Operations currently in the Workflow
@@ -271,10 +281,7 @@ public class BidirectionSuggest {
             if (i > 19) break;
         }
         
-        
-        
-        
-        return suggestionList20;
+        return suggestionList;
     }
 
     public static void main(String[] args) {

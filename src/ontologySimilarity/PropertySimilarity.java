@@ -14,8 +14,9 @@ import stringMatcher.CompareDefination;
 
 /**
  * 
- * @author Rui Wang, Michael Cotterell, Alok Dhamanaskar
  * The class has methods required to calculate Property similarity between two concepts in the Ontology
+ * 
+ * @author Rui Wang, Michael Cotterell, Alok Dhamanaskar
  * 
  */
 public class PropertySimilarity {

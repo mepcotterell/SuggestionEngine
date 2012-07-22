@@ -1,4 +1,4 @@
-package dataMediator;
+package inputOutputMatch;
 
 //import java.lang.reflect.Array;
 import util.NodeType;
@@ -27,6 +27,11 @@ import util.WebServiceOprScore_type;
 
 import org.semanticweb.owlapi.model.*;
 
+/**
+ * Currently not used / supported.
+ * 
+ * @author Rui Wang
+ */
 public class LeafMediation {
 //
 //	/**doc/literal

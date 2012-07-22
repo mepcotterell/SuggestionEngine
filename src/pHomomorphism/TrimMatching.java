@@ -6,10 +6,12 @@ import java.util.Set;
 
 /**
  *
- * @author Alok Dhamanaskar (alokd@uga.edu)
- * @see LICENSE (MIT style license file). 
  * Implements TrimMatching part of the pHomomorphism algorithm that given a match (G1node, G2node)
  * Removed bad matches from H 
+ * 
+ * @author Alok Dhamanaskar (alokd@uga.edu)
+ * @see LICENSE (MIT style license file). 
+ * 
  */
 public class TrimMatching 
 {

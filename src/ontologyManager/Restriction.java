@@ -11,12 +11,14 @@ import java.util.*;
 
 import org.semanticweb.owlapi.model.*;
 
-/***************************************************************************************
+/**
+ * This class is used to get the OWLClassRestriction, OWLproperty, OWLClass which are
+ * defined in super OWLClassExpression as OWLRestrictions.
+ * 
  * @author Yung Long Lee
  * @see LICENSE (MIT style license file). 
  * 
- * This class is used to get the OWLClassRestriction, OWLproperty, OWLClass which are
- * defined in super OWLClassExpression as OWLRestrictions.
+ * 
  */
 public class Restriction {
 

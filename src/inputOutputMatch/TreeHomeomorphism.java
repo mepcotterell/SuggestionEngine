@@ -1,5 +1,5 @@
 
-package dataMediator;
+package inputOutputMatch;
 
 import util.NodeType;
 import java.util.ArrayList;
@@ -17,7 +17,10 @@ import util.WebServiceOpr;
 import org.semanticweb.owlapi.model.*;
 
 /**
- * @author Rui
+ * 
+ * The class is currently not used by SSE. 
+ * 
+ * @author Rui Wang
  *
  */
 public class TreeHomeomorphism {

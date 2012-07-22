@@ -2,9 +2,7 @@
 package test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import suggest.ForwardSuggest;
 import util.MatchedIOPaths;
 import util.WebServiceOpr;
@@ -12,11 +10,14 @@ import util.WebServiceOprScore;
 
 /**
  *
+ * Test class for testing the Forward Suggestion capability.
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
+ * 
  */
 
-public class TestFwdSuggest {
+public class TestFwdSuggWitMatchedPaths {
 
     public static List<List<Double>> pvals = new ArrayList<List<Double>>();
     
@@ -42,18 +43,7 @@ public class TestFwdSuggest {
     
     public static void main (String[] args) {
         
-        class Results {
-            Map<String, WebServiceOprScore> test1 = new HashMap<String, WebServiceOprScore>();
-            Map<String, WebServiceOprScore> test2 = new HashMap<String, WebServiceOprScore>();
-            Map<String, WebServiceOprScore> test3 = new HashMap<String, WebServiceOprScore>();
-            Map<String, WebServiceOprScore> test4 = new HashMap<String, WebServiceOprScore>();
-        }
-        
-        Results results = new Results();
-        
-        // Specify a desired functionality or operation name
-        String desiredOps = "";//retrieve sequences";
-        //String desiredOps = "http://purl.obolibrary.org/obo/obi.owl#Class_40";
+        String desiredOps = "";
         
         List<WebServiceOpr> candidateOpsOBI = new ArrayList<WebServiceOpr>();
 
@@ -154,72 +144,73 @@ public class TestFwdSuggest {
         
         
         List<WebServiceOpr> workflowOpsOBI = new ArrayList<WebServiceOpr>();
-        workflowOpsOBI.add(new WebServiceOpr("run", clustalW));
+        workflowOpsOBI.add(new WebServiceOpr("run", wublast));
         
         System.out.println();
         System.out.println("--------------------------------------------------");
         System.out.println("TEST - OBI");
         System.out.println("Case 1: There is only one operation on the workflow Blast.run\n------------------------------------\n");
-        //desiredOps = "multiple sequence alignment";//http://purl.obolibrary.org/obo/OBIws_0000063
         ForwardSuggest sugg2 = new ForwardSuggest();
         
         List<WebServiceOprScore> suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
                     System.out.println("\n");
         for (WebServiceOprScore suggestion: suggestOpList2) {
-            results.test1.put(suggestion.getOperationName(), suggestion);
             String[] ww = suggestion.getWsDescriptionDoc().split("/");
             String wsName = ww[ww.length -1].replace("sawsdl", "");
 
             System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
             System.out.println();
-//            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPaths();
-//            //System.out.println(mps + "\n");
-//            for(MatchedIOPaths.PathMatches mp : mps)
-//            {
-//                System.out.print("\t" + mp.getOpName() + "-->" + mp.getIpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
-//            }
-//            System.out.println("\n");
+            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPaths();
+            for(MatchedIOPaths.PathMatches mp : mps)
+            {
+                System.out.print("\t" + mp.getOpName() + "-->" + mp.getIpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
+            }
+            System.out.println("\n");
         }
         //------------------------------------------------------------
         
-//        workflowOpsOBI.add(new WebServiceOpr("getResultTypes", wublast));
-//        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
-//                    System.out.println("\n");
-//        for (WebServiceOprScore suggestion: suggestOpList2) {
-//            results.test1.put(suggestion.getOperationName(), suggestion);
-//            String[] ww = suggestion.getWsDescriptionDoc().split("/");
-//            String wsName = ww[ww.length -1].replace("sawsdl", "");
-//
-//            System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
-//            System.out.println();
-//            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPathsIp();
-//            //System.out.println(mps + "\n");
-//            for(MatchedIOPaths.PathMatches mp : mps)
-//            {
-//                System.out.print("\t" + mp.getIpName() + "-->" + mp.getOpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
-//            }
-//            System.out.println("\n");
-//        }
-//        //----------------------------------------------------------------------
-//        
-//        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
-//        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
-//                    System.out.println("\n");
-//        for (WebServiceOprScore suggestion: suggestOpList2) {
-//            results.test1.put(suggestion.getOperationName(), suggestion);
-//            String[] ww = suggestion.getWsDescriptionDoc().split("/");
-//            String wsName = ww[ww.length -1].replace("sawsdl", "");
-//
-//            System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
-//            System.out.println();
-//            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPathsIp();
-//            //System.out.println(mps + "\n");
-//            for(MatchedIOPaths.PathMatches mp : mps)
-//            {
-//                System.out.print("\t" + mp.getIpName() + "-->" + mp.getOpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
-//            }
-//            System.out.println("\n");
-//        }
+        workflowOpsOBI.add(new WebServiceOpr("getResult", wublast));
+  
+        System.out.println("--------------------------------------------------");
+        System.out.println("Case 2: \n");
+        System.out.println("--------------------------------------------------");
+  
+        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+                    System.out.println("\n");
+        for (WebServiceOprScore suggestion: suggestOpList2) {
+            String[] ww = suggestion.getWsDescriptionDoc().split("/");
+            String wsName = ww[ww.length -1].replace("sawsdl", "");
+
+            System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
+            System.out.println();
+            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPaths();
+            for(MatchedIOPaths.PathMatches mp : mps)
+            {
+                System.out.print("\t" + mp.getIpName() + "-->" + mp.getOpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
+            }
+            System.out.println("\n");
+        }
+        //----------------------------------------------------------------------
+        
+        workflowOpsOBI.add(new WebServiceOpr("filterByEvalScore", filerSeq));
+        System.out.println("--------------------------------------------------");
+        System.out.println("Case 3: \n");
+        System.out.println("--------------------------------------------------");
+        suggestOpList2 = sugg2.suggestNextService(workflowOpsOBI, candidateOpsOBI, desiredOps, ontology, null);
+                    System.out.println("\n");
+        for (WebServiceOprScore suggestion: suggestOpList2) {
+            String[] ww = suggestion.getWsDescriptionDoc().split("/");
+            String wsName = ww[ww.length -1].replace("sawsdl", "");
+
+            System.out.println(wsName+ suggestion.getOperationName() + "\tTotal=" + suggestion.getScore() + "\tDm=" + suggestion.getDmScore() + "\tFn=" + suggestion.getFnScore() + "\tPe=" + suggestion.getPeScore());
+            System.out.println();
+            List<MatchedIOPaths.PathMatches> mps = suggestion.getMatchedPathsIp().getMatchedPaths();
+            for(MatchedIOPaths.PathMatches mp : mps)
+            {
+                System.out.print("\t" + mp.getIpName() + "-->" + mp.getOpName() + " With confidence "+ mp.getConfidenceLevel() + "%\n");
+            }
+            System.out.println("\n");
+        }
     
         
     }// Main ends

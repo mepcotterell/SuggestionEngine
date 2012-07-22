@@ -7,21 +7,25 @@ import util.WebServiceOprScore;
 import static java.lang.System.out;
 
 /**
- * This class provides methods for displaying different metrics on a list of 
- * WebServiceOprScore
+ * This class provides methods for classifying the Suggested Operations into High, 
+ * Medium and low.
+ * 
  * @author Michael Cotterell
  * @author Alok Dhamanaskar
+ * @see LICENSE (MIT style license file). 
+ * 
  */
 public class TestMetrics {
     
+    /**
+     * Method For printing the sub scores for suggested a Operation
+     * @param suggestion 
+     */
     private static void printOp (WebServiceOprScore suggestion) {
         String[] ww = suggestion.getWsDescriptionDoc().split("/");
         String wsName = ww[ww.length -1].replace("sawsdl", "");
        	DecimalFormat twoDForm = new DecimalFormat("#.##");
        
-//        out.println(wsName +suggestion.getOperationName() + "--Total=" + twoDForm.format(suggestion.getScore()) +
-//                "\tDm=" + twoDForm.format(suggestion.getDmScore()) + "\tFn=" + twoDForm.format(suggestion.getFnScore()) );
-
         out.println(wsName +suggestion.getOperationName() + "-" + twoDForm.format(suggestion.getScore()) );
     } // printOp
     
@@ -41,8 +45,15 @@ public class TestMetrics {
     
     
        
-    public static void printMetrics (List<WebServiceOprScore> list, double factor) {
-        
+    /**
+     * Classify the Suggested Operations as high medium and low and print them.
+     * 
+     * @param list of Suggested operations
+     * @param factor Controls how high the high should be
+     * 
+     */
+    public static void printMetrics (List<WebServiceOprScore> list, double factor) 
+    {
         // Determine the mean, min, and max
         double sum = 0.0;
         double min = 1;

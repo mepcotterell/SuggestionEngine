@@ -13,28 +13,33 @@ import util.WebServiceOprScore_type;
 
 /**
  *
+ * Test Class for testing Path based input-output Matching.
+ * 
  * @author Alok Dhamanaskar
- * Test Class for testing Path based DataMediation
+ * @see LICENSE (MIT style license file). 
+ * 
  */
-public class TestPathBasedDataMediation {
+
+public class TestPathBasedDataMediation 
+{
     
     public static String wublast  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wublast.sawsdl";
     public static String clustalW = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2.sawsdl";
-   public static String filerSeq  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/FilterSequencesWS.sawsdl";
+    public static String filerSeq  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/FilterSequencesWS.sawsdl";
     
-    public static String ontology = "owl/webService.owl";//"http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";//   
+    public static String ontology = "http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl"; 
     
     public static void main (String[] args) {
             
         WebServiceOpr candidateop = new WebServiceOpr("getResult",wublast);
         List<WebServiceOpr> workflowOps = new ArrayList<WebServiceOpr>();
         workflowOps.add(new WebServiceOpr("run", wublast));
-        //workflowOps.add(new WebServiceOpr("getResultTypes", wublast));
+        workflowOps.add(new WebServiceOpr("getResultTypes", wublast));
         
         DmScore dm = new DmScore();
-        //Double Score = dm.calculatePathDmScore(workflowOps, candidateop, ontology);
+        Double Score = dm.calculatePathDmScore(workflowOps, candidateop, ontology, new ArrayList<String>());
         
-        //System.out.println("\n\nDMScore = " + Score + "\n\n");
+        System.out.println("\n\nDMScore = " + Score + "\n\n");
         
         Map<WebServiceOprScore_type, WebServiceOprScore_type> matchedPaths= dm.getDmResults();
         

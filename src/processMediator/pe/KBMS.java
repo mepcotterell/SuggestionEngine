@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package processMediator.pe;
 
 import java.util.Hashtable;
@@ -8,7 +6,8 @@ import java.util.Hashtable;
 import jpl.PrologException;
 import jpl.Query;
 
-/**knowledge base management system, provides methods to query knowledge base or update knowledge base
+/**knowledge base management system, provides methods to query knowledge base or 
+ * update knowledge base, Currently not used
  * @author Rui
  * Summer 2010
  *

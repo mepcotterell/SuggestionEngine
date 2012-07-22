@@ -1,8 +1,6 @@
 
-package dataMediator;
+package inputOutputMatch;
 
-
-import static java.lang.System.out;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -11,11 +9,14 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 
 /**
+ * 
+ * Calculate the matchScore for an input with any of the Global Inputs
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
  *
- * <br/><br/> Calculate the matchScore for an input with any of the Global Inputs
  */
+
 public class GlobalInputs { 
     
     private static Namespace sawsdlNS = Namespace.getNamespace("sawsdl", "http://www.w3.org/ns/sawsdl");

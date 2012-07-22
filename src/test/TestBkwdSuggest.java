@@ -2,19 +2,18 @@
 package test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import suggest.BackwardSuggest;
-import suggest.ForwardSuggest;
-import util.MatchedIOPaths;
 import util.WebServiceOpr;
 import util.WebServiceOprScore;
 
 /**
- *
+ * 
+ * Test class for testing the Backward Suggestions Capability
+ * 
  * @author Alok Dhamanaskar
  * @see LICENSE (MIT style license file). 
+ * 
  */
 
 public class TestBkwdSuggest {
@@ -45,7 +44,7 @@ public class TestBkwdSuggest {
     public static String wsNeighbor  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/wsPhylipNeighbor.sawsdl";
     public static String clustlPhylogeny  = "http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/resources/clustalw2_phylogeny.sawsdl";
     
-    public static String ontology = "/home/alok/Desktop/obiws.owl";//"http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";   
+    public static String ontology = "http://obi-webservice.googlecode.com/svn/trunk/ontology/webService.owl";   
     
     public static void main (String[] args) {
         

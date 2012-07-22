@@ -4,11 +4,11 @@ package util;
 import java.util.*;
 
 /**
- *
+ * This class stores the matched input-output paths
+ * 
  * @author Alok Dhamanaskar 
  * @see LICENSE (MIT style license file). 
  * 
- * This class stores the input-output match info
  */
 public class MatchedIOPaths  {
 

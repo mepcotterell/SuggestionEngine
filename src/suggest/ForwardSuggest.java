@@ -8,12 +8,13 @@ import suggest.calculator.PeScore;
 import util.*;
 
 /**
+ * 
+ * A class that provides method for suggestion of the next Web service Operation(), 
+ * by calculating sub scores for Data mediation, Functionality and Preconditions & effects score 
+ * 
  * @author Rui Wang
  * @author Alok DHamanaskar
  * @see LICENSE (MIT style license file).
- * 
- * A class that provides method for suggestion of the next Web service Operation(), 
- * by calculating sub scores for Data mediation, Functionality and Preconditions & effects score
  * 
  */
 public class ForwardSuggest {
@@ -46,7 +47,7 @@ public class ForwardSuggest {
     }
 
     /**
-     * Returns the data mediation result for all candidateOPs.
+     * Returns the data matching result for all candidateOPs.
      *
      * @return the dmResults
      */
@@ -372,7 +373,7 @@ public class ForwardSuggest {
             if (i > 19) break;
         }
         
-        return suggestionList20;
+        return suggestionList;
     }//suggestNextServicepHom
     
     public static void main(String[] args) {

@@ -1,17 +1,17 @@
 
 package pHomomorphism;
 
-
-import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  *
+ * To be implemented.
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file).
- * Yet to be implemented
+ * 
  */
 public class PHomMaxSimilarity implements PHomomorphism {
     

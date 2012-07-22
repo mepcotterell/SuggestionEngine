@@ -1,23 +1,23 @@
 
 package suggest.calculator;
 
-import dataMediator.PHomomorphismSim;
-import dataMediator.PathRank;
-import dataMediator.TreeHomeomorphism;
+import inputOutputMatch.PHomomorphismSim;
+import inputOutputMatch.PathRank;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import pHomomorphism.PHomMaxCardinality;
-import pHomomorphism.PHomomorphism;
 import util.WebServiceOpr;
 import util.WebServiceOprScore_type;
 
 /**
+ * 
+ * Provides methods for invoking pathbased and pHomomorphism input-output matching 
+ * algorithms to calculate input-output matching sub-scores
+ * 
  * @author Rui Wang
  * @author Alok Dhamanaskar
  * @see LICENSE (MIT style license file).
  * 
- * Invokes Path Based DataMediation to get the score as well as Matched paths
  */
 public class DmScore {
 

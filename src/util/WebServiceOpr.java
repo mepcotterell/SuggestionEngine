@@ -2,13 +2,14 @@
 package util;
 
 /**
+ *  
+ * A class that represents a single Web service operation, by storing the operation name 
+ *
+ * and the WSDL/ WADL location. Include setters and getters for the same.
  * @author Rui Wang
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file).
  * 
- * A class that represents a single Web service operation, by storing the operation name 
- * and the WSDL/ WADL location. Include setters and getters for the same.
- *  
  * @param operationName Name of the Operation in The WSDL/WADL
  * @param wsDescriptionDoc Name / Location of the Web service Description Document (WSDL/WADL)
  * @param extraInfo Some extra info, not sure if needed / used  

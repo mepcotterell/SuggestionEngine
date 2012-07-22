@@ -6,9 +6,11 @@ import java.util.List;
 
 /**
  *
+ * A class to represent output of Greedy Match
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file).
- * A class to represent output of Greedy Match
+ * 
  */
 public class Combination {
 

@@ -9,10 +9,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * 
+ * This class Implements all the methods of the interface PHomomorphism.
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE(MIT style license file). 
  * 
- * This class Implements all the methods of the interface PHomomorphism.
  */
 public class PHomMaxCardinality implements PHomomorphism {
     

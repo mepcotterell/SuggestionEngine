@@ -9,25 +9,30 @@ import ontologyManager.OntologyManager;
 import parser.SchemaParser;
 
 /**
-*
-* @author Alok Dhamanaskar
-* @see LICENSE (MIT style license file).
-*
-*/
+ * The class provides method for retrieving all the available documentation 
+ * for a Web service input
+ *
+ * @author Alok Dhamanaskar
+ * @see LICENSE (MIT style license file).
+ *
+ */
 public class GetDocumentation
 {
-    /**
-* The function returns all available documentation for the given parameter in the WSDL.
-* It returns Documentation from the WSDL file as well as the Ontology
-*
-* @param WSDLURL : URL to the WSDL file
-* @param paramName : Name of the Parameter from WSDL for which to find documentation
-* @param owlURI : The URL of the Ontology file
-* @return A list of available documentation including Ontological Definition, Description and
-* Usage as well as WSDL Documentation
-*/
     
-    public static List<String> getParamInfo(String WSDLURL,String paramName, String owlURI)
+    
+    /**
+     * The function returns all available documentation for the given parameter
+     * in the WSDL. It returns Documentation from the WSDL file as well as the
+     * Ontology
+     *
+     * @param WSDLURL : URL to the WSDL file
+     * @param paramName : Name of the Parameter from WSDL for which to find
+     * documentation
+     * @param owlURI : The URL of the Ontology file
+     * @return A list of available documentation including Ontological
+     * Definition, Description and Usage as well as WSDL Documentation
+     */
+    public static List<String> getParamInfo(String WSDLURL, String paramName, String owlURI) 
     {
         List<String> DocList = new ArrayList<String>();
         Element paramElement= null;

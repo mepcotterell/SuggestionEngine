@@ -5,10 +5,12 @@ package pHomomorphism;
 import static java.lang.System.out;
 
 /**
+ * 
+ * A class to test the functionality provided by this package.
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
  * 
- * A class to test the functionality provided by this package
  */
 public class Test {
 

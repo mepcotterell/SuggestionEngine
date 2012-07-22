@@ -6,9 +6,12 @@ import static java.lang.System.out;
 import java.util.List;
 
 /**
+ * 
+ * A class that has misc useful functions mostly used for debugging.
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). The class provides
- * A class that has random useful functions mostly used for debugging
+ * 
  */
 public class Util {
 

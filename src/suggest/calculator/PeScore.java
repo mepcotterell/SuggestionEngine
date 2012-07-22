@@ -8,13 +8,16 @@ import util.Timer;
 import util.WebServiceOpr;
 
 /**
- * @author Rui Wang
- * @see LICENSE (MIT style license file).
  *
  * Class to calculate pre-conditions & effects component, currently not being
  * used, as PeScore is not considered
+ * 
+ * @author Rui Wang
+ * @see LICENSE (MIT style license file).
+ *
  */
-public class PeScore {
+public class PeScore 
+{
 
     /**
      * check whether current state entails precondition of candidate operation given initial state to initialize current state, 

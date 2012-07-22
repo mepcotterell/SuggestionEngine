@@ -1,20 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package util;
 
 import java.util.List;
-import java.util.Set;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
 /**
  *
+ * Contains Utility Functions for debugging like Printing i/o paths 
+ * 
  * @author Alok Dhamanaskar
  * @see    LICENSE (MIT style license file).
  * 
  */
+
 public class DebuggingUtils
 {
     public static void printCollection(List<String> s)
@@ -25,7 +24,15 @@ public class DebuggingUtils
         
         }
     }
-    
+
+    /**
+     * Print all the paths for an input or output.
+     * 
+     * @param nextOpInPaths A list of Paths (List of Elements)
+     * @param WSDLName WSDL Name
+     * @param OpName Operation Name
+     * @param type 
+     */
     public static void printPaths(List<List<Element>> nextOpInPaths, String WSDLName, String OpName, String type)
     {
     
@@ -41,7 +48,12 @@ public class DebuggingUtils
             System.out.println("-----------------------------------------");
         }
     }
-    
+
+       
+    /**
+     * Print the path for an input or output
+     * @param Paths List of elements
+     */
     public static void printPath(List<Element> Paths)
     {
             for ( Element e1 : Paths)        
@@ -55,7 +67,7 @@ public class DebuggingUtils
 
     }
     
-        /**
+    /**
      * The method calculates generalized mean for a given array of (n) values and an Exponent Value(m).
      * mean = ((1/n)SUM(Xi))^(1/m)
      * m = 0 Geometric mean,

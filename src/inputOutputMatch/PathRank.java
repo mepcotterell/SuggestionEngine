@@ -1,5 +1,5 @@
 
-package dataMediator;
+package inputOutputMatch;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -15,10 +15,12 @@ import uk.ac.shef.wit.simmetrics.similaritymetrics.QGramsDistance;
 import util.*;
 
 /**
- * @author Rui Wang
+ * 
+ * Calculates DmScore and Matched Paths by implementing the PathBased input-output Matching Algorithm
+ * 
+ * @author Rui Wang, Alok Dhamanaskar
  * @see LICENSE (MIT style license file).
  * 
- * Calculates DmScore and Matched Paths by implementing the PathBased DaataMediation Algorithm
  */
 public class PathRank {
     

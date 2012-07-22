@@ -1,18 +1,19 @@
+
 package test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import suggest.BidirectionSuggest;
 import util.MatchedIOPaths;
 import util.WebServiceOpr;
 import util.WebServiceOprScore;
 
 /**
- *
+ * Test class for Bidirectional Suggestions, and displaying the Matched Paths.
+ * 
  * @author Alok Dhamanaskar
  * @see LICENSE (MIT style license file). 
+ * 
  */
 
 public class TestBidrSuggest {
@@ -35,27 +36,33 @@ public class TestBidrSuggest {
     
     public static void main (String[] args) {
         
-        class Results {
-            Map<String, WebServiceOprScore> test1 = new HashMap<String, WebServiceOprScore>();
-            Map<String, WebServiceOprScore> test2 = new HashMap<String, WebServiceOprScore>();
-            Map<String, WebServiceOprScore> test3 = new HashMap<String, WebServiceOprScore>();
-            Map<String, WebServiceOprScore> test4 = new HashMap<String, WebServiceOprScore>();
-        }
-        
-        Results results = new Results();
-        
-        // Specify a desired functionality or operation name
-        String desiredOps = "";//retrieve sequences";
-        //String desiredOps = "http://purl.obolibrary.org/obo/obi.owl#Class_40";
+        String desiredOps = "";
         
         List<WebServiceOpr> candidateOpsOBI = new ArrayList<WebServiceOpr>();
 
         candidateOpsOBI.add(new WebServiceOpr("filterByEvalScore", filerSeq));
-        candidateOpsOBI.add(new WebServiceOpr("filterByEval", filerSeq));
+        candidateOpsOBI.add(new WebServiceOpr("filterByEvalScoreCSV", filerSeq));
         
-        candidateOpsOBI.add(new WebServiceOpr("array2string", wsconverter));
-        candidateOpsOBI.add(new WebServiceOpr("base64toString", wsconverter));   
+        candidateOpsOBI.add(new WebServiceOpr("decode", wsconverter));
+        candidateOpsOBI.add(new WebServiceOpr("encode", wsconverter));   
+        candidateOpsOBI.add(new WebServiceOpr("csvtoArray", wsconverter));   
+        candidateOpsOBI.add(new WebServiceOpr("arraytoCSV", wsconverter));   
+               
+        candidateOpsOBI.add(new WebServiceOpr("getStyleInfo", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getFormatStyles", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("fetchData", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getSupportedFormats", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getDatabaseInfo", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("fetchBatch", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getSupportedDBs", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getFormatInfo", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getSupportedStyles", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getDatabaseInfoList", wsdbfetch));
+        candidateOpsOBI.add(new WebServiceOpr("getDbFormats", wsdbfetch));
+
+        //----------------------------------------------------------------------
         
+        candidateOpsOBI.add(new WebServiceOpr("run", wublast));
         candidateOpsOBI.add(new WebServiceOpr("getParameters", wublast));
         candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", wublast));
         candidateOpsOBI.add(new WebServiceOpr("getResult", wublast));
@@ -75,19 +82,16 @@ public class TestBidrSuggest {
         candidateOpsOBI.add(new WebServiceOpr("getResultTypes", psiblast));
         candidateOpsOBI.add(new WebServiceOpr("getStatus", psiblast));
         candidateOpsOBI.add(new WebServiceOpr("run", psiblast));
+              
+        candidateOpsOBI.add(new WebServiceOpr("getParameters", fasta));
+        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", fasta));
+        candidateOpsOBI.add(new WebServiceOpr("getResult", fasta));
+        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", fasta));
+        candidateOpsOBI.add(new WebServiceOpr("getStatus", fasta));
+        candidateOpsOBI.add(new WebServiceOpr("run", fasta));    
 
-        candidateOpsOBI.add(new WebServiceOpr("getStyleInfo", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getFormatStyles", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("fetchData", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getSupportedFormats", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getDatabaseInfo", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("fetchBatch", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getSupportedDBs", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getFormatInfo", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getSupportedStyles", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getDatabaseInfoList", wsdbfetch));
-        candidateOpsOBI.add(new WebServiceOpr("getDbFormats", wsdbfetch));
-
+        //----------------------------------------------------------------------
+        
         candidateOpsOBI.add(new WebServiceOpr("getParameters", clustalW));
         candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", clustalW));
         candidateOpsOBI.add(new WebServiceOpr("getResult", clustalW));
@@ -103,18 +107,12 @@ public class TestBidrSuggest {
         candidateOpsOBI.add(new WebServiceOpr("run", tcoffee));        
         
         candidateOpsOBI.add(new WebServiceOpr("getParameters", muscle));
-       candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", muscle));
+        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", muscle));
         candidateOpsOBI.add(new WebServiceOpr("getResult", muscle));
         candidateOpsOBI.add(new WebServiceOpr("getResultTypes", muscle));
         candidateOpsOBI.add(new WebServiceOpr("getStatus", muscle));
         candidateOpsOBI.add(new WebServiceOpr("run", muscle));        
-        
-        candidateOpsOBI.add(new WebServiceOpr("getParameters", fasta));
-        candidateOpsOBI.add(new WebServiceOpr("getParameterDetails", fasta));
-        candidateOpsOBI.add(new WebServiceOpr("getResult", fasta));
-        candidateOpsOBI.add(new WebServiceOpr("getResultTypes", fasta));
-        candidateOpsOBI.add(new WebServiceOpr("getStatus", fasta));
-        candidateOpsOBI.add(new WebServiceOpr("run", fasta));    
+                 
         
         List<WebServiceOpr> workflowPrefixOps = new ArrayList<WebServiceOpr>();
         List<WebServiceOpr> workflowSuffixOps = new ArrayList<WebServiceOpr>();
@@ -125,14 +123,12 @@ public class TestBidrSuggest {
         System.out.println("--------------------------------------------------");
         System.out.println("TEST - OBI");
         System.out.println("Case 1: There is only one operation on the workflow Blast.run\n------------------------------------\n");
-        //desiredOps = "filterByEvalScore";
         BidirectionSuggest sugg2 = new BidirectionSuggest();
         
         List<WebServiceOprScore> suggestOpList2 = sugg2.suggestServices
                 (workflowPrefixOps, workflowSuffixOps, candidateOpsOBI, desiredOps,  ontology, null);
         System.out.println("\n");
         for (WebServiceOprScore suggestion: suggestOpList2) {
-            results.test1.put(suggestion.getOperationName(), suggestion);
             String[] ww = suggestion.getWsDescriptionDoc().split("/");
             String wsName = ww[ww.length -1].replace("sawsdl", "");
 

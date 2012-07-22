@@ -12,26 +12,27 @@ import ontologyManager.OntologyManager;
 import parser.SchemaParser;
 
 /**
-*
-* @author Alok Dhamanaskar
-* @see LICENSE (MIT style license file).
-*
+ * A class that has methods for suggesting possible input values to the user 
+ * for a particular Web service input.
+ * 
+ * @author Alok Dhamanaskar
+ * @see LICENSE (MIT style license file).
+ * 
 */
 public class SuggestInputValues
 {
 
-    
     /**
-* A constructor for suggestInputValues class that given the name of the parameter,
-* URL for the WSDL file and URL for the Ontology file gets the list of possible input
-* values by looking up individuals & direct subclasses.
-* Use getInputValues() to get the actual values.
-*
-* @param WSDLURL : URL for the WSDL file from which the parameter is.
-* @param paramName : name of the parameter to suggest values for
-* @param owlURI : URI for the owl file
-*
-*/
+     * A constructor for suggestInputValues class that given the name of the parameter,
+     * URL for the WSDL file and URL for the Ontology file gets the list of possible input 
+     * values by looking up individuals & direct subclasses.
+     * Use getInputValues() to get the actual values.
+     * 
+     * @param WSDLURL : URL for the WSDL file from which the parameter is.
+     * @param paramName : name of the parameter to suggest values for
+     * @param owlURI : URI for the owl file
+     * @return 
+     */
     public static List<String> SuggestParamValues(String WSDLURL, String paramName, String owlURI)
     {
         List<String> values = new ArrayList<String>();  
@@ -80,16 +81,14 @@ public class SuggestInputValues
         
     }//Method ends
     
-            
     /**
-*
-* Finds out the direct sub-classes for a given class in an Ontology
-*
-* @param conceptClass : The class in the ontology, as an object of OWLClass to find subclasses for
-* @param parser : Object of ontology Manager
-*/
-    private static List<String> getDirectSubClasses(OWLClass conceptClass, OntologyManager parser)
-    {
+     *
+     * Finds out the direct sub-classes for a given class in an Ontology
+     *
+     * @param conceptClass : The class in the ontology, as an object of OWLClass to find subclasses for
+     * @param parser : Object of ontology Manager
+     */
+    private static List<String> getDirectSubClasses(OWLClass conceptClass, OntologyManager parser) {
         List<String> values = new ArrayList<String>();        
         Set<OWLClass> subclasses = parser.getDirectSubClasses(conceptClass);
         String label = "";
@@ -108,14 +107,13 @@ public class SuggestInputValues
     }//method ends
 
     /**
-*
-* Finds out the Individuals for a given class in an Ontology
-*
-* @param conceptClass : The class in the ontology, as an object of OWLClass to find subclasses for
-* @param parser : Object of ontology Manager
-*/
-    private static List<String> getIndividuals(OWLClass conceptClass, OntologyManager parser)
-    {
+     *
+     * Finds out the Individuals for a given class in an Ontology
+     *
+     * @param conceptClass : The class in the ontology, as an object of OWLClass to find subclasses for
+     * @param parser : Object of ontology Manager
+     */
+    private static List<String> getIndividuals(OWLClass conceptClass, OntologyManager parser) {
         List<String> values = new ArrayList<String>();        
         try{
             OWLOntology ontology = parser.getOntology();

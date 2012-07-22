@@ -8,10 +8,12 @@ import java.util.logging.Level;
 import org.semanticweb.owlapi.model.OWLClass;
 
 /**
+ * 
+ * The class that implements the OntologySimilarity similarity interface.
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
  * 
- * The class that implements all the methods for OntologySimnilarity interface.
  */
 public class OntologySimilarityImpl implements OntologySimilarity {
 
@@ -96,7 +98,7 @@ public class OntologySimilarityImpl implements OntologySimilarity {
         //Test Code
         String class1 = "http://purl.obolibrary.org/obo/OBIws_0000175";
         String class2 = "http://purl.obolibrary.org/obo/OBIws_0000027";
-        String owlURI = "/home/alok/Desktop/obiws.owl";
+        String owlURI = "owl/obiws.owl";
         OntologyManager parser = OntologyManager.getInstance(owlURI);
         
         OWLClass cls1 = parser.getConceptClass(class1);

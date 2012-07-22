@@ -8,9 +8,11 @@ import java.util.logging.Logger;
 
 /**
  *
+ * Class with functions to Store, Retrieve and Manipulate the H list in the pHomorphism algorithm 
+ * 
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
- * Class with functions to Store, Retrieve and Manipulate the H list in the pHomorphism algorithm 
+ * 
  */
 public class HGoodMinus {
     

@@ -6,10 +6,11 @@ import java.util.logging.Logger;
 
 /**
  *
+ * 
+ * Class to calculate Transitive closure of a directed Graph using Warshall's algorithm in cubic time
  * @author Alok Dhamanaskar (alokd@uga.edu)
  * @see LICENSE (MIT style license file). 
  * @see http://www.sroede.nl/pages/warshall/Default.aspx
- * Class to calculate Transitive closure of a directed Graph using Warshall's algorithm in cubic time
  * 
  */
 public class TransitiveClosure {
