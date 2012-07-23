@@ -1,3 +1,4 @@
 SuggestionEngine
 
+The Service Suggestion Engine is built to facilitate the process of constructing and extending workflows by providing suggestions to the user for the next or previous Web service operation. Suggestions are provided as a ranked list of Web service operations. <br>The Web service operations are ranked on the basis of their input-output compatibility with the operations currently in the workflow and how well their objective specification matches the desired functionality provided by the user. For details of the working of SSE and calculation of sub-scores refer to the recent publications.
 
